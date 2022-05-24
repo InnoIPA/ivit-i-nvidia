@@ -1,0 +1,11 @@
+{
+    "framework": "tensorrt",
+    "input_data": "/dev/video0",
+    "category": "sample",
+    "application": "yolo",
+    "prim": {
+        "model_json": "./app/trt/mask_detection_yolo/yolov4-tiny-mask.json"
+    },
+    "app_name": "yolov3-tiny",
+    "input_type": "V4L2"
+}

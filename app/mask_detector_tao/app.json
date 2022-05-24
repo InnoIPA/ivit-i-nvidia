@@ -1,0 +1,11 @@
+{
+    "framework": "tensorrt",
+    "input_data": "/dev/video2",
+    "category": "smart city",
+    "application": "mask detection",
+    "prim": {
+        "model_json": "./app/trt/mask_detector/mask_detector.json"
+    },
+    "app_name": "mask_detector",
+    "input_type": "V4L2"
+}

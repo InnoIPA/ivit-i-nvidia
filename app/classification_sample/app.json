@@ -1,0 +1,11 @@
+{
+    "framework": "tensorrt",
+    "input_data": "/dev/video0",
+    "category": "sample",
+    "application": "classification",
+    "prim": {
+        "model_json": "./app/trt/classification_sample/classification.json"
+    },
+    "app_name": "classification_sample",
+    "input_type": "V4L2"
+}

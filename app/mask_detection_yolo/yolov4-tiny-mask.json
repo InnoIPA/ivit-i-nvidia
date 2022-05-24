@@ -1,0 +1,12 @@
+{
+    "tag": "darknet",
+    "tensorrt": {
+        "model_path": "./app/trt/mask_detection_yolo/yolov4-tiny-mask.trt",
+        "label_path": "./app/trt/mask_detection_yolo/yolov4-tiny-mask.txt",
+        "device": "NVIDIA GeForce GTX 1050 Ti",
+        "input_size": "3,608,608",
+        "preprocess": "caffe",
+        "thres": 0.5,
+        "nms_thres": 0.5
+    }
+}

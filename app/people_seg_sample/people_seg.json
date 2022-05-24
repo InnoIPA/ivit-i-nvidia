@@ -1,0 +1,11 @@
+{
+    "tag": "seg",
+    "tensorrt": {
+        "model_path": "./app/trt/people_seg_sample/peoplesegnet.engine",
+        "label_path": "./app/trt/people_seg_sample/peoplesegnet.txt",
+        "device": "NVIDIA GeForce GTX 1050 Ti",
+        "input_size": "3,576,960",
+        "preprocess": "torch",
+        "thres": "0.9"
+    }
+}

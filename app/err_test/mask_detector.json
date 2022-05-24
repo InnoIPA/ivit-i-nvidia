@@ -1,0 +1,12 @@
+{  
+    "tag":"obj",
+    "tensorrt":{
+        "model_path":"./app/trt/err_test/mask.engine",
+        "label_path":"./app/trt/err_test/mask.txt",
+        "device": "NVIDIA GeForce GTX 1050 Ti",
+        "input_size":"3,224,224",
+        "preprocess":"caffe",
+        "thres":0.8,
+	    "dynamic_batch":true
+    }
+}
