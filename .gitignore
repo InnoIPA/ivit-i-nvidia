@@ -29,3 +29,4 @@ __pycahe__
 **/*/*.png
 **/*/*.avi
 **/*/*.mp4
+app/people_seg_sample/peoplesegnet_resnet50_int8.txt
