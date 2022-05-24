@@ -5,9 +5,9 @@
 1. Download Model
 
    * run the script
-       ```shell
-       ./models/HumanPose/download_model.sh
-
+       ```bash
+        cd /path/to/iNIT-I
+        ./app/humanpose_sample/download_model.sh
        ```
    * choose the model
        ```
@@ -27,12 +27,11 @@
     
     ```bash
     # For Example
-    cd /path/to/iNIT-I
 
     ./converter/pose-converter \
-    -m ./app/trt/humanpose_sample/resnet18_baseline_att_224x224_A.pth \
-    -j ./app/trt/humanpose_sample/label.json \
-    -e ./app/trt/humanpose_sample/resnet18_baseline_att_224x224_A.engine
+    -m ./app/humanpose_sample/resnet18_baseline_att_224x224_A.pth \
+    -j ./app/humanpose_sample/label.json \
+    -e ./app/humanpose_sample/resnet18_baseline_att_224x224_A.engine
 
     ###############################
     # get human pose parser ... 0.002 s 
@@ -50,14 +49,14 @@
 3. Prepare the application configuration `app.json`
     
     > Notice: 
-    > if you only want to run with `tensorrt_demo.py`, you could ignore the option below: `category`, `application`, `app_name`, `input_type`.
+    > if you only want to run with `demo.py`, you could ignore the option below: `category`, `application`, `app_name`, `input_type`.
 
     ```json
     {
         "framework": "tensorrt",
         "input_data": "./data/web/production_ID_4806533.mp4",
         "prim": {
-            "model_json": "./app/trt/humanpose_sample/humanpose.json"
+            "model_json": "./app/humanpose_sample/humanpose.json"
         },
         "category": "sample",
         "application": "human pose",
@@ -80,8 +79,8 @@
     {
         "tag": "pose",
         "tensorrt": {
-            "model_path": "./app/trt/humanpose_sample/resnet18_baseline_att_224x224_A.engine",
-            "label_path": "./app/trt/humanpose_sample/label.json",
+            "model_path": "./app/humanpose_sample/resnet18_baseline_att_224x224_A.engine",
+            "label_path": "./app/humanpose_sample/label.json",
             "device": "NVIDIA GeForce GTX 1050 Ti",
             "input_size": "3,224,224",
             "preprocess": "torch",
@@ -104,7 +103,7 @@
 ## Run Human Pose Estimation Sample
 
 ```
-python3 tensorrt_demo.py -c app/trt/humanpose_sample/app.json
+python3 demo.py -c app/humanpose_sample/app.json
 ```
 
 ---

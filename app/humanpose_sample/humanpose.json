@@ -1,8 +1,8 @@
 {
     "tag": "pose",
     "tensorrt": {
-        "model_path": "./app/trt/humanpose_sample/resnet18_baseline_att_224x224_A.engine",
-        "label_path": "./app/trt/humanpose_sample/label.json",
+        "model_path": "./app/humanpose_sample/resnet18_baseline_att_224x224_A.engine",
+        "label_path": "./app/humanpose_sample/label.json",
         "device": "NVIDIA GeForce GTX 1050 Ti",
         "input_size": "3,224,224",
         "preprocess": "torch",
