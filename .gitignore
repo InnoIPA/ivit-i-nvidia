@@ -14,7 +14,7 @@ __pycahe__
 **/*/*.tlt
 **/*/*.engine
 **/*/*.cfg
-**/*/*.weight
+**/*/*.weights
 # --------------------------------------
 # Plugins
 **/*/*.so
@@ -24,3 +24,8 @@ __pycahe__
 **/*/*_colormap.txt
 *.log
 **/*/*.log
+**/*/*.jpg
+**/*/*.jpeg
+**/*/*.png
+**/*/*.avi
+**/*/*.mp4
