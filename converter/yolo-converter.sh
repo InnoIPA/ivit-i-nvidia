@@ -8,9 +8,9 @@ function printd(){
 MODEL=$(realpath $1)
 
 # Check file is exists
-FLAG=$(ls ${MODEL} 2> /dev/null)
+FLAG=$(ls "${MODEL}.weights" 2> /dev/null)
 if [[ -z $FLAG ]];then
-    printd "Couldn't find model (${MODEL})"
+    printd "Couldn't find model ( ${MODEL}.weights )"
     exit
 fi
 
