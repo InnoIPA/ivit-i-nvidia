@@ -1,5 +1,4 @@
-#%%
-import torch, time, os
+import torch, time, os, sys
 import torchvision.models as models
 try:
     from torch2trt import torch2trt

@@ -5,17 +5,14 @@ Classification model which trained from NVIDIA TAO or iTAO.
     ```bash
     cd /path/to/iNIT-I
     # for desktop user
-    sudo ./docker/trt/run.sh -f trt -m
-    # for server user
-    sudo ./docker/trt/run.sh -f trt -m
+    sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
     ```
     * `-m` means magic,print information with funny format.
 
 ## For Sample Torch Model
 1. Download Sample Model ( Torch )
     ```bash
-    cd app/trt/classification_sample
-    python3 download_resnext50.py
+    python3 app/classification_sample/download_resnext50.py
 
     # ------------------------------------
     # My situation
@@ -33,7 +30,7 @@ Classification model which trained from NVIDIA TAO or iTAO.
         "framework": "tensorrt",
         "input_data": "/dev/video2",
         "prim": {
-            "model_json": "./app/trt/classification_sample/classification.json"
+            "model_json": "./app/classification_sample/classification.json"
         },
         "category": "sample",
         "application": "classification",
@@ -56,8 +53,8 @@ Classification model which trained from NVIDIA TAO or iTAO.
     {
         "tag": "cls",
         "tensorrt": {
-            "model_path": "./app/trt/classification_sample/resnet50.engine",
-            "label_path": "./app/trt/classification_sample/imagenet.txt",
+            "model_path": "./app/classification_sample/resnet50.engine",
+            "label_path": "./app/classification_sample/imagenet.txt",
             "device": "NVIDIA GeForce GTX 1050 Ti",
             "input_size": "3,224,224",
             "preprocess": "torch",
@@ -75,8 +72,12 @@ Classification model which trained from NVIDIA TAO or iTAO.
     |   input_size  |   the input size of the AI model
     |   preprocess  |   the process mode in [ 'torch', 'caffe' ]
     |   thres       |   the threshold
+4. Run demo
+    ```
+    python3 demo.py -c app/classification_sample/app.json
+    ```
 
-## For TAO Classification Model
+## For TAO Classification Model ( Archived )
 1. Prepare Model and Label
     ```shell
     tree
