@@ -8,6 +8,7 @@ __pycahe__
 # Model and Configuration file ( YOLO )
 **/*/*.trt
 **/*/*.plan
+**/*/*.pth
 **/*/*.onnx
 **/*/*.etlt
 **/*/*.tlt
