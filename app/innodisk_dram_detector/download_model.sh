@@ -17,14 +17,6 @@ echo "$(date +"%F %T") Download model from google drive ..."
 ROOT=$(dirname `realpath ${0}`)
 echo $ROOT
 cd $ROOT
-
-TRG_FOLDER="./"
-
-if [[ ! (${TRG_FOLDER} == *"${ROOT}"*) ]];then
-	echo "$(date +"%F %T") Move terminal to $(realpath ${TRG_FOLDER})"
-	cd ${TRG_FOLDER}
-fi
-
 # ------------------------------------------------------------------------------
 
 # Model: https://drive.google.com/file/d/1bZ0ylEEwMKhdEb3y04Ajxx3pLbhcAJ_A/view?usp=sharing

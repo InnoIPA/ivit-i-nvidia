@@ -18,13 +18,6 @@ ROOT=$(dirname `realpath ${0}`)
 echo $ROOT
 cd $ROOT
 
-TRG_FOLDER="./"
-
-if [[ ! (${TRG_FOLDER} == *"${ROOT}"*) ]];then
-	echo "$(date +"%F %T") Move terminal to $(realpath ${TRG_FOLDER})"
-	cd ${TRG_FOLDER}
-fi
-
 # ------------------------------------------------------------------------------
 
 # https://drive.google.com/file/d/15e86j8KmctNE9HmpQGXxZ8CM7LHLKCSm/view?usp=sharing
