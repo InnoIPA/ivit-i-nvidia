@@ -1,8 +1,8 @@
 {
     "tag": "darknet",
     "tensorrt": {
-        "model_path": "./app/trt/innodisk_dram_detector/yolov3-tiny-dram.trt",
-        "label_path": "./app/trt/innodisk_dram_detector/yolov3-tiny-dram.txt",
+        "model_path": "./app/innodisk_dram_detector/yolov3-tiny-dram.trt",
+        "label_path": "./app/innodisk_dram_detector/yolov3-tiny-dram.txt",
         "device": "NVIDIA GeForce GTX 1050 Ti",
         "input_size": "3,608,608",
         "preprocess": "caffe",

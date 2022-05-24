@@ -1,10 +1,10 @@
 {
     "framework": "tensorrt",
-    "input_data": "./app/trt/innodisk_dram_detector/innodisk_dram.avi",
+    "input_data": "./app/innodisk_dram_detector/innodisk_dram.avi",
     "category": "smart factory",
     "application": "dram detection",
     "prim": {
-        "model_json": "./app/trt/innodisk_dram_detector/yolov3-tiny.json"
+        "model_json": "./app/innodisk_dram_detector/yolov3-tiny.json"
     },
     "app_name": "yolov3-tiny",
     "input_type": "V4L2"
