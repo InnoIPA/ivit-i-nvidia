@@ -23,9 +23,9 @@ else
 fi
 
 # Parse information from configuration
-BASE_NAME=$(cat ${CONF} | jq -r '.project')
-TAG_VER=$(cat ${CONF} | jq -r '.version')
-TAG_FRAMEWORK=$(cat ${CONF} | jq -r '.framework')
+BASE_NAME=$(cat ${CONF} | jq -r '.PROJECT')
+TAG_VER=$(cat ${CONF} | jq -r '.VERSION')
+TAG_FRAMEWORK=$(cat ${CONF} | jq -r '.FRAMEWORK')
 
 # Concate name
 IMAGE_NAME="${BASE_NAME}/${TAG_FRAMEWORK}:${TAG_VER}"
