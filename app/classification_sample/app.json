@@ -1,8 +1,7 @@
 {
     "framework": "tensorrt",
     "input_data": "/dev/video0",
-    "category": "sample",
-    "application": "classification",
+    "application": [ "counting_number" ],
     "prim": {
         "model_json": "./app/classification_sample/classification.json"
     },
