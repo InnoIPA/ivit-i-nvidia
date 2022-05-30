@@ -1,5 +1,11 @@
 {
-    "project": "init-i",
-    "version": "v0.1",
-    "framework": "nvidia"
+    "PROJECT": "init-i",
+    "VERSION": "v0.1",
+    "FRAMEWORK": "nvidia",
+    "HOST": "",
+    "PORT": 818,
+    "LOGGER": "init-i-web.log",
+    "TASK_ROOT": "./app",
+    "DATA": "data",
+    "DEBUG": true
 }
