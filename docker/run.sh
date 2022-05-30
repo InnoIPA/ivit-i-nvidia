@@ -5,10 +5,37 @@ source "$(dirname $(realpath $0))/utils.sh"
 # Set the default value of the getopts variable 
 gpu="all"
 port=""
+project_name="init-i"
 framework=""
 version="latest"
 magic=false
 server=false
+
+# Install pre-requirement
+if [[ -z $(which jq) ]];then
+    printd "Installing requirements .... " Cy
+    sudo apt-get install jq -yqq
+fi
+
+# Variable
+CONF="init-i.json"
+FLAG=$(ls ${CONF} 2>/dev/null)
+if [[ -z $FLAG ]];then
+    CONF="${RUN_PWD}/${CONF}"
+    FLAG=$(ls ${CONF} 2>/dev/null)
+    if [[ -z $FLAG ]];then
+        printd "Couldn't find configuration (${CONF})" Cy
+        exit
+    fi
+else
+    printd "Detected configuration (${CONF})" Cy
+fi
+
+# Parse information from configuration
+project_name=$(cat ${CONF} | jq -r '.PROJECT')
+version=$(cat ${CONF} | jq -r '.VERSION')
+framework=$(cat ${CONF} | jq -r '.FRAMEWORK')
+
 # ---------------------------------------------------------
 # help
 function help(){
@@ -77,9 +104,9 @@ mount_gpu="--gpus"
 set_vision=""
 command="bash"
 web_api="./run_web_api.sh"
-docker_image="init-i/${framework}:${version}"
+docker_image="${project_name}/${framework}:${version}"
 workspace="/workspace"
-docker_name="init-i-${framework}"
+docker_name="${project_name}-${framework}"
 
 # ---------------------------------------------------------
 # Check if image come from docker hub
