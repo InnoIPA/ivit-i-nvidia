@@ -31,7 +31,7 @@ pip3 install --disable-pip-version-check tqdm cython gdown setuptools packaging 
 # For darknet yolo to tensorrt
 printd "Install the requirement of Darknet " Cy
 apt-get -qy install bsdmainutils
-pip3 install --disable-pip-version-check GPUtil wget
+pip3 install --disable-pip-version-check GPUtil wget colorlog
 pip3 install onnx==1.9.0
 
 # For web api
@@ -41,3 +41,4 @@ apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall netbase
 printd "Done${REST}"
 
 
+sadasd
