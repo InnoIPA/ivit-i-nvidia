@@ -8,5 +8,7 @@
     "LOGGER": "init-i-web.log",
     "TASK_ROOT": "./app",
     "DATA": "data",
-    "DEBUG": true
+    "DEBUG": false,
+    "WORKER": 5,
+    "THREADING": 10
 }   

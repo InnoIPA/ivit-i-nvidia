@@ -353,3 +353,7 @@ if __name__ == "__main__":
     
     app, socketio = create_app()
     socketio.run(app, host=app.config['HOST'], port=app.config['PORT'], debug=app.config['DEBUG'])
+
+else:
+    # export INIT_I=/workspace/init-i.json
+    app, socketio = create_app()
