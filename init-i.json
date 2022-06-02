@@ -1,11 +1,12 @@
 {
     "PROJECT": "init-i",
     "VERSION": "v0.1",
-    "FRAMEWORK": "nvidia",
+    "PLATFORM": "nvidia",
+    "FRAMEWORK": "tensorrt",
     "HOST": "",
     "PORT": 818,
     "LOGGER": "init-i-web.log",
     "TASK_ROOT": "./app",
     "DATA": "data",
     "DEBUG": true
-}
+}   
