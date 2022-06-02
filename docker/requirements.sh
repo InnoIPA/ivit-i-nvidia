@@ -39,6 +39,3 @@ pip3 install flask flask-socketio flask-cors flasgger gunicorn==20.1.0 eventlet=
 apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall netbase
 
 printd "Done${REST}"
-
-
-sadasd
