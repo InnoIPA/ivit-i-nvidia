@@ -128,3 +128,8 @@ Introduce of iNIT-I-NVIDIA
     `-- segmentation.py         # instance segmentation
 ```
 
+# Developer for web api
+```bash
+git submodule add --name web https://github.com/MaxChangInnodisk/init-i-web-api.git ./init_i/web
+
+```

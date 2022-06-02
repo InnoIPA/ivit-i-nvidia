@@ -9,6 +9,6 @@
     "TASK_ROOT": "./app",
     "DATA": "data",
     "DEBUG": false,
-    "WORKER": 5,
-    "THREADING": 10
+    "WORKER": 1,
+    "THREADING": 30
 }   
