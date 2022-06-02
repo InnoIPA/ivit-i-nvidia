@@ -25,10 +25,10 @@ fi
 # Parse information from configuration
 BASE_NAME=$(cat ${CONF} | jq -r '.PROJECT')
 TAG_VER=$(cat ${CONF} | jq -r '.VERSION')
-TAG_FRAMEWORK=$(cat ${CONF} | jq -r '.FRAMEWORK')
+TAG_PLATFORM=$(cat ${CONF} | jq -r '.PLATFORM')
 
 # Concate name
-IMAGE_NAME="${BASE_NAME}/${TAG_FRAMEWORK}:${TAG_VER}"
+IMAGE_NAME="${BASE_NAME}/${TAG_PLATFORM}:${TAG_VER}"
 printd "Concatenate docker image name: ${IMAGE_NAME}" Cy
 
 # Change the default runtime

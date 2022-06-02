@@ -6,7 +6,7 @@ source "$(dirname $(realpath $0))/utils.sh"
 gpu="all"
 port=""
 project_name="init-i"
-framework=""
+platform=""
 version="latest"
 magic=false
 server=false
@@ -34,7 +34,7 @@ fi
 # Parse information from configuration
 project_name=$(cat ${CONF} | jq -r '.PROJECT')
 version=$(cat ${CONF} | jq -r '.VERSION')
-framework=$(cat ${CONF} | jq -r '.FRAMEWORK')
+platform=$(cat ${CONF} | jq -r '.PLATFORM')
 
 # ---------------------------------------------------------
 # help
@@ -45,7 +45,7 @@ function help(){
 	echo "options:"
 	echo "g		select the target gpu."
 	echo "p		run container with Web API, setup the web api port number."
-	echo "f		Setup framework like [ nvidia, intel, xillinx ]."
+	echo "f		Setup platform like [ nvidia, intel, xillinx ]."
 	echo "v		Setup docker image version like [ v0.1, lastest ]."
 	echo "s		Server mode for non vision user"
 	echo "m		Print information with magic"
@@ -60,7 +60,7 @@ while getopts "g:p:c:f:v:shm" option; do
 			port=$OPTARG
 			;;
 		f )
-			framework=$OPTARG
+			platform=$OPTARG
 			;;
 		s )
 			server=true
@@ -104,9 +104,9 @@ mount_gpu="--gpus"
 set_vision=""
 command="bash"
 web_api="./run_web_api.sh"
-docker_image="${project_name}/${framework}:${version}"
+docker_image="${project_name}/${platform}:${version}"
 workspace="/workspace"
-docker_name="${project_name}-${framework}"
+docker_name="${project_name}-${platform}"
 
 # ---------------------------------------------------------
 # Check if image come from docker hub
@@ -149,7 +149,7 @@ mount_gpu="${mount_gpu} device=${gpu}"
 # ---------------------------------------------------------
 # If port is available, run the WEB API
 if [[ -n ${port} ]];then 
-	# command="python3 ${web_api} --host 0.0.0.0 --port ${port} --af ${framework}"
+	# command="python3 ${web_api} --host 0.0.0.0 --port ${port} --af ${platform}"
 	command="source ${web_api} -n ${framework_abbr} -b 0.0.0.0:${port} -t 10"
 fi
 
@@ -157,7 +157,7 @@ fi
 # Show information
 title="\n\
 PROGRAMMER: Welcome to iNIT-I \n\
-FRAMEWORK:  ${framework}\n\
+FRAMEWORK:  ${platform}\n\
 MODE:  ${mode}\n\
 DOCKER: ${docker_image} \n\
 CONTAINER: ${docker_name} \n\
