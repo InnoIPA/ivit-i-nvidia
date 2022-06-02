@@ -14,7 +14,7 @@ def special_situation(model_cfg):
             return model_cfg["framework"]
         else:
             for framework in FRAMEWORK_LIST:
-                if framework in model_cfg.keys().lower():
+                if framework in model_cfg.keys():
                     return framework
     
     return True if get_framework(model_cfg)=="openvino" and model_cfg['tag']=="pose" else False    
@@ -137,3 +137,40 @@ def check_json(s):
 
 def print_route():
     logging.info("Call WEB API -> {}".format(request.path))
+
+def pure_jsonify_2(in_dict, ret_dict, exclude_key:list=['api', 'runtime', 'palette', 'drawer', 'draw_tools'], include_key=[dict, list, str, int, float, bool]):    
+    for key, val in in_dict.items():
+        try:
+            if (key in exclude_key):
+                ret_dict[key]=str(type(val)) if val!=None else None
+                continue
+            if (type(val) in include_key ):
+                ret_dict[key] = val
+                pure_jsonify_2(in_dict[key], ret_dict[key])
+            else:
+                ret_dict[key] = str(type(val))
+        except:
+            continue
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+# 搭配 pure_jsonify 使用，由於該方法會將變數改變，所以透過 deepcopy 取得一個新的，只用於顯示 
+def get_pure_jsonify(in_dict:dict, json_format=True)-> dict:
+    ret_dict = dict()
+    # temp_in_dict = copy.deepcopy(in_dict)
+    temp_in_dict = in_dict
+    pure_jsonify_2(temp_in_dict, ret_dict)
+    # return ret_dict
+    ret = json.dumps(ret_dict, cls=NumpyEncoder, indent=4)
+    return json.loads(ret) if json_format else ret
+
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        elif isinstance(obj, np.float32):
+            return float(obj)
+        elif isinstance(obj, np.float64):
+            return float(obj)
+        elif isinstance(obj, np.int64):
+            return int(obj)
+        return json.JSONEncoder.default(self, obj)
