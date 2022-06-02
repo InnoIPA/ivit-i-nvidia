@@ -40,13 +40,13 @@ def main(args):
     
     # ----------------------------------------------------------------------------------------------------------------
     # 6. Start inference base on three mode
-    input_type = parse_input_data(app_conf['input_data'])
-    if input_type=='camera':        # Camera 
+    source_type = parse_input_data(app_conf['source'])
+    if source_type=='camera':        # Camera 
         
-        cap = cv2.VideoCapture(app_conf['input_data'])
+        cap = cv2.VideoCapture(app_conf['source'])
 
         if not cap.isOpened():
-            msg = "Can't capture the device. ({})".format(input_type)
+            msg = "Can't capture the device. ({})".format(source_type)
             logging.error(msg, stack_info=True)
         # -------------- camera start --------------
         while(cap.isOpened()):
@@ -73,9 +73,9 @@ def main(args):
         cap.release()
         cv2.destroyAllWindows()
         
-    elif input_type=='video':       # Video 
+    elif source_type=='video':       # Video 
     
-        cap = cv2.VideoCapture(app_conf['input_data'])
+        cap = cv2.VideoCapture(app_conf['source'])
         # -------------- video start --------------
         while(cap.isOpened()):
             t_fps = Timer()
@@ -96,11 +96,11 @@ def main(args):
         cap.release()
         cv2.destroyAllWindows()
 
-    elif input_type == 'image':     # Single image 
+    elif source_type == 'image':     # Single image 
         t_fps = Timer()
-        frame = cv2.imread(app_conf['input_data'])
+        frame = cv2.imread(app_conf['source'])
         if frame.any()==None:
-            msg = "Can't read image. ({})".format(input_type)
+            msg = "Can't read image. ({})".format(source_type)
             logging.error(msg, exc_info=True, stack_info=True)
         # -------------- start --------------
         info = trg.inference(trt_objects, frame, model_conf)   
@@ -123,7 +123,7 @@ def main(args):
         cv2.destroyAllWindows()
         
     else:                           # Format error
-        msg = 'Excepted `input_data` is ["camera", "video", "image"]'
+        msg = 'Excepted `source` is ["camera", "video", "image"]'
         logging.error(msg)
         raise Exception(msg)
 
