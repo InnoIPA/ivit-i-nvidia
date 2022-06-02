@@ -54,8 +54,6 @@ def create_app():
     # register blueprint
     app.register_blueprint(bp_tasks)        # captrue the info of tasks
     app.register_blueprint(bp_operators)    # operate the task
-    # app.register_blueprint(bp_streams)      # about AI inference ( run, stop, streaming )
-
     app.register_blueprint(bp_utils)        # some utils, like 'v4l2', 'device' ... etc
     app.register_blueprint(bp_tests)        # just for test
     
@@ -88,7 +86,6 @@ def create_app():
     def index():
         """ return task list """
         return jsonify(app.config["TASK_LIST"])
-
 
     @app.route("/routes/", methods=["GET", "POST"])
     def help():
@@ -165,23 +162,20 @@ def create_app():
     def stream(uuid, src, namespace):
         '''Stream event: sending 'image' and 'result' to '/app/<uuid>/stream' via socketio'''
         ret_info, info = dict(), None
-        [model_conf, trg, runtime, draw, palette] =[ app.config['TASK'][uuid][key] for key in ['config', 'api', 'runtime', 'draw_tools', 'palette'] ]    # 取得其他物件
-
+        # get all the ai inference objects
+        [ model_conf, trg, runtime, draw, palette ] = [ app.config['TASK'][uuid][key] for key in ['config', 'api', 'runtime', 'draw_tools', 'palette'] ]
         # deep copy the config to avoid changing the old one when do inference
         temp_model_conf = copy.deepcopy(model_conf)
-
-        if src==None: 
-            return 'Source object is None', 400
-
+        # start looping
         try:
             while(app.config['SRC'][app.config['TASK'][uuid]['source']]['status']=='run'):
                 # logging.debug('get frame')
                 t1 = time.time()
                 ret_frame, frame = src.get_frame()
                 app.config['TASK'][uuid]['frame_index'] += 1
-                
+                # If no frame, wait a new frame when source type is rtsp and video
                 if not ret_frame: 
-                    logging.debug('Reconnect source')
+                    logging.debug('Reconnect source ... ')
                     if src.get_type().lower() in ['rtsp', 'video']:
                         src = get_src(uuid, init=True, reload_src=True) 
                         continue
@@ -191,12 +185,12 @@ def create_app():
                         app.config['TASK'][uuid]['error']= err_msg
                         app.config['TASK'][uuid]['status']= 'error'
                         break
-                    
+                # Check is all ai object is exist
                 # logging.debug('check object')
                 if (None in [ temp_model_conf, trg, runtime, draw, palette ]):
                     logging.error('None in [ temp_model_conf, trg, runtime, draw, palette ]')
                     break
-
+                
                 # logging.debug('do inference ( frame:{} ) '.format(app.config['TASK'][uuid]['frame_index']))
                 t2 = time.time()
                 ret, info, _frame = do_inference( frame, uuid, temp_model_conf, trg, runtime, draw, palette, ret_draw=True ) 
@@ -314,7 +308,7 @@ def create_app():
         except Exception as e:
             return f"{e}", 400
         
-    @app.route("/task/<uuid>/stream/start")
+    @app.route("/task/<uuid>/stream/start", methods=["GET"])
     def start_stream(uuid):      
 
         af = app.config['AF']
@@ -339,7 +333,7 @@ def create_app():
             logging.info('Stream is running')
             return jsonify('Stream is running'), 200
 
-    @app.route("/task/<uuid>/stream/stop")
+    @app.route("/task/<uuid>/stream/stop", methods=["GET"])
     def stop_stream(uuid):
 
         if app.config['TASK'][uuid]['status']!='error':
