@@ -47,7 +47,7 @@ def load_txt(path:str) -> list:
 
     return ret
 
-def parse_input_data(input_data:str):
+def parse_input_data(source:str):
     
     def print_error(msg):
         logging.error(msg)
@@ -57,21 +57,21 @@ def parse_input_data(input_data:str):
         if not os.path.exists(path):
             print_error("The file is not exist. ({})".format(path))
 
-    if not input_data:
-        print_error("Can not parse input_data in app configuration, please check again.")
+    if not source:
+        print_error("Can not parse source in app configuration, please check again.")
 
     # video, camera, image
-    name, ext = os.path.splitext(input_data)
+    name, ext = os.path.splitext(source)
     
     if not bool(ext):       
         return "camera" if name!='test' else "test"
     
     elif ext in VID_EXT:
-        check_file(input_data)
+        check_file(source)
         return "video"
     
     elif ext in IMG_EXT:
-        check_file(input_data)
+        check_file(source)
         return "image"
     else:
         print_error("Unexcepted input data, the supported format is: {}, {}".format(VID_EXT, IMG_EXT))
