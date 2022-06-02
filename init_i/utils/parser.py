@@ -64,7 +64,7 @@ def parse_input_data(source:str):
     name, ext = os.path.splitext(source)
     
     if not bool(ext):       
-        return "camera" if name!='test' else "test"
+        return "v4l2" if name!='test' else "test"
     
     elif ext in VID_EXT:
         check_file(source)

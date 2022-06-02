@@ -41,7 +41,7 @@ def main(args):
     # ----------------------------------------------------------------------------------------------------------------
     # 6. Start inference base on three mode
     source_type = parse_input_data(app_conf['source'])
-    if source_type=='camera':        # Camera 
+    if source_type=='v4l2':        # Camera 
         
         cap = cv2.VideoCapture(app_conf['source'])
 
@@ -63,7 +63,7 @@ def main(args):
 
             frame_draw = draw_fps(frame_draw, int(1/(t_fps.get_cost_time())))
             # ===============================================================
-            cv2.imshow('iVINNO', frame_draw)
+            cv2.imshow('iNIT-I', frame_draw)
             key = cv2.waitKey(1)
             if key==ord('q'): 
                 break
@@ -86,7 +86,7 @@ def main(args):
             frame_draw = draw.draw_detections(info, palette, model_conf)
             frame_draw = draw_fps(frame_draw, int(1/(t_fps.get_cost_time())))
 
-            cv2.imshow('iVINNO', frame_draw)
+            cv2.imshow('iNIT-I', frame_draw)
             key = cv2.waitKey(1)
             if key==ord('q'): 
                 break
@@ -109,7 +109,7 @@ def main(args):
         frame_draw = draw_fps(frame_draw, fps)
         
         while True:
-            cv2.imshow('iVINNO', frame_draw)
+            cv2.imshow('iNIT-I', frame_draw)
             key = cv2.waitKey(1)
             if key==ord('s'):
                 cv2.imwrite('./results.jpg', frame_draw)
