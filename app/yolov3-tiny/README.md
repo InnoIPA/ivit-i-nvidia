@@ -36,5 +36,5 @@
 4. Run demo.py
     ```
     cd /path/to/init-i
-    python3 demo.py -c ./app/yolov3-tiny/app.json
+    python3 demo.py -c ./app/yolov3-tiny/task.json
     ```

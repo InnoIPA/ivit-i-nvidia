@@ -46,33 +46,33 @@
     | `-j` | label file for parse the model 
     | `-e` | the output path of the tensorrt engine
 
-3. Prepare the application configuration `app.json`
+3. Prepare the application configuration `task.json`
     
     > Notice: 
-    > if you only want to run with `demo.py`, you could ignore the option below: `category`, `application`, `app_name`, `input_type`.
+    > if you only want to run with `demo.py`, you could ignore the option below: `category`, `application`, `name`, `source_type`.
 
     ```json
     {
         "framework": "tensorrt",
-        "input_data": "./data/web/production_ID_4806533.mp4",
+        "source": "./data/web/production_ID_4806533.mp4",
         "prim": {
             "model_json": "./app/humanpose_sample/humanpose.json"
         },
         "category": "sample",
         "application": "human pose",
-        "app_name": "humanpose_sample",
-        "input_type": "Video"
+        "name": "humanpose_sample",
+        "source_type": "Video"
     }
     ```
     |   item        |   describe   
     |   ---         |   ----        
     |   framework   |   [ "tensorrt", "openvino" ]
-    |   input_data  |   [ v4l2, image path , video path, RTSP url ]
+    |   source  |   [ v4l2, image path , video path, RTSP url ]
     |   prim        |   the path to model configuration
     |   category    |   the category of this application
     |   application |   the sub category of this applicathtion
-    |   app_name    |   the name of this application
-    |   input_type  |   the type of input data [ "V4L2", "Image", "Video", "RTSP" ]
+    |   name    |   the name of this application
+    |   source_type  |   the type of input data [ "V4L2", "Image", "Video", "RTSP" ]
 
 4. Prepare the model configuration
     ```json
@@ -103,7 +103,7 @@
 ## Run Human Pose Estimation Sample
 
 ```
-python3 demo.py -c app/humanpose_sample/app.json
+python3 demo.py -c app/humanpose_sample/task.json
 ```
 
 ---

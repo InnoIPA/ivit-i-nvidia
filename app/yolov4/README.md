@@ -36,5 +36,5 @@
 4. Run demo.py
     ```
     cd /path/to/init-i
-    python3 tensorrt_demo.py -c ./app/yolov4/app.json
+    python3 tensorrt_demo.py -c ./app/yolov4/task.json
     ```

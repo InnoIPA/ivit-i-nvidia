@@ -1,0 +1,10 @@
+{
+    "framework": "tensorrt",
+    "source": "/dev/video0",
+    "application": [],
+    "prim": {
+        "model_json": "./app/test/classification.json"
+    },
+    "name": "test",
+    "source_type": "V4L2"
+}

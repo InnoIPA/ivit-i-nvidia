@@ -11,7 +11,7 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
     tree ./app/people_seg_sample
     .
     |-- README.md
-    |-- app.json
+    |-- task.json
     |-- download_model.sh
     |-- people_seg.json
     |-- peoplesegnet.txt
@@ -61,33 +61,33 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
     people
     ```
 
-4. Prepare the application configuration `app.json`
+4. Prepare the application configuration `task.json`
     
     > Notice: 
-    > if you only want to run with `tensorrt_demo.py`, you could ignore the option below: `category`, `application`, `app_name`, `input_type`.
+    > if you only want to run with `tensorrt_demo.py`, you could ignore the option below: `category`, `application`, `name`, `source_type`.
 
     ```json
     {
         "framework": "tensorrt",
-        "input_data": "rtsp://admin:admin@172.16.21.1:554/snl/live/1/1/n",
+        "source": "rtsp://admin:admin@172.16.21.1:554/snl/live/1/1/n",
         "prim": {
             "model_json": "./app/people_seg_sample/people_seg.json"
         },
         "category": "sample",
         "application": "people track",
-        "app_name": "people_seg_sample",
-        "input_type": "RTSP"
+        "name": "people_seg_sample",
+        "source_type": "RTSP"
     }
     ```
     |   item        |   describe   
     |   ---         |   ----        
     |   framework   |   [ "tensorrt", "openvino" ]
-    |   input_data  |   [ v4l2, image path , video path, RTSP url ]
+    |   source  |   [ v4l2, image path , video path, RTSP url ]
     |   prim        |   the path to model configuration
     |   category    |   the category of this application
     |   application |   the sub category of this applicathtion
-    |   app_name    |   the name of this application
-    |   input_type  |   the type of input data [ "V4L2", "Image", "Video", "RTSP" ]
+    |   name    |   the name of this application
+    |   source_type  |   the type of input data [ "V4L2", "Image", "Video", "RTSP" ]
 
 5. Prepare the model configuration
     ```json
@@ -118,7 +118,7 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
 ## Run Human Pose Estimation Sample
 
 ``` 
-python3 demo.py -c app/people_seg_sample/app.json
+python3 demo.py -c app/people_seg_sample/task.json
 ```
 
 ---

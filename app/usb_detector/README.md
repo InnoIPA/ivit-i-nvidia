@@ -1,6 +1,33 @@
 # TAO-YOLOv4 for iVINNO-TensorRT
 YOLOv4 model which trained from NVIDIA TAO or iTAO.
 
+# 下載模型跟標籤
+```
+./app/trt/usb_detecotr/download_model.sh
+```
+# 下載資料
+```
+./app/trt/usb_detecotr/download_testing_data.sh
+```
+# 轉換模型
+```
+./converter/tao-converter \
+-k nvidia_tlt \
+-p Input,1x3x608x608,8x3x608x608,16x3x608x608 \
+-d 3,608,608 \
+-o BatchedNMS \
+-e ./app/trt/usb_detector/usb.engine \
+-t fp32 \
+-i nchw \
+-m 1 \
+./app/trt/usb_detector/yolov4_darknet53_e100_pruned_fp16.etlt
+```
+# 修改配置檔案
+```
+input_data: ./app/trt/usb_detector/output.mp4
+```
+# --------------------- -------------------------
+
 ## Pre-requirements
 
 ### 1. Prepare Model and Label
@@ -25,7 +52,7 @@ YOLOv4 model which trained from NVIDIA TAO or iTAO.
     -d 3,608,608 \
     -o BatchedNMS \
     -e ./app/trt/usb_detector/usb.engine \
-    -t fp16 \
+    -t fp32 \
     -i nchw \
     -m 1 \
     ./app/trt/usb_detector/yolov4_darknet53_e100_pruned_fp16.etlt

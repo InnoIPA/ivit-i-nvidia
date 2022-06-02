@@ -1,11 +1,11 @@
 {
     "framework": "tensorrt",
-    "input_data": "./data/web/innodisk_usb.mp4",
+    "source": "./data/web/innodisk_usb.mp4",
     "category": "smart factory",
     "application": "innodisk usb detection",
     "prim": {
         "model_json": "./app/trt/usb_detector/usb_detector.json"
     },
-    "app_name": "usb_detector",
-    "input_type": "Video"
+    "name": "usb_detector",
+    "source_type": "Video"
 }

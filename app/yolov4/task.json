@@ -1,11 +1,11 @@
 {
     "framework": "tensorrt",
-    "input_data": "/dev/video0",
+    "source": "/dev/video0",
     "category": "sample",
     "application": "yolo",
     "prim": {
         "model_json": "./app/yolov4/yolov4.json"
     },
-    "app_name": "yolov4",
-    "input_type": "V4L2"
+    "name": "yolov4",
+    "source_type": "V4L2"
 }

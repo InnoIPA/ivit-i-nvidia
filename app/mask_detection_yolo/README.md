@@ -13,13 +13,13 @@
     # Notice: no need to give extension here
     ./converter/yolo-converter.sh ./app/mask_detection_yolo/yolov4-tiny-mask
     ```
-4. Modify the application configuration `app.json`, `yolov4-tiny-mask.json`
+4. Modify the application configuration `task.json`, `yolov4-tiny-mask.json`
     |   key             |   example     |   descr       |
     |   ---             |   ---         |   ---         |
-    |   input_data      |   /dev/video0 |   the input data
+    |   source      |   /dev/video0 |   the input data
     |   thres           |   0.5         |   the threshold of object detection
 
 5. Run demo.py
     ```
-    python3 demo.py -c ./app/mask_detection_yolo/app.json
+    python3 demo.py -c ./app/mask_detection_yolo/task.json
     ```

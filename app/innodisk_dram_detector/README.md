@@ -18,7 +18,7 @@
     ```
 4. Run the sample code via CLI
     ```bash
-    # modify the input_data in app.json
+    # modify the source in task.json
     # ./app/innodisk_dram_detector/innodisk_dram.avi
-    python3 demo.py -c ./app/innodisk_dram_detector/app.json
+    python3 demo.py -c ./app/innodisk_dram_detector/task.json
     ```

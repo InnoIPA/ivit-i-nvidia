@@ -1,11 +1,11 @@
 {
     "framework": "tensorrt",
-    "input_data": "/dev/video0",
+    "source": "/dev/video0",
     "category": "sample",
     "application": "human pose",
     "prim": {
         "model_json": "./app/humanpose_sample/humanpose.json"
     },
-    "app_name": "humanpose_sample",
-    "input_type": "Camera"
+    "name": "humanpose_sample",
+    "source_type": "Camera"
 }

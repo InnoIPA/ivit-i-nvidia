@@ -1,11 +1,11 @@
 {
     "framework": "tensorrt",
-    "input_data": "rtsp://admin:admin@172.16.21.1:554/snl/live/1/1/n",
+    "source": "rtsp://admin:admin@172.16.21.1:554/snl/live/1/1/n",
     "category": "sample",
     "application": "people track",
     "prim": {
         "model_json": "./app/people_seg_sample/people_seg.json"
     },
-    "app_name": "people_seg_sample",
-    "input_type": "RTSP"
+    "name": "people_seg_sample",
+    "source_type": "RTSP"
 }

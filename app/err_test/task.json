@@ -1,6 +1,6 @@
 {
     "framework":"tensorrt",
-    "input_data":"/dev/video0",
+    "source":"/dev/video0",
     "category":"smart city",
     "application": "mask detection",
     "prim":{
