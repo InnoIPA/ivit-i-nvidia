@@ -1,13 +1,24 @@
 # iNIT-I For NVIDIA
-Introduce of iNIT-I-NVIDIA
+iNIT-I for NVIDIA x86 platform
 
 ## Pre-requirements
 * NVIDIA gpu driver ( 430+ )
 * Install [docker](https://max-c.notion.site/Install-Docker-9a0927c9b8aa4455b66548843246152f) and [nvidia-docker2](https://max-c.notion.site/Install-NVIDIA-Docker-b15e1b2930f646f389675bde6a04c9e2)
+* Clone Repository
+    ```bash
+    # clone repo and submodule
+    git clone --recurse-submodules https://github.com/MaxChangInnodisk/init-i-nvidia.git
+    
+    # check if submodule is downloaded
+    ls ./init_i/web
+    ai  api  app.py  __init__.py  __pycache__  utils
+
+    # if not exist then download submodule again
+    git submodule init && git submodule update
+    ```
 
 ## Build Environment
 
-### Docker
 1. Build the docker images
     ```bash
     ./docker/build.sh
@@ -34,102 +45,23 @@ Introduce of iNIT-I-NVIDIA
     Successfully built 2290a33efdc1
     Successfully tagged init-i/nvidia:v0.1
     ```
-    about 12 min.
+    > about 12 min.
 2. Run the docker container
     ```shelld
-
-    .docker/trt/run.sh                  # run without camera, the name will be "ivinno-trt"
-    .docker/trt/run.sh /dev/video0      # run with camera, the container name will be "ivinno-trt-cam"
-    ./docker/trt/run.sh /dev/video0 1   # run with camera and mount gpu ( id:1 )
+    ./docker/run.sh -f nvidia -v v0.1 -m
     ```
+
 ## Samples
 | name | describe 
 | ---- | -------- 
-| [classification_sample](app/trt/classification_sample/README.md)    |  Classfication sample for NVIDIA TAO Toolkit.  
-| [innodisk_sample](app/trt/usb_detector/README.md)   | YOLOv4 sample for NVIDIA TAO Toolkit.
-| [people_seg_sample](app/trt/people_seg_sample/README.md)   | Peopple segmentation for the `etlt` model download from NVIDIA NGC.
-| [humanpose_sample](app/trt/humanpose_sample/README.md) | Human pose estimation which base on [trt_pose](https://github.com/NVIDIA-AI-IOT/trt_pose)
-
-# Overview
-
-```shell
-.                                       # ---------------------------------------------------------
-├── config                              # CONFIGURATIONS
-│   └── trt                                 
-│       ├── app_config                      # app config which could run with demo.py, app config have to cooperate with model config
-│       │   ├── classification.json
-│       │   ├── human_pose.json
-│       │   ├── people_seg.json
-│       │   └── yolov4.json
-│       └── model_config                    # place all configs of model, user could adjust the parameters of the model .
-│           ├── classification.json
-│           ├── humanpose.json
-│           ├── people_segmentation.json
-│           └── yolov4.json
-|                                       # ---------------------------------------------------------
-├── converter                           # CONVERTER
-│   ├── pose-converter                      # converter human pose model from torch to tensorrt engine.
-│   └── tao-converter                       # converter for TAO ( etlt model )
-|                                       # ---------------------------------------------------------
-├── docker                              # ENVIRONMENT
-│   └── trt                                 # environment for tensorrt 
-│       ├── build.sh                            # build the docker image via Dockerfile.
-│       ├── Dockerfile                          # the building workflow.
-│       ├── format_print.sh                     # some printing utility.
-│       ├── patch_pose.sh                       # the pre-requirement for human pose estimation.
-│       ├── requirements.sh                     # requirement for environment.
-│       └── run.sh                              # run the docker container.
-|
-|                                       # ---------------------------------------------------------
-├── ivinno                              # API
-│   └── trt                                 # ivinno api for tensorrt
-|
-|                                       # ---------------------------------------------------------
-├── models                              # SAMPLES
-│   ├── HumanPose                           # Human Pose Estimation
-│   │   ├── download_model.sh                   # download human pose model 
-│   │   ├── human_pose.json                     # provide the default label
-│   │   └── README.md
-│   ├── PeopleSegNet                        # People Segmentation 
-│   │   ├── download_model.sh                   # download PeopleSegNet from NVIDIA NGC
-│   │   └── README.md                           # provide the default label
-│   ├── TAO-Classification                  # Classification for the model trained from TAO  
-│   │   └── README.md
-│   └── TAO-YOLOv4                          # YOLOv4 for the model trained from TAO
-│       └── README.md
-├── README-TRT.md
-└── tensorrt_demo.py
-
-```
+| [classification_sample](app/classification_sample/README.md)    |  Classfication sample.  
+| [usb_detector](app/usb_detector/README.md)   | The objected detection sample which trained from NVIDIA TAO Toolkit.
+| [people_seg_sample](app/people_seg_sample/README.md)   | Peopple segmentation for the `etlt` model download from NVIDIA NGC.
+| [humanpose_sample](app/humanpose_sample/README.md) | Human pose estimation which base on [trt_pose](https://github.com/NVIDIA-AI-IOT/trt_pose)
 
 
-# Overview of API
-```shell
-./ivinno/trt
-|         
-|-- common                      # utilities for TensorRT
-|   |-- api.py                  # return the target api
-|   |-- common.py               # any basic tensorrt function in here, also include the parents of each model's api.
-|   `-- process.py              # include pre-process and post-process
-|
-|-- utils                       # utilities for Other
-|   |-- drawing_tools.py        # draw the image base on the results.
-|   |-- logger.py               # config the logger.
-|   |-- parser.py               # the parse tools like 'load_json', 'load_txt', etc.
-|   `-- timer.py                # custom timer to calculate running time.
-|
-|-- cls                     
-|   `-- classification.py       # classification
-|-- obj
-|   `-- yolov4.py               # yolov4
-|-- pose
-|   `-- bodypose.py             # human pose estimation
-`-- seg
-    `-- segmentation.py         # instance segmentation
-```
-
-# Developer for web api
-```bash
-git submodule add --name web https://github.com/MaxChangInnodisk/init-i-web-api.git ./init_i/web
-
-```
+# Developer
+* Add submodule
+    ```bash
+    git submodule add --name web https://github.com/MaxChangInnodisk/init-i-web-api.git ./init_i/web
+    ```
