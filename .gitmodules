@@ -1,3 +1,0 @@
-[submodule "web"]
-	path = init_i/web
-	url = https://github.com/MaxChangInnodisk/init-i-web-api.git
