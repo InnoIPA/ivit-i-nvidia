@@ -29,4 +29,14 @@ __pycahe__
 **/*/*.png
 **/*/*.avi
 **/*/*.mp4
-app/people_seg_sample/peoplesegnet_resnet50_int8.txt
+app
+!app/classification_sample
+!app/err_test
+!app/humanpose_sample
+!app/innodisk_dram_detector
+!app/mask_detection_yolo
+!app/people_seg_sample
+!app/usb_detector
+!app/yolov3-tiny
+!app/yolov4
+!app/yolov4-tiny
