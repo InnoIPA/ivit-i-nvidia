@@ -29,7 +29,7 @@ __pycahe__
 **/*/*.png
 **/*/*.avi
 **/*/*.mp4
-app
+app/*
 !app/classification_sample
 !app/err_test
 !app/humanpose_sample
