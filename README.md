@@ -19,7 +19,7 @@ iNIT-I for NVIDIA x86 platform
     ai  api  app.py  __init__.py  utils
 
     # if not exist then download submodule again
-    git submodule init && git submodule update
+    # $ git submodule init && git submodule update
     ```
 
 2. Build the docker images
@@ -35,8 +35,10 @@ iNIT-I for NVIDIA x86 platform
     Successfully tagged init-i/nvidia:v0.1
     ```
     > about 12 min.
-3. Run the docker container
-    ```shelld
+3. Run the docker container with web api
+    ```bash
+    ./docker/run.sh -f nvidia -v v0.1 -wm
+    # enter container without web api
     ./docker/run.sh -f nvidia -v v0.1 -m
     ```
 

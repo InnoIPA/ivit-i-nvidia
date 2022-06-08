@@ -40,3 +40,4 @@ app
 !app/yolov3-tiny
 !app/yolov4
 !app/yolov4-tiny
+!**/*/README.md

@@ -1,15 +1,19 @@
 # TAO-YOLOv4 for iVINNO-TensorRT
 YOLOv4 model which trained from NVIDIA TAO or iTAO.
+# Enter the container
+```bash
+sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
+```
 
-# 下載模型跟標籤
+# Download Model and Label
 ```
 ./app/trt/usb_detecotr/download_model.sh
 ```
-# 下載資料
+# Download meta data
 ```
 ./app/trt/usb_detecotr/download_testing_data.sh
 ```
-# 轉換模型
+# Convert Model
 ```
 ./converter/tao-converter \
 -k nvidia_tlt \
@@ -22,7 +26,7 @@ YOLOv4 model which trained from NVIDIA TAO or iTAO.
 -m 1 \
 ./app/trt/usb_detector/yolov4_darknet53_e100_pruned_fp16.etlt
 ```
-# 修改配置檔案
+# Modified Configuration
 ```
 input_data: ./app/trt/usb_detector/output.mp4
 ```

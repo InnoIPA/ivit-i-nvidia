@@ -2,7 +2,10 @@
 You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/orgs/nvidia/teams/tao/models/peoplesegnet/files).
 
 ## Pre-requirements
-
+0. Enter the container
+    ```bash
+    sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
+    ```
 1. Download Model
     ```bash 
     ./app/people_seg_sample/download_model.sh

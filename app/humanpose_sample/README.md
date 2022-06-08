@@ -1,6 +1,10 @@
 # Human Pose Estimation for iVINNO-TensorRT
 
 ## Pre-requirements
+0. Enter the container
+```bash
+sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
+```
 
 1. Download Model
 
