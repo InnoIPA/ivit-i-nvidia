@@ -4,7 +4,7 @@ source "$(dirname $(realpath $0))/utils.sh"
 # ---------------------------------------------------------
 # Set the default value of the getopts variable 
 gpu="all"
-port=""
+web=""
 project_name="init-i"
 platform=""
 version="latest"
@@ -35,6 +35,7 @@ fi
 project_name=$(cat ${CONF} | jq -r '.PROJECT')
 version=$(cat ${CONF} | jq -r '.VERSION')
 platform=$(cat ${CONF} | jq -r '.PLATFORM')
+port=$(cat ${CONF} | jq -r '.PORT')
 
 # ---------------------------------------------------------
 # help
@@ -44,20 +45,20 @@ function help(){
 	echo "Syntax: scriptTemplate [-g|p|c|f|smh]"
 	echo "options:"
 	echo "g		select the target gpu."
-	echo "p		run container with Web API, setup the web api port number."
+	echo "w		run container with Web API."
 	echo "f		Setup platform like [ nvidia, intel, xillinx ]."
 	echo "v		Setup docker image version like [ v0.1, lastest ]."
 	echo "s		Server mode for non vision user"
 	echo "m		Print information with magic"
 	echo "h		help."
 }
-while getopts "g:p:c:f:v:shm" option; do
+while getopts "g:c:f:v:wshmh" option; do
 	case $option in
 		g )
 			gpu=$OPTARG
 			;;
-		p )
-			port=$OPTARG
+		w )
+			web=true
 			;;
 		f )
 			platform=$OPTARG
@@ -103,7 +104,7 @@ mount_camera=""
 mount_gpu="--gpus"
 set_vision=""
 command="bash"
-web_api="./run_web_api.sh"
+web_api="./exec_web_api.sh"
 docker_image="${project_name}/${platform}:${version}"
 workspace="/workspace"
 docker_name="${project_name}-${platform}"
@@ -112,14 +113,10 @@ docker_name="${project_name}-${platform}"
 # Check if image come from docker hub
 hub_name="maxchanginnodisk/${docker_image}"
 from_hub=$(check_image $hub_name)
-echo "Checking Docker Hun Image: ${from_hub}"
-if [[ from_hub -eq 0 ]];then
-	echo "From Local"
-else
+if [[ ! from_hub -eq 0 ]];then
 	echo "From Docker Hub"
 	docker_image=${hub_name}
 fi
-echo $docker_image
 
 # ---------------------------------------------------------
 # SERVER or DESKTOP MODE
@@ -147,10 +144,9 @@ done
 mount_gpu="${mount_gpu} device=${gpu}"
 
 # ---------------------------------------------------------
-# If port is available, run the WEB API
-if [[ -n ${port} ]];then 
-	# command="python3 ${web_api} --host 0.0.0.0 --port ${port} --af ${platform}"
-	command="source ${web_api} -n ${framework_abbr} -b 0.0.0.0:${port} -t 10"
+# If web is available, run the WEB API
+if [[ -n ${web} ]];then 
+	command="${web_api}"
 fi
 
 # ---------------------------------------------------------
@@ -161,7 +157,8 @@ FRAMEWORK:  ${platform}\n\
 MODE:  ${mode}\n\
 DOCKER: ${docker_image} \n\
 CONTAINER: ${docker_name} \n\
-PORT: ${port} \n\
+Web API: ${web} \n\
+HOST: 0.0.0.0:${port} \n\
 CAMERA:  $((${#cam_arr[@]}/2))\n\
 GPU:  ${gpu}\n\
 COMMAND: ${command}"
