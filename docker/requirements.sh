@@ -26,7 +26,7 @@ printd "Install torch, torchvision with CUDA 11.1 " Cy
 pip3 install --disable-pip-version-check torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 
 printd "Install other msicellaneous packages " Cy
-apt-get -qy install bsdmainutils zip
+apt-get -qy install bsdmainutils zip jq
 pip3 install --disable-pip-version-check tqdm cython gdown setuptools packaging pycocotools GPUtil wget colorlog
 
 # For darknet yolo to tensorrt
