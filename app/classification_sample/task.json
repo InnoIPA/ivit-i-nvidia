@@ -1,10 +1,10 @@
 {
     "framework": "tensorrt",
-    "source": "/dev/video0",
-    "application": [ "counting_number" ],
+    "source": "data/cat01.jpg",
+    "application": "counting_number",
     "prim": {
         "model_json": "./app/classification_sample/classification.json"
     },
     "name": "classification_sample",
-    "source_type": "V4L2"
+    "source_type": "Image"
 }
