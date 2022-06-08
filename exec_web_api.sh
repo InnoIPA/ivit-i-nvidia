@@ -19,7 +19,6 @@ if [[ -z $FLAG ]];then
 fi
 
 # Parse information from configuration
-echo "Detected configuration (${CONF})"
 PORT=$(cat ${CONF} | jq -r '.PORT')
 WORKER=$(cat ${CONF} | jq -r '.WORKER')
 THREADING=$(cat ${CONF} | jq -r '.THREADING')
@@ -27,9 +26,13 @@ export INIT_I=/workspace/init-i.json
 
 # Run
 if [[ ! -d "./init_i/web" ]];then
-    echo "Could not found the web api"
+    echo "Could not found the web api, make sure the submodule is downloaded."
     exit
 fi
+
+# get ip address
+ip=$(python3 -c "from init_i.web.utils.common import get_address;print(get_address())")
+echo "HOST: ${ip}" | boxes -s 80x5 -a c
 
 gunicorn --worker-class eventlet \
 -w ${WORKER} \
