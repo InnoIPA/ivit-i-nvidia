@@ -43,7 +43,7 @@ class Draw:
     def draw_cls(self, frame, info, palette):
         
         h,w,c = frame.shape
-        for idx, det in enumerate(info['dets']):        
+        for idx, det in enumerate(info['detections']):        
             if det:
                 class_id = det['id']
                 class_name = det['label']
@@ -62,7 +62,7 @@ class Draw:
         
         h,w,c = frame.shape
         # ret_frame = frame.copy()
-        for idx, det in enumerate(info['dets']):  
+        for idx, det in enumerate(info['detections']):  
             
             class_id = det['id']
             class_name = det['label']
@@ -87,7 +87,7 @@ class Draw:
         
         _frame = frame.copy()
         
-        for det in info['dets']:  
+        for det in info['detections']:  
             # parse mask
             # ======================================================================================================
             classes= len(palette)       # palette
@@ -128,7 +128,7 @@ class Draw:
         _frame = frame.copy()
         _mask = np.zeros(frame.shape[:2], dtype=np.uint8)
         t0 = time.time()    
-        for det in info['dets']:  
+        for det in info['detections']:  
             class_id, class_name, class_score = det['id'], det['label'], det['score']
             x1, x2, y1, y2 = det['xmin']*scale_w, det['xmax']*scale_w, det['ymin']*scale_h, det['ymax']*scale_h
             x1, y1, x2, y2 = map(int, [x1, y1, x2, y2] )
@@ -175,7 +175,7 @@ class Draw:
     # For Human Pose Estimation ( drawing tool will provide by itself - det['drawer] )
     def draw_pose(self, frame, info, palette):
         
-        for det in info['dets']:  
+        for det in info['detections']:  
             drawer = det['drawer']      
             _frame = drawer(frame, det['counts'], det['objects'], det['peaks'], palette)
             _frame = draw_sth(_frame, 'COUNTS', int(det['counts']))

@@ -74,7 +74,7 @@ class Classification(Model):
         info = {
             "frame": None,                          # placeholder for frame.
             "output_resolution": out_resolution,    # the resize proportion output resolution.
-            "dets": []                              # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
+            "detections": []                              # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
         }
 
         temp_dets = {                      
@@ -104,7 +104,7 @@ class Classification(Model):
         # update frame into info['frame']
         info['frame']=frame.copy()
 
-        # map each result into dets
+        # map each result into detections
         if results:
             for result in results:              # parse each result after classification
                 result = self.custom_norm(result)
@@ -112,7 +112,7 @@ class Classification(Model):
                 new_temp_dets['id'] = int(np.argmax(result))
                 new_temp_dets['score'] = float( result[ new_temp_dets['id'] ])
                 new_temp_dets['label'] = labels[ new_temp_dets['id'] ]
-                info['dets'].append(new_temp_dets)                               # update into ret['dets']
+                info['detections'].append(new_temp_dets)                               # update into ret['detections']
         
         self.clear_runtime()
 

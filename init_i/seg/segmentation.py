@@ -45,7 +45,7 @@ class Segmentation(Model):
         info = {
             "frame": None,                          # placeholder for frame.
             "output_resolution": out_resolution,    # the resize proportion output resolution.
-            "dets": [],                             # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
+            "detections": [],                             # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
             "input_size": None,
         }
 
@@ -96,7 +96,7 @@ class Segmentation(Model):
                     new_temp_dets['score'] = float(score)
                     new_temp_dets['mask'] = img_masks[idx]
 
-                    info['dets'].append(new_temp_dets)                        # update into ret['dets']
+                    info['detections'].append(new_temp_dets)                        # update into ret['detections']
         # clear context
         self.clear_runtime()
         return info

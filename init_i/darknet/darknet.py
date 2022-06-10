@@ -85,7 +85,7 @@ class Darknet(Model):
         info = {
             "frame": None,                          # placeholder for frame.
             "output_resolution": out_resolution,    # the resize proportion output resolution.
-            "dets": []                              # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
+            "detections": []                              # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
         }
 
         temp_dets = {                      
@@ -116,7 +116,7 @@ class Darknet(Model):
         # update frame into info['frame']
         info['frame']=frame.copy()
 
-        # map each result into dets
+        # map each result into detections
         if results:
             # NEW ..............................
             boxes, scores, classes = _postprocess_yolo(
@@ -139,7 +139,7 @@ class Darknet(Model):
                 new_temp_dets['label'] = labels[new_temp_dets['id']]
                 new_temp_dets['score'] = float(scores[idx])
 
-                info['dets'].append(new_temp_dets)           
+                info['detections'].append(new_temp_dets)           
 
         self.clear_runtime()
         return info
@@ -249,9 +249,9 @@ def _postprocess_yolo(trt_outputs, img_w, img_h, conf_th, nms_threshold,
     # filter low-conf detections and concatenate results of all yolo layers
     detections = []
     for o in trt_outputs:
-        dets = o.reshape((-1, 7))
-        dets = dets[dets[:, 4] * dets[:, 6] >= conf_th]
-        detections.append(dets)
+        detections = o.reshape((-1, 7))
+        detections = detections[detections[:, 4] * detections[:, 6] >= conf_th]
+        detections.append(detections)
     detections = np.concatenate(detections, axis=0)
 
     if len(detections) == 0:

@@ -62,7 +62,7 @@ class BodyPose(Model):
         info = {
             "frame": None,                          # placeholder for frame.
             "output_resolution": out_resolution,    # the resize proportion output resolution.
-            "dets": []                              # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
+            "detections": []                              # each object's information ( { xmin, ymin, xmax, ymax, label, score, id } ).
         }
         temp_dets = {                      
             "drawer": None,
@@ -91,7 +91,7 @@ class BodyPose(Model):
         # update frame into info['frame']
         info['frame']=frame.copy()
 
-        # map each result into dets
+        # map each result into detections
         if results:
 
             # parse results
@@ -103,7 +103,7 @@ class BodyPose(Model):
             new_temp_dets['counts']=np.array(counts)
             new_temp_dets['objects']=objects
             new_temp_dets['peaks']=peaks
-            info['dets'].append(new_temp_dets)                        # update into ret['dets']
+            info['detections'].append(new_temp_dets)                        # update into ret['detections']
         # clear context
         self.clear_runtime()
         return info
