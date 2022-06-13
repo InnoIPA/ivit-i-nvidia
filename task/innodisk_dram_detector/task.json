@@ -2,7 +2,9 @@
     "framework": "tensorrt",
     "source": "./app/innodisk_dram_detector/innodisk_dram.avi",
     "category": "smart factory",
-    "application": "dram detection",
+    "application": {
+        "name": "counting"
+    },
     "prim": {
         "model_json": "./app/innodisk_dram_detector/yolov3-tiny.json"
     },

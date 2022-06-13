@@ -2,7 +2,9 @@
     "framework": "tensorrt",
     "source": "/dev/video0",
     "category": "sample",
-    "application": "yolo",
+    "application": {
+        "name": "yolo"
+    },
     "prim": {
         "model_json": "./app/yolov4/yolov4.json"
     },

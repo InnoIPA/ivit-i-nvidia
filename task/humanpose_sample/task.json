@@ -2,7 +2,9 @@
     "framework": "tensorrt",
     "source": "/dev/video0",
     "category": "sample",
-    "application": "human pose",
+    "application": {
+        "name": "human pose"
+    },
     "prim": {
         "model_json": "./app/humanpose_sample/humanpose.json"
     },

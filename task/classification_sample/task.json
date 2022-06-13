@@ -1,7 +1,9 @@
 {
     "framework": "tensorrt",
     "source": "data/cat01.jpg",
-    "application": "counting_number",
+    "application": {
+        "name": "classification"
+    },
     "prim": {
         "model_json": "./app/classification_sample/classification.json"
     },
