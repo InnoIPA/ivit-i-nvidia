@@ -249,9 +249,9 @@ def _postprocess_yolo(trt_outputs, img_w, img_h, conf_th, nms_threshold,
     # filter low-conf detections and concatenate results of all yolo layers
     detections = []
     for o in trt_outputs:
-        detections = o.reshape((-1, 7))
-        detections = detections[detections[:, 4] * detections[:, 6] >= conf_th]
-        detections.append(detections)
+        dets = o.reshape((-1, 7))
+        dets = dets[dets[:, 4] * dets[:, 6] >= conf_th]
+        detections.append(dets)
     detections = np.concatenate(detections, axis=0)
 
     if len(detections) == 0:
