@@ -6,7 +6,7 @@
         "name": "human pose"
     },
     "prim": {
-        "model_json": "./app/humanpose_sample/humanpose.json"
+        "model_json": "./task/humanpose_sample/humanpose.json"
     },
     "name": "humanpose_sample",
     "source_type": "Camera"

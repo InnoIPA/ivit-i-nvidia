@@ -6,7 +6,7 @@
         "name": "yolo"
     },
     "prim": {
-        "model_json": "./app/yolov4-tiny/yolov4-tiny.json"
+        "model_json": "./task/yolov4-tiny/yolov4-tiny.json"
     },
     "name": "yolov3-tiny",
     "source_type": "V4L2"

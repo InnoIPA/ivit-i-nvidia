@@ -1,12 +1,13 @@
 {
     "framework": "tensorrt",
-    "source": "/dev/video0",
     "category": "sample",
+    "source": "./data/highway.mp4",
     "application": {
-        "name": "yolo"
+        "name": "counting",
+        "depend_on": [ "car" ]
     },
     "prim": {
-        "model_json": "./app/yolov4/yolov4.json"
+        "model_json": "./task/yolov4/yolov4.json"
     },
     "name": "yolov4",
     "source_type": "V4L2"

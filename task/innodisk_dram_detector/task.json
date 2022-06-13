@@ -1,12 +1,12 @@
 {
     "framework": "tensorrt",
-    "source": "./app/innodisk_dram_detector/innodisk_dram.avi",
+    "source": "./task/innodisk_dram_detector/innodisk_dram.avi",
     "category": "smart factory",
     "application": {
         "name": "counting"
     },
     "prim": {
-        "model_json": "./app/innodisk_dram_detector/yolov3-tiny.json"
+        "model_json": "./task/innodisk_dram_detector/yolov3-tiny.json"
     },
     "name": "yolov3-tiny",
     "source_type": "V4L2"

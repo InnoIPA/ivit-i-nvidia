@@ -5,7 +5,7 @@
         "name": "classification"
     },
     "prim": {
-        "model_json": "./app/classification_sample/classification.json"
+        "model_json": "./task/classification_sample/classification.json"
     },
     "name": "classification_sample",
     "source_type": "Image"

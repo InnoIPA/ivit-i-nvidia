@@ -1,8 +1,8 @@
 {
     "tag": "obj",
     "tensorrt": {
-        "model_path": "./app/trt/usb_detector/usb.engine",
-        "label_path": "./app/trt/usb_detector/usb.txt",
+        "model_path": "./task/trt/usb_detector/usb.engine",
+        "label_path": "./task/trt/usb_detector/usb.txt",
         "device": "NVIDIA GeForce GTX 1050 Ti",
         "input_size": "3,608,608",
         "preprocess": "caffe",

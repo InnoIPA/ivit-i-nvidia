@@ -7,7 +7,7 @@
         "depend_on": [ "people" ]
     },
     "prim": {
-        "model_json": "./app/people_seg_sample/people_seg.json"
+        "model_json": "./task/people_seg_sample/people_seg.json"
     },
     "name": "people_seg_sample",
     "source_type": "RTSP"

@@ -6,7 +6,7 @@
         "name": "yolo"
     },
     "prim": {
-        "model_json": "./app/mask_detection_yolo/yolov4-tiny-mask.json"
+        "model_json": "./task/mask_detection_yolo/yolov4-tiny-mask.json"
     },
     "name": "yolov3-tiny",
     "source_type": "V4L2"

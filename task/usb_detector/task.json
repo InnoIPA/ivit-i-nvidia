@@ -7,7 +7,7 @@
         "depend_on": [ "ng" ]
     },
     "prim": {
-        "model_json": "./app/trt/usb_detector/usb_detector.json"
+        "model_json": "./task/trt/usb_detector/usb_detector.json"
     },
     "name": "usb_detector",
     "source_type": "Video"
