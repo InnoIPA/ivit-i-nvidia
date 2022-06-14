@@ -10,5 +10,5 @@
         "model_json": "./task/yolov4/yolov4.json"
     },
     "name": "yolov4",
-    "source_type": "V4L2"
+    "source_type": "Video"
 }

@@ -9,5 +9,5 @@
         "model_json": "./task/yolov3-tiny/yolov3-tiny.json"
     },
     "name": "yolov3-tiny",
-    "source_type": "V4L2"
+    "source_type": "Video"
 }
