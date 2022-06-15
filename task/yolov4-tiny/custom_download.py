@@ -98,13 +98,18 @@ def modify_size(model, size, log=True):
     with open(trg_config, 'w') as file:
         file.writelines(data)
     
-    # link the weight file if needed
-    if check_path( trg_weight, log=False ):
-        return new_name
-    else:
-        print("\nLink a new weight file: {}".format(trg_weight))
-        os.symlink( org_weight, trg_weight )
-        return f"{new_name}"
+    # new weight file if needed
+    if not check_path( trg_weight, log=False ):        
+        # link weight
+        # print("\nLink a new weight file: {}".format(trg_weight))
+        # os.symlink( org_weight, trg_weight )
+        print("\nRename the weight file: {}".format(trg_weight))
+        os.rename(org_weight, trg_weight)
+        
+        # clear os config
+        os.remove(org_config)
+    
+    return new_name
 
 # -------------------------------------------------------
 # Download weight if needed
