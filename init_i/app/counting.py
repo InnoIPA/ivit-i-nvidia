@@ -5,6 +5,8 @@ class Counting(App):
     
     def __init__(self, depend_labels:list) -> None:
         super().__init__(depend_labels)
+        # logging.warning(depend_labels)
+        # logging.warning(type(depend_labels))
         self.total_num = dict()
 
     def __call__(self, frame, info):
@@ -30,8 +32,13 @@ class Counting(App):
 
             label = detection['label']
 
-            
+            # check if the label is in the labels we select ( depend_on )
             if label in self.depend_labels:
+
+                # if not in detected_labels, we append it
+                if not ( label in self.detected_labels ):
+                    self.detected_labels.append(label)
+
                 x1, y1 = max(int(detection['xmin']), 0), max(int(detection['ymin']), 0)
                 x2, y2 = min(int(detection['xmax']), size[1]), min(int(detection['ymax']), size[0])
                 cx, cy = int((x1 + x2) / 2), int((y1 + y2) / 2)
@@ -45,7 +52,7 @@ class Counting(App):
 
         # if the first frame web have to saving all object here
         if self.frame_idx <= 1:  
-            for label in self.depend_labels:
+            for label in self.detected_labels:
                 for pt in self.cnt_pts_cur_frame[label]:
                     for pt2 in self.cnt_pts_prev_frame[label]:
                         
@@ -56,7 +63,7 @@ class Counting(App):
 
         # if not the firt frame, we update the center point and separate the new one
         else:
-            for label in self.depend_labels:
+            for label in self.detected_labels:
 
                 track_obj_copy = self.track_obj[label].copy()
                 self.cnt_pts_cur_frame_copy = self.cnt_pts_cur_frame[label].copy()
@@ -80,7 +87,7 @@ class Counting(App):
                         self.track_obj[label].pop(idx)
 
         # adding the remaining point to track_obj
-        for label_num, label in enumerate(self.depend_labels):
+        for label_num, label in enumerate(self.detected_labels):
 
             for pt in self.cnt_pts_cur_frame[label]:
                 self.track_obj[label][ self.track_idx[label] ]=pt
