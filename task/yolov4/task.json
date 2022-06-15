@@ -3,8 +3,7 @@
     "category": "sample",
     "source": "./data/highway.mp4",
     "application": {
-        "name": "counting",
-        "depend_on": [ "car" ]
+        "name": "counting"
     },
     "prim": {
         "model_json": "./task/yolov4/yolov4.json"

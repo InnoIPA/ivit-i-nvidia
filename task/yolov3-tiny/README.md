@@ -7,15 +7,15 @@
 2. Download model
     ```bash
     # In the yolov3-tiny folder
-    cd /path/to/init-i/app/yolov3-tiny              # modify to your path
+    cd /path/to/init-i/task/yolov3-tiny              # modify to your path
     python3 custom_download.py -m yolov3-tiny -s 416 
 
     # In the init-i folder
-    python3 ./app/yolov3-tiny/custom_download.py -m yolov3-tiny -s 416 -f ./app/yolov3-tiny
+    python3 ./task/yolov3-tiny/custom_download.py -m yolov3-tiny -s 416 -f ./task/yolov3-tiny
 
     # The weight and config will be downloaded
-    ls ./app/yolov3-tiny/yolov3-tiny-416*
-    ./app/yolov3-tiny/yolov3-tiny-416.cfg  ./app/yolov3-tiny/yolov3-tiny-416.weights
+    ls ./task/yolov3-tiny/yolov3-tiny-416*
+    ./task/yolov3-tiny/yolov3-tiny-416.cfg  ./task/yolov3-tiny/yolov3-tiny-416.weights
     ```
 3. Convert Model
     ```bash
@@ -23,11 +23,11 @@
     cd /path/to/init-i
 
     # Notice: no need to give extension here
-    ./converter/yolo-converter.sh ./app/yolov3-tiny/yolov3-tiny-416
+    ./converter/yolo-converter.sh ./task/yolov3-tiny/yolov3-tiny-416
 
     # After convert yolov3-tiny-416 should be generated.
-    ls ./app/yolov3-tiny/yolov3-tiny-416* | grep trt
-    ./app/yolov3-tiny/yolov3-tiny-416.trt
+    ls ./task/yolov3-tiny/yolov3-tiny-416* | grep trt
+    ./task/yolov3-tiny/yolov3-tiny-416.trt
     ```
     * Convert performance
       * `1050 Ti`
@@ -36,5 +36,5 @@
 4. Run demo.py
     ```
     cd /path/to/init-i
-    python3 demo.py -c ./app/yolov3-tiny/task.json
+    python3 demo.py -c ./task/yolov3-tiny/task.json
     ```
