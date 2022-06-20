@@ -58,7 +58,20 @@ iNIT-I for NVIDIA x86 platform
 
 
 # For Developer
-* Add submodule
-    ```bash
-    git submodule add --name web https://github.com/MaxChangInnodisk/init-i-web-api.git ./init_i/web
-    ```
+* init python api
+    * Add a sample task
+        > If we want to create a task called `test`
+        
+        1. create the folder name `test` and upload `model`, `label`, `task.json`, `model.json` on the cloud.
+        2. change the permission to anyone and copy the download link.
+        2. copy download script ( `custom_download.sh` ) from other task and modify the ID which could parse from download link.
+    
+    * Add an application
+        > If we want to create an application called `tracking`
+        
+        1. define application module ( `tracking.py` ) in `./init_i/app/`.
+        2. define the class object called `Tracking`, capitalizing the first word.
+        3. inherit the module `App` in `init_i.app.common`.
+        4. define custom parameter in `__init__()` and define the custom `__call__()` function.
+        5. add judgment for new application like `if app_tag_in_config=="tracking"` in `handler.py`.
+    
