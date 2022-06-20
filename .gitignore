@@ -5,6 +5,20 @@ __pycahe__
 **/*/__pycahe__
 **/*/*.pyc
 # --------------------------------------
+# For Basic Task
+task/*
+!task/classification_sample/*
+!task/err_test/*
+!task/humanpose_sample/*
+!task/innodisk_dram_detector/*
+!task/mask_detection_yolo/*
+!task/people_seg_sample/*
+!task/usb_detector/*
+!task/yolov3-tiny/*
+!task/yolov4/*
+!task/yolov4-tiny/*
+
+# --------------------------------------
 # Model and Configuration file ( YOLO )
 **/*/*.trt
 **/*/*.plan
@@ -29,18 +43,6 @@ __pycahe__
 **/*/*.png
 **/*/*.avi
 **/*/*.mp4
-app/*
-!app/classification_sample
-!app/err_test
-!app/humanpose_sample
-!app/innodisk_dram_detector
-!app/mask_detection_yolo
-!app/people_seg_sample
-!app/usb_detector
-!app/yolov3-tiny
-!app/yolov4
-!app/yolov4-tiny
-!**/*/README.md
 # --------------------------------------
 # Import temperate
 temp/
