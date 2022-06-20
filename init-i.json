@@ -8,6 +8,7 @@
     "PORT": 818,
     "LOGGER": "init-i-web.log",
     "TASK_ROOT": "./task",
+    "TEMP_PATH": "./temp",
     "DATA": "data",
     "DEBUG": false,
     "WORKER": 1,

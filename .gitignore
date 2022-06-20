@@ -41,3 +41,6 @@ app/*
 !app/yolov4
 !app/yolov4-tiny
 !**/*/README.md
+# --------------------------------------
+# Import temperate
+temp/
