@@ -6,12 +6,12 @@
     ```
 2. Download model
     ```bash
-    ./app/mask_detection_yolo/download_model.sh
+    ./task/mask_detection_yolo/download_model.sh
     ```
 3. Convert Model
     ```bash
     # Notice: no need to give extension here
-    ./converter/yolo-converter.sh ./app/mask_detection_yolo/yolov4-tiny-mask
+    ./converter/yolo-converter.sh ./task/mask_detection_yolo/yolov4-tiny-mask
     ```
 4. Modify the application configuration `task.json`, `yolov4-tiny-mask.json`
     |   key             |   example     |   descr       |
@@ -21,5 +21,5 @@
 
 5. Run demo.py
     ```
-    python3 demo.py -c ./app/mask_detection_yolo/task.json
+    python3 demo.py -c ./task/mask_detection_yolo/task.json
     ```
