@@ -4,7 +4,7 @@ from init_i.app.helper import FONT, FONT_SCALE, FONT_THICKNESS, get_text_size, g
 from init_i.app.common import App
 
 BORDER = 2
-COLOR = ( 0, 0, 255 )
+# COLOR = ( 0, 0, 255 )
 FONT=cv2.LINE_AA
 FONT_SCALE=2
 FONT_THICKNESS=3
@@ -57,13 +57,13 @@ class Counting(App):
                 cx, cy = int((x1 + x2) / 2), int((y1 + y2) / 2)
                 
                 # draw the bbox, label text
-                cv2.rectangle(frame, (x1, y1), (x2, y2), COLOR, BORDER)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), self.palette[label], BORDER)
             
         # draw the number text on frame
         for label_num, label in enumerate(self.detected_labels):
 
             cnt = "Detected {} {}".format(self.total_num[label], label)
             wid, hei = get_text_size(cnt)
-            cv2.putText(frame, cnt, (10, 10+hei+(hei*(label_num+1))+(hei*label_num) ), FONT, FONT_SCALE, COLOR, FONT_THICKNESS)
+            cv2.putText(frame, cnt, (10, 10+hei+(hei*(label_num+1))+(hei*label_num) ), FONT, FONT_SCALE, self.palette[label], FONT_THICKNESS)
 
         return frame
