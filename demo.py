@@ -49,17 +49,27 @@ def main(args):
     src = Source(model_conf['source'], model_conf['source_type'])
 
     has_application=True
+    
     try:
         application = get_application(model_conf)
+        if application == None:
+            has_application = False
     except Exception as e:
         logging.error(e)
         has_application=False
-
+    
     cv2.namedWindow(CV_WIN, cv2.WND_PROP_FULLSCREEN)
     cv2.setWindowProperty(CV_WIN, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     while True:
         ret_frame, frame = src.get_frame()
+        if not ret_frame:
+            if model_conf["source_type"] in ['Image', 'V4L2']:
+                break
+            elif model_conf["source_type"] in ['Video', 'RTSP']:
+                src = Source(model_conf['source'], model_conf['source_type'])
+                continue
+
         info = trg.inference(trt_objects, frame, model_conf)   
         
         if info is not None:
@@ -78,92 +88,6 @@ def main(args):
 
     src.release()
 
-
-    # if source_type=='v4l2':        # Camera 
-        
-    #     cap = cv2.VideoCapture(app_conf['source'])
-
-    #     if not cap.isOpened():
-    #         msg = "Can't capture the device. ({})".format(source_type)
-    #         logging.error(msg, stack_info=True)
-    #     # -------------- camera start --------------
-    #     while(cap.isOpened()):
-        
-    #         t_fps = Timer()
-    #         ret, frame = cap.read()
-    #         if not ret and frame==None: break  
-            
-    #         info = trg.inference(trt_objects, frame, model_conf)   
-            
-    #         # ===============================================================
-    #         # Do something
-    #         frame_draw = draw.draw_detections(info, palette, model_conf)
-
-    #         frame_draw = draw_fps(frame_draw, int(1/(t_fps.get_cost_time())))
-    #         # ===============================================================
-    #         cv2.imshow('iNIT-I', frame_draw)
-    #         key = cv2.waitKey(1)
-    #         if key==ord('q'): 
-    #             break
-    #         elif key==ord('c'):
-    #             palette = get_palette(model_conf)
-    #     # -------------- camera end --------------
-    #     cap.release()
-    #     cv2.destroyAllWindows()
-        
-    # elif source_type=='video':       # Video 
-    
-    #     cap = cv2.VideoCapture(app_conf['source'])
-    #     # -------------- video start --------------
-    #     while(cap.isOpened()):
-    #         t_fps = Timer()
-    #         ret, frame = cap.read()
-    #         if not ret and frame==None: break  
-
-    #         info = trg.inference(trt_objects, frame, model_conf)   
-    #         frame_draw = draw.draw_detections(info, palette, model_conf)
-    #         frame_draw = draw_fps(frame_draw, int(1/(t_fps.get_cost_time())))
-
-    #         cv2.imshow('iNIT-I', frame_draw)
-    #         key = cv2.waitKey(1)
-    #         if key==ord('q'): 
-    #             break
-    #         elif key==ord('c'):
-    #             palette = get_palette(model_conf)
-    #     # -------------- video end --------------
-    #     cap.release()
-    #     cv2.destroyAllWindows()
-
-    # elif source_type == 'image':     # Single image 
-    #     t_fps = Timer()
-    #     frame = cv2.imread(app_conf['source'])
-    #     if frame.any()==None:
-    #         msg = "Can't read image. ({})".format(source_type)
-    #         logging.error(msg, exc_info=True, stack_info=True)
-    #     # -------------- start --------------
-    #     info = trg.inference(trt_objects, frame, model_conf)   
-    #     frame_draw = draw.draw_detections(info, palette, model_conf)
-    #     fps = int(1/(t_fps.get_cost_time()))
-    #     frame_draw = draw_fps(frame_draw, fps)
-        
-    #     while True:
-    #         cv2.imshow('iNIT-I', frame_draw)
-    #         key = cv2.waitKey(1)
-    #         if key==ord('s'):
-    #             cv2.imwrite('./results.jpg', frame_draw)
-    #         elif key==ord('c'):
-    #             frame_draw = frame.copy()
-    #             frame_draw = draw.draw_detections(info, get_palette(model_conf), model_conf)
-    #             frame_draw = draw_fps(frame_draw, fps)        
-    #         elif key==ord('q'):
-    #             break
-    #     # -------------- end --------------
-    #     cv2.destroyAllWindows()
-        
-    # else:                           # Format error
-    #     msg = 'Excepted `source` is ["camera", "video", "image"]'
-    #     logging.error(msg)
-    #     raise Exception(msg)
 
 if __name__ == "__main__":
 
