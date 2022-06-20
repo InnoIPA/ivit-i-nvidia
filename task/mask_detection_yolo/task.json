@@ -3,7 +3,7 @@
     "source": "/dev/video0",
     "category": "sample",
     "application": {
-        "name": "yolo"
+        "name": "counting"
     },
     "prim": {
         "model_json": "./task/mask_detection_yolo/yolov4-tiny-mask.json"
