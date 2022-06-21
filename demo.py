@@ -70,13 +70,14 @@ def main(args):
                 src = Source(model_conf['source'], model_conf['source_type'])
                 continue
 
-        info = trg.inference(trt_objects, frame, model_conf)   
+        org_frame = frame.copy()
+        info = trg.inference(trt_objects, org_frame, model_conf)   
         
         if info is not None:
             if not has_application:
                 frame = draw.draw_detections(info, palette, model_conf)
             else:
-                frame = application(frame, info)
+                frame = application(org_frame, info)
         else:
             continue
         
