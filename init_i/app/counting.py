@@ -64,6 +64,6 @@ class Counting(App):
 
             cnt = "Detected {} {}".format(self.total_num[label], label)
             wid, hei = get_text_size(cnt)
-            cv2.putText(frame, cnt, (10, 10+hei+(hei*(label_num+1))+(hei*label_num) ), FONT, FONT_SCALE, self.palette[label], FONT_THICKNESS)
+            cv2.putText(frame, cnt, (10, 10+(hei*(label_num+1)) ), FONT, FONT_SCALE, self.palette[label], FONT_THICKNESS)
 
         return frame
