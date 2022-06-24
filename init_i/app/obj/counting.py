@@ -6,7 +6,7 @@ from init_i.app.common import App
 BORDER = 2
 # COLOR = ( 0, 0, 255 )
 FONT=cv2.LINE_AA
-FONT_SCALE=2
+FONT_SCALE=1
 FONT_THICKNESS=3
 
 
@@ -64,6 +64,7 @@ class Counting(App):
 
             cnt = "Detected {} {}".format(self.total_num[label], label)
             wid, hei = get_text_size(cnt)
+            hei = hei+14
             cv2.putText(frame, cnt, (10, 10+(hei*(label_num+1)) ), FONT, FONT_SCALE, self.palette[label], FONT_THICKNESS)
 
         return frame
