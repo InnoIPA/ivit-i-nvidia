@@ -48,12 +48,11 @@ def main(args):
 
     src = Source(model_conf['source'], model_conf['source_type'])
 
-    has_application=True
+    has_application=False
     
     try:
         application = get_application(model_conf)
-        if application == None:
-            has_application = False
+        has_application = False if application == None else True
     except Exception as e:
         logging.error(e)
         has_application=False
