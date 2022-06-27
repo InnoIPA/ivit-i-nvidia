@@ -1,4 +1,5 @@
 import os, sys, cv2, logging, argparse
+from shutil import ExecError
 import numpy as np
 sys.path.append(os.getcwd())
 from init_i.utils.logger import config_logger
@@ -57,6 +58,24 @@ def main(args):
         logging.error(e)
         has_application=False
     
+    try:
+        app_info = model_conf["application"]
+        
+        if "area" in app_info["name"]:
+            key = "area_points"
+            if not key in app_info:
+                ret_frame, frame = src.get_frame()
+                if ret_frame:
+                    application.set_area(pnts=None, frame=frame)
+            else:
+                application.set_area(pnts=app_info[key])
+            
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        msg = 'Stream Error: \n{}\n{} ({}:{})'.format(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+        logging.error(msg)
+
     cv2.namedWindow(CV_WIN, cv2.WND_PROP_FULLSCREEN)
     cv2.setWindowProperty(CV_WIN, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
@@ -71,7 +90,7 @@ def main(args):
 
         org_frame = frame.copy()
         info = trg.inference(trt_objects, org_frame, model_conf)   
-        
+
         if info is not None:
             if not has_application:
                 frame = draw.draw_detections(info, palette, model_conf)
@@ -82,9 +101,11 @@ def main(args):
         
         cv2.imshow(CV_WIN, frame)
     
-        key = cv2.waitKey(1)
+        key = cv2.waitKey(1 if not args.debug else 0)
         if key in {ord('q'), ord('Q'), '27'}:
             break
+        else:
+            pass
 
     src.release()
 
@@ -94,6 +115,7 @@ if __name__ == "__main__":
     # 宣告外部參數
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', help='the path of configuration.')
+    parser.add_argument('-d', '--debug', action="store_true", help='the debug mode.')
     args = parser.parse_args()
 
     main(args)
