@@ -3,7 +3,7 @@
     "source": "/dev/video0",
     "category": "sample",
     "application": {
-        "name": "human pose"
+        "name": "default"
     },
     "prim": {
         "model_json": "./task/humanpose_sample/humanpose.json"

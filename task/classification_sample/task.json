@@ -2,7 +2,7 @@
     "framework": "tensorrt",
     "source": "data/cat01.jpg",
     "application": {
-        "name": "classification"
+        "name": "default"
     },
     "prim": {
         "model_json": "./task/classification_sample/classification.json"

@@ -3,8 +3,7 @@
     "source": "rtsp://admin:admin@172.16.21.1:554/snl/live/1/1/n",
     "category": "sample",
     "application": {
-        "name": "counting",
-        "depend_on": [ "people" ]
+        "name": "default"
     },
     "prim": {
         "model_json": "./task/people_seg_sample/people_seg.json"
