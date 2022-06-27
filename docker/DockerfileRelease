@@ -1,0 +1,15 @@
+FROM nvcr.io/nvidia/tensorrt:21.03-py3
+# ------------------------------------------------------------------
+WORKDIR /workspace
+COPY ["." , "/workspace/" ]
+# ------------------------------------------------------------------
+# 由於 安裝套件有互動界面會導致報錯 所以先行關閉
+ENV DEBIAN_FRONTEND noninteractive  
+
+RUN chmod +x /workspace/docker/requirements.sh \
+&& cd /workspace/docker/ && ./requirements.sh \
+&& chmod +x /workspace/docker/patch_pose.sh \
+&& cd /workspace/docker/ && ./patch_pose.sh
+
+# ------------------------------------------------------------------
+ENTRYPOINT [ "/bin/bash", "-c" ]
