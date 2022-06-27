@@ -139,9 +139,10 @@ class Model(object):
 
     def parse_param(self, conf):
         logging.debug("Parse parameters from config")
-
-    # def __del__(self):
-    #     self.clear_runtime()
+    
+    def release(self):
+        self.clear_runtime()
+        del self.cfx
 
 # ------------------------------------------------------------------------------------------------------
 # Simple helper data class that's a little nicer to use than a 2-tuple.
