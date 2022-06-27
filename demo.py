@@ -76,38 +76,47 @@ def main(args):
         msg = 'Stream Error: \n{}\n{} ({}:{})'.format(exc_type, exc_obj, fname, exc_tb.tb_lineno)
         logging.error(msg)
 
-    cv2.namedWindow(CV_WIN, cv2.WND_PROP_FULLSCREEN)
-    cv2.setWindowProperty(CV_WIN, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    if not args.server:
+        cv2.namedWindow(CV_WIN, cv2.WND_PROP_FULLSCREEN)
+        cv2.setWindowProperty(CV_WIN, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    try:
+        while True:
+            ret_frame, frame = src.get_frame()
+            if not ret_frame:
+                if model_conf["source_type"] in ['Image', 'V4L2']:
+                    break
+                elif model_conf["source_type"] in ['Video', 'RTSP']:
+                    src = Source(model_conf['source'], model_conf['source_type'])
+                    continue
 
-    while True:
-        ret_frame, frame = src.get_frame()
-        if not ret_frame:
-            if model_conf["source_type"] in ['Image', 'V4L2']:
-                break
-            elif model_conf["source_type"] in ['Video', 'RTSP']:
-                src = Source(model_conf['source'], model_conf['source_type'])
-                continue
+            org_frame = frame.copy()
+            info = trg.inference(trt_objects, org_frame, model_conf)   
 
-        org_frame = frame.copy()
-        info = trg.inference(trt_objects, org_frame, model_conf)   
-
-        if info is not None:
-            if not has_application:
-                frame = draw.draw_detections(info, palette, model_conf)
+            if args.server:
+                logging.info( info["detections"])
             else:
-                frame = application(org_frame, info)
-        else:
-            continue
-        
-        cv2.imshow(CV_WIN, frame)
-    
-        key = cv2.waitKey(1 if not args.debug else 0)
-        if key in {ord('q'), ord('Q'), '27'}:
-            break
-        else:
-            pass
+                if info is not None:
+                    if not has_application:
+                        frame = draw.draw_detections(info, palette, model_conf)
+                    else:
+                        frame = application(org_frame, info)
+                else:
+                    continue
+                
+                cv2.imshow(CV_WIN, frame)
+            
+                key = cv2.waitKey(1 if not args.debug else 0)
+                if key in {ord('q'), ord('Q'), '27'}:
+                    break
+                else:
+                    pass
 
-    src.release()
+    except KeyboardInterrupt:
+        logging.warning("Quit")
+    finally:        
+        trg.release()
+        if not args.server:
+            src.release()
 
 
 if __name__ == "__main__":
@@ -116,6 +125,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', help='the path of configuration.')
     parser.add_argument('-d', '--debug', action="store_true", help='the debug mode.')
+    parser.add_argument('-s', '--server', action="store_true", help='the server mode.')
     args = parser.parse_args()
 
     main(args)
