@@ -1,0 +1,13 @@
+{
+    "framework": "tensorrt",
+    "source": "data/night-street.mp4",
+    "category": "sample",
+    "application": {
+        "name": "default"
+    },
+    "prim": {
+        "model_json": "./task/yolov4-tiny-sample/yolov4-tiny.json"
+    },
+    "name": "yolov4-tiny-sample",
+    "source_type": "Video"
+}

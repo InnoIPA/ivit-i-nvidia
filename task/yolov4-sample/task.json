@@ -1,0 +1,13 @@
+{
+    "framework": "tensorrt",
+    "category": "sample",
+    "source": "./data/car.mp4",
+    "application": {
+        "name": "default"
+    },
+    "prim": {
+        "model_json": "./task/yolov4-sample/yolov4.json"
+    },
+    "name": "yolov4-sample",
+    "source_type": "Video"
+}

@@ -1,0 +1,12 @@
+{
+    "tag": "darknet",
+    "tensorrt": {
+        "model_path": "./task/yolov4-sample/yolov4-416.trt",
+        "label_path": "./task/yolov4-sample/coco.txt",
+        "device": "NVIDIA GeForce GTX 1050 Ti",
+        "input_size": "3,416,416",
+        "preprocess": "caffe",
+        "thres": 0.6,
+        "nms_thres": 0.8
+    }
+}

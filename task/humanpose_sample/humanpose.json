@@ -6,6 +6,6 @@
         "device": "NVIDIA GeForce GTX 1050 Ti",
         "input_size": "3,224,224",
         "preprocess": "torch",
-        "thres": "0.7"
+        "thres": "0.5"
     }
 }

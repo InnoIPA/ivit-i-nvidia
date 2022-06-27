@@ -1,6 +1,6 @@
 {
     "framework": "tensorrt",
-    "source": "data/cat01.jpg",
+    "source": "data/cat.jpg",
     "application": {
         "name": "default"
     },

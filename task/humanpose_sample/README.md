@@ -11,7 +11,7 @@ sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
    * run the script
        ```bash
         cd /path/to/iNIT-I
-        ./app/humanpose_sample/download_model.sh
+        ./task/humanpose_sample/download_model.sh
        ```
    * choose the model
        ```
@@ -33,9 +33,9 @@ sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
     # For Example
 
     ./converter/pose-converter \
-    -m ./app/humanpose_sample/resnet18_baseline_att_224x224_A.pth \
-    -j ./app/humanpose_sample/label.json \
-    -e ./app/humanpose_sample/resnet18_baseline_att_224x224_A.engine
+    -m ./task/humanpose_sample/resnet18_baseline_att_224x224_A.pth \
+    -j ./task/humanpose_sample/label.json \
+    -e ./task/humanpose_sample/resnet18_baseline_att_224x224_A.engine
 
     ###############################
     # get human pose parser ... 0.002 s 

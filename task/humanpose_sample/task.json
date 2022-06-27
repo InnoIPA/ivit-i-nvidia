@@ -1,7 +1,6 @@
 {
     "framework": "tensorrt",
-    "source": "/dev/video0",
-    "category": "sample",
+    "source": "./data/pedestrians.jpg",
     "application": {
         "name": "default"
     },
@@ -9,5 +8,5 @@
         "model_json": "./task/humanpose_sample/humanpose.json"
     },
     "name": "humanpose_sample",
-    "source_type": "Camera"
+    "source_type": "Image"
 }

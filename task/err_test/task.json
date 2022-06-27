@@ -1,9 +1,0 @@
-{
-    "framework":"tensorrt",
-    "source":"/dev/video0",
-    "category":"smart city",
-    "application": "mask detection",
-    "prim":{
-        "model_json":"./task/trt/err_test/mask_detector.json"
-    }
-}

@@ -8,10 +8,10 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
     ```
 1. Download Model
     ```bash 
-    ./app/people_seg_sample/download_model.sh
+    ./task/people_seg_sample/download_model.sh
 
     # After downloaded
-    tree ./app/people_seg_sample
+    tree ./task/people_seg_sample
     .
     |-- README.md
     |-- task.json
@@ -32,22 +32,22 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
     ./converter/tao-converter -k nvidia_tlt \
     -d 3,576,960 \
     -o mask_fcn_logits/Conv2D,mask_fcn_logits/BiasAdd \
-    -e /workspace/app/people_seg_sample/peoplesegnet.engine \
+    -e /workspace/task/people_seg_sample/peoplesegnet.engine \
     -t fp32 \
     -i nchw \
     -m 1 \
-    /workspace/app/people_seg_sample/peoplesegnet_resnet50.etlt
+    /workspace/task/people_seg_sample/peoplesegnet_resnet50.etlt
 
     # Int 8
     ./converter/tao-converter -k nvidia_tlt \
     -d 3,576,960 \
     -o mask_fcn_logits/Conv2D,mask_fcn_logits/BiasAdd \
-    -c /workspace/app/people_seg_sample/peoplesegnet_resnet50_int8.txt \
-    -e /workspace/app/people_seg_sample/peoplesegnet_int8.engine \
+    -c /workspace/task/people_seg_sample/peoplesegnet_resnet50_int8.txt \
+    -e /workspace/task/people_seg_sample/peoplesegnet_int8.engine \
     -t int8 \
     -i nchw \
     -m 1 \
-    /workspace/app/people_seg_sample/peoplesegnet_resnet50.etlt
+    /workspace/task/people_seg_sample/peoplesegnet_resnet50.etlt
     ```
 
     * The convert time with my graphic card ( NVIDIA Tesla A2 )
@@ -58,7 +58,7 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
 
 3. Create a label file for inference
     ```bash
-    cat /workspace/app/people_seg_sample/peoplesegnet.txt
+    cat /workspace/task/people_seg_sample/peoplesegnet.txt
 
     other
     people
@@ -121,7 +121,7 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
 ## Run Human Pose Estimation Sample
 
 ``` 
-python3 demo.py -c app/people_seg_sample/task.json
+python3 demo.py -c task/people_seg_sample/task.json
 ```
 
 ---
