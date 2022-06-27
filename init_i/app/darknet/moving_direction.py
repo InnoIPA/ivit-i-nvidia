@@ -96,27 +96,47 @@ class MovingDirection(App):
                 self.track_idx[label] +=1
 
             # draw the arrow text on frame
+            
             if label in self.prev_track_obj:
-                
-                for idx, cur_pt in self.track_obj[label].items():
-                
-                    if not (idx in self.prev_track_obj[label]):
-                        continue
 
-                    prev_pt = self.prev_track_obj[label][idx]
-                    prev_pt, cur_pt = list(prev_pt), list(cur_pt)
+                if self.frame_idx > 1:
+
+                    for idx, cur_pt in self.track_obj[label].items():
                     
-                    bias = 20
-                    for i in range(2):
-                        padding = bias * (1 if prev_pt[i]> cur_pt[i] else -1)
-                        prev_pt[i] = int(prev_pt[i] + padding)
-                        cur_pt[i] = int(cur_pt[i] + padding *-1 )
+                        if not (idx in self.prev_track_obj[label]):
+                            continue
 
-                    cv2.arrowedLine(frame, cur_pt , prev_pt, self.palette[label], 2, tipLength=0.5)
+                        prev_pt = self.prev_track_obj[label][idx]
+                        _prev_pt, _cur_pt = list(prev_pt).copy(), list(cur_pt).copy()
+
+
+                        bias, status = 20, None
+                        
+                        for i in range(2):
+                            if _prev_pt[i] > cur_pt[i]:
+                                bias = bias * 1
+                            elif _prev_pt[i] < cur_pt[i]:
+                                bias = bias * -1
+                            else:
+                                pass
+                            padding = bias
+                            _prev_pt[i] = int(_prev_pt[i] + padding)
+                            _cur_pt[i] = int(_cur_pt[i] + padding *-1 )
+
+                        
+                        cv2.putText(frame, str(idx), (_cur_pt[0], _cur_pt[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 1, cv2.LINE_AA)
+
+
+                        cv2.circle(frame, tuple(_cur_pt), 2, (0, 0, 255), 3)
+                        cv2.circle(frame, tuple(_prev_pt), 2, (0, 255, 255), 3)
+
+                        cv2.arrowedLine(frame, tuple(_prev_pt), tuple(_cur_pt), self.palette[label], 2, tipLength=0.5)
         
                 # update the preview information
                 self.cnt_pts_prev_frame[label] = self.cnt_pts_cur_frame[label].copy()
+            else:
+                self.prev_track_obj.update( {label: list()})
 
-        self.prev_track_obj = self.track_obj.copy()
+            self.prev_track_obj[label] = self.track_obj[label].copy()
 
         return frame

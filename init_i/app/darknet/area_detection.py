@@ -71,6 +71,8 @@ class AeraDetection(App):
         # draw poly point
         overlay = frame.copy()
         for pnt in self.pnts:
+            if type(pnt)==list:
+                    pnt = tuple(pnt)
             cv2.circle(overlay, pnt, 3, AREA_COLOR, -1)
 
         # file poly and make it transparant
@@ -134,6 +136,8 @@ class AeraDetection(App):
 
             # draw poly point
             for pnt in self.temp_pnts:
+                if type(pnt)==list:
+                    pnt = tuple(pnt)
                 cv2.circle(overlay, pnt, 3, AREA_COLOR, -1)
 
             # file poly and make it transparant

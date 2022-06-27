@@ -1,7 +1,7 @@
 
 import logging, os
 APP_KEY = "application"
-FRAMEWORK = "openvino"
+FRAMEWORK = "tensorrt"
 
 def get_app_list():
     dir_path = os.path.dirname(__file__)    
@@ -76,23 +76,23 @@ def get_application(config:dict):
 
     if 'tracking' in app_name:
         logging.warning("Got {} application".format("tracking"))
-        from .obj.tracking import Tracking as trg
+        from .darknet.tracking import Tracking as trg
 
     elif 'direction' in app_name:
         logging.warning("Got {} application".format("moving direction"))
-        from .obj.moving_direction import MovingDirection as trg
+        from .darknet.moving_direction import MovingDirection as trg
     
     elif 'counting' == app_name:
         logging.warning("Got {} application".format("pure counting"))
-        from .obj.counting import Counting as trg
+        from .darknet.counting import Counting as trg
     
     elif 'area' in app_name:
         logging.warning("Got {} application".format("area detection"))
-        from .obj.area_detection import AeraDetection as trg
+        from .darknet.area_detection import AeraDetection as trg
     
     elif 'heatmap' in app_name:
         logging.warning("Got {} application".format("heatmap"))
-        from .obj.heatmap import Heatmap as trg
+        from .darknet.heatmap import Heatmap as trg
     
     else:
         return None
