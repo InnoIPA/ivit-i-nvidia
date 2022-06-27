@@ -31,7 +31,7 @@ cd $ROOT && rm -rf ${TRG}
 
 # --------------------------------------------------------------------------------
 # TRT_POSE
-printd "$(date +%T) Check trt_pose "
+printd "$(date +%T) Check trt_pose " Cy
 TRG="pure_trt_pose"
 
 if [[ -n ${TRG} ]];then git clone https://github.com/p513817/pure_trt_pose.git; fi
