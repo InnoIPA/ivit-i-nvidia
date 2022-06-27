@@ -14,4 +14,4 @@ echo "Converting ..." | boxes
 /workspace/task/people_seg_sample/peoplesegnet_resnet50.etlt
 
 echo "Run ..." | boxes
-python3 demo.py -c task/people_seg_sample/task.json
+python3 demo.py -c task/people_seg_sample/task.json -s

@@ -7,4 +7,4 @@ echo "Converting ..." | boxes
 -j ./task/humanpose_sample/label.json \
 -e ./task/humanpose_sample/resnet18_baseline_att_224x224_A.engine
 echo "Run ..." | boxes
-python3 demo.py -c task/humanpose_sample/task.json
+python3 demo.py -c task/humanpose_sample/task.json -s
