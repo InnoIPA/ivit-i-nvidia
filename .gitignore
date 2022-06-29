@@ -22,6 +22,7 @@ __pycahe__
 **/*/*.o
 # --------------------------------------
 # Temprate Data
+temp/
 **/*/*_colormap.txt
 **/*/*int8.tlt
 *.log
