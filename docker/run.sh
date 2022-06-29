@@ -105,7 +105,7 @@ mount_gpu="--gpus"
 set_vision=""
 command="bash"
 web_api="./exec_web_api.sh"
-docker_image="${project_name}/${platform}:${version}"
+docker_image="${project_name}-${platform}:${version}"
 workspace="/workspace"
 docker_name="${project_name}-${platform}"
 
