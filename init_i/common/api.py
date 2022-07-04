@@ -6,8 +6,8 @@ from init_i.obj.yolov4 import YoloV4
 from init_i.pose.bodypose import BodyPose
 from init_i.darknet.darknet import Darknet
 
-# get gpu list
 def get_gpu_info():
+    """ Capture GPU Information """
     gpus = GPUtil.getGPUs()
     ret = list()
     for gpu in gpus:
@@ -22,6 +22,7 @@ def get_gpu_info():
     return ret
 
 def find_gpu(in_gpu_name):
+    """ Find GPU name and Convert to the gpu index """
     ret = False
     gpu_idx = None
     for gpu in get_gpu_info():
@@ -32,7 +33,7 @@ def find_gpu(in_gpu_name):
     return ret, gpu_idx
 
 def get(prim_conf):
-    
+    """ Get target API and return it """
     model_conf = prim_conf[ prim_conf['framework'] ]    
     ret, gpu_idx = find_gpu(model_conf['device'])
     if not ret:
