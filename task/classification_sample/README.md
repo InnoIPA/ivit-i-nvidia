@@ -12,7 +12,7 @@ Classification model which trained from NVIDIA TAO or iTAO.
 ## For Sample Torch Model
 1. Download Sample Model ( Torch )
     ```bash
-    python3 app/classification_sample/download_resnext50.py
+    python3 task/classification_sample/download_resnext50.py
 
     # ------------------------------------
     # My situation
@@ -53,8 +53,8 @@ Classification model which trained from NVIDIA TAO or iTAO.
     {
         "tag": "cls",
         "tensorrt": {
-            "model_path": "./app/classification_sample/resnet50.engine",
-            "label_path": "./app/classification_sample/imagenet.txt",
+            "model_path": "./task/classification_sample/resnet50.engine",
+            "label_path": "./task/classification_sample/imagenet.txt",
             "device": "NVIDIA GeForce GTX 1050 Ti",
             "input_size": "3,224,224",
             "preprocess": "torch",
@@ -74,7 +74,7 @@ Classification model which trained from NVIDIA TAO or iTAO.
     |   thres       |   the threshold
 4. Run demo
     ```
-    python3 demo.py -c app/classification_sample/task.json
+    python3 demo.py -c task/classification_sample/task.json
     ```
 
 ## For TAO Classification Model ( Archived )
