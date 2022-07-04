@@ -37,9 +37,6 @@ class Classification(Model):
         return ( [context, inputs, outputs, bindings, stream], palette)
     
     def norm(self, data):
-        return ((data - np.min(data)) / (np.max(data) - np.min(data)))
-
-    def custom_norm(self, data):
         old_min = np.min(data)
         old_max = np.max(data)
         old_range = old_max - old_min
@@ -107,7 +104,7 @@ class Classification(Model):
         # map each result into detections
         if results:
             for result in results:              # parse each result after classification
-                result = self.custom_norm(result)
+                result = self.norm(result)
                 new_temp_dets = temp_dets.copy() 
                 new_temp_dets['id'] = int(np.argmax(result))
                 new_temp_dets['score'] = float( result[ new_temp_dets['id'] ])

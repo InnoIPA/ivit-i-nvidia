@@ -1,4 +1,4 @@
-import cv2, os, shutil, time, sys, copy, logging
+import cv2, os, shutil, time, sys, copy, logging, ctypes
 import numpy as np
 import tensorrt as trt
 
@@ -8,7 +8,6 @@ from init_i.utils.timer import Timer
 from init_i.common import common
 from init_i.common.common import Model
 from init_i.utils.parser import load_json, load_txt, parse_config
-import ctypes
 
 class Darknet(Model):
 
@@ -22,7 +21,6 @@ class Darknet(Model):
                              'Did you forget to do a "make" in the "./plugins/" '
                              'subdirectory?')
         super(Darknet, self).__init__(idx)
-
 
     def load_model(self, conf):
         
@@ -44,33 +42,6 @@ class Darknet(Model):
         palette = self.get_palette(conf)
         return ( [context, inputs, outputs, bindings, stream], palette)
     
-    def norm(self, data):
-        return ((data - np.min(data)) / (np.max(data) - np.min(data)))
-
-    def custom_norm(self, data):
-        old_min = np.min(data)
-        old_max = np.max(data)
-        old_range = old_max - old_min
-        new_min = 0
-        new_max = 1
-        new_range = new_max - new_min
-        return ( (data-old_min)*(new_range/old_range) + new_min )
-
-    def softmax(self, x):
-
-        y = np.exp(x - np.max(x))
-        f_x = y / np.sum(np.exp(x))
-        return f_x
-
-    def softmax2d(self, x):
-        
-        max = np.max(x,axis=1,keepdims=True) #returns max of each row and keeps same dims
-        e_x = np.exp(x - max) #subtracts each row with its max value
-        sum = np.sum(e_x,axis=1,keepdims=True) #returns sum of each row and keeps same dims
-        f_x = e_x / sum 
-        return f_x
-
-    """ Do Inference """
     def inference(self, trt_objects, frame, conf):
         
         conf = parse_config(conf)
@@ -144,9 +115,8 @@ class Darknet(Model):
         self.clear_runtime()
         return info
 
-    """ Parse parameters from config """
     def parse_param(self, conf):
-
+        """ Parse parameters from config """
         conf = parse_config(conf)
         input_size = tuple(map(int, conf['input_size'].split(","))) # c, h, w
         out_size = [ input_size[1]//4, input_size[2]//4 ]
@@ -155,7 +125,6 @@ class Darknet(Model):
         dynamic_shape = (1,)+input_size if 'dynamic_batch' in conf.keys() else None # setup with one batch -> ( 1, 3, h, w)
 
         return input_size, out_size, preprocess, thres, dynamic_shape
-
 
 def _preprocess_yolo(img, input_shape, letter_box=False):
     """Preprocess an image before TRT YOLO inferencing.
@@ -189,7 +158,6 @@ def _preprocess_yolo(img, input_shape, letter_box=False):
     img = img.transpose((2, 0, 1)).astype(np.float32)
     img /= 255.0
     return img
-
 
 def _nms_boxes(detections, nms_threshold):
     """Apply the Non-Maximum Suppression (NMS) algorithm on the bounding
@@ -230,7 +198,6 @@ def _nms_boxes(detections, nms_threshold):
 
     keep = np.array(keep)
     return keep
-
 
 def _postprocess_yolo(trt_outputs, img_w, img_h, conf_th, nms_threshold,
                       input_shape, letter_box=False):
