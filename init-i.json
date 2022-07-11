@@ -1,6 +1,6 @@
 {
     "PROJECT": "init-i",
-    "VERSION": "v0.3",
+    "VERSION": "v0.4",
     "PLATFORM": "nvidia",
     "FRAMEWORK": "tensorrt",
     "AF": "tensorrt",
