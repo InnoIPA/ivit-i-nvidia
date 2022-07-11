@@ -26,7 +26,7 @@ printd "Install torch, torchvision with CUDA 11.1 " Cy
 pip3 install --disable-pip-version-check torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 
 printd "Install other msicellaneous packages " Cy
-apt-get -qy install bsdmainutils zip jq
+apt-get -qy install bsdmainutils zip jq wget
 pip3 install --disable-pip-version-check tqdm cython gdown setuptools packaging pycocotools GPUtil wget colorlog
 
 # For darknet yolo to tensorrt
@@ -35,7 +35,8 @@ printd "Install the requirement of Darknet " Cy
 pip3 install onnx==1.9.0
 
 # For web api
-pip3 install flask flask-socketio flask-cors flasgger gunicorn==20.1.0 eventlet==0.30.2
+pip3 install flask flask-socketio==5.1.2 flask-cors flasgger gunicorn==20.1.0 eventlet==0.30.2
+pip3 install python-engineio==4.3.2 python-socketio==5.6.0
 apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall netbase
 
 printd "Done${REST}"
