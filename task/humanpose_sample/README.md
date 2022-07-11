@@ -1,4 +1,4 @@
-# Human Pose Estimation for iVINNO-TensorRT
+# Human Pose Estimation for iVIT-TensorRT
 
 ## Pre-requirements
 0. Enter the container
@@ -115,7 +115,7 @@ python3 demo.py -c task/humanpose_sample/task.json
 # For Developer
 
 ## Reference
-1. Human Pose Estimation in iVINNO base on [NVIDIA-AI-IOT_pose](https://github.com/NVIDIA-AI-IOT_pose) 
+1. Human Pose Estimation in iVIT base on [NVIDIA-AI-IOT_pose](https://github.com/NVIDIA-AI-IOT_pose) 
 2. We provide a prue repository of trt_pose for ivinno. [p513817/pure_trt_pose](https://github.com/p513817/pure_trt_pose)
 
 ## Pre-processing

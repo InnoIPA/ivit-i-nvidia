@@ -1,4 +1,4 @@
-# People Instance Segmentation for iVINNO-TensorRT
+# People Instance Segmentation for iVIT-TensorRT
 You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/orgs/nvidia/teams/tao/models/peoplesegnet/files).
 
 ## Pre-requirements

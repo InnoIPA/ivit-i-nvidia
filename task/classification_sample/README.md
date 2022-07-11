@@ -1,4 +1,4 @@
-# TAO-Classification for iVINNO-TensorRT
+# TAO-Classification for iVIT-TensorRT
 Classification model which trained from NVIDIA TAO or iTAO.
 
 ## Enter the iVIT-I container
