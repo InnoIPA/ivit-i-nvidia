@@ -5,12 +5,12 @@ import tensorrt as trt
 import copy
 
 sys.path.append(f'{os.getcwd()}')
-from init_i.utils.logger import config_logger
-from init_i.utils.timer import Timer
-from init_i.common import common
-from init_i.common.common import Model
-from init_i.common.process import preproc
-from init_i.utils.parser import load_json, load_txt, parse_config
+from ivit_i.utils.logger import config_logger
+from ivit_i.utils.timer import Timer
+from ivit_i.common import common
+from ivit_i.common.common import Model
+from ivit_i.common.process import preproc
+from ivit_i.utils.parser import load_json, load_txt, parse_config
 
 class SemSegmentation(Model):
 

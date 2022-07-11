@@ -1,10 +1,10 @@
 import logging, GPUtil, sys
-from init_i.cls.classification import Classification
-from init_i.seg.segmentation import Segmentation
-from init_i.seg.semsegmentation import SemSegmentation
-from init_i.obj.yolov4 import YoloV4
-from init_i.pose.bodypose import BodyPose
-from init_i.darknet.darknet import Darknet
+from ivit_i.cls.classification import Classification
+from ivit_i.seg.segmentation import Segmentation
+from ivit_i.seg.semsegmentation import SemSegmentation
+from ivit_i.obj.yolov4 import YoloV4
+from ivit_i.pose.bodypose import BodyPose
+from ivit_i.darknet.darknet import Darknet
 
 def get_gpu_info():
     """ Capture GPU Information """

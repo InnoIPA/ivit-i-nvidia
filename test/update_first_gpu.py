@@ -1,7 +1,7 @@
 import json, os, sys, argparse
 
 sys.path.append(os.getcwd())
-from init_i.utils.gpus import get_gpu_info
+from ivit_i.utils.gpus import get_gpu_info
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--framework", default="tensorrt", help="framework [ tensorrt, openvino ]")

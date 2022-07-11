@@ -3,14 +3,14 @@ from pyexpat import model
 from shutil import ExecError
 import numpy as np
 sys.path.append(os.getcwd())
-from init_i.utils.logger import config_logger
-from init_i.utils.parser import load_json, load_txt, parse_input_data
-from init_i.utils.timer import Timer
-from init_i.utils.drawing_tools import Draw, get_palette, draw_fps
-from init_i.common import api
-from init_i.web.ai.pipeline import Source
-from init_i.app.handler import get_application
-from init_i.web.tools.common import handle_exception
+from ivit_i.utils.logger import config_logger
+from ivit_i.utils.parser import load_json, load_txt, parse_input_data
+from ivit_i.utils.timer import Timer
+from ivit_i.utils.drawing_tools import Draw, get_palette, draw_fps
+from ivit_i.common import api
+from ivit_i.web.ai.pipeline import Source
+from ivit_i.app.handler import get_application
+from ivit_i.web.tools.common import handle_exception
 
 CV_WIN='Detection Results'
 

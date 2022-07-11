@@ -9,13 +9,13 @@ iNIT-I for NVIDIA x86 platform
 ## Prepare Environment
 
 1. Clone Repository and submodule
-    > submodule is web api which will be place in [init_i/web](./init_i/web)
+    > submodule is web api which will be place in [ivit_i/web](./ivit_i/web)
     ```bash
     # clone repo and submodule
     git clone --recurse-submodules https://github.com/MaxChangInnodisk/ivit-i-nvidia.git
     
     # check if submodule is downloaded
-    ls ./init_i/web
+    ls ./ivit_i/web
     ai  api  app.py  __init__.py  utils
 
     # if not exist then download submodule again
@@ -69,9 +69,9 @@ iNIT-I for NVIDIA x86 platform
     * Add an application
         > If we want to create an application called `tracking`
         
-        1. define application module ( `tracking.py` ) in `./init_i/app/`.
+        1. define application module ( `tracking.py` ) in `./ivit_i/app/`.
         2. define the class object called `Tracking`, capitalizing the first word.
-        3. inherit the module `App` in `init_i.app.common`.
+        3. inherit the module `App` in `ivit_i.app.common`.
         4. define custom parameter in `__init__()` and define the custom `__call__()` function.
         5. add judgment for new application like `if app_tag_in_config=="tracking"` in `handler.py`.
     

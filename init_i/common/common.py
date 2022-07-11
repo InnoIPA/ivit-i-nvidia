@@ -59,8 +59,8 @@ import tensorrt as trt
 import logging
 
 sys.path.append(os.getcwd())
-from init_i.utils.timer import Timer
-from init_i.utils.drawing_tools import get_palette
+from ivit_i.utils.timer import Timer
+from ivit_i.utils.drawing_tools import get_palette
 try:
     # Sometimes python2 does not understand FileNotFoundError
     FileNotFoundError
