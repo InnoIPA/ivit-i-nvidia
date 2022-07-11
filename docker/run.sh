@@ -178,7 +178,7 @@ ${mount_camera} \
 ${set_vision} \
 ${docker_image} \"${command}\""
 
-# echo ""
 echo -e "Command: ${docker_cmd}"
-# echo ""
+
+
 bash -c "${docker_cmd}"
