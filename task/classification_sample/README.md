@@ -1,11 +1,11 @@
 # TAO-Classification for iVINNO-TensorRT
 Classification model which trained from NVIDIA TAO or iTAO.
 
-## Enter the iNIT-I container
+## Enter the iVIT-I container
     ```bash
-    cd /path/to/iNIT-I
+    cd /path/to/iVIT-I
     # for desktop user
-    sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
+    sudo ./docker/run.sh -m
     ```
     * `-m` means magic,print information with funny format.
 
@@ -108,14 +108,14 @@ Classification model which trained from NVIDIA TAO or iTAO.
     mask
     non-mask
     ```
-4. Update informations about model and label in `/ivinno-trt/config/trt/model_config/classification.json`
+4. Update informations about model and label in `task/classification_sample/task.json`
     ```
     model_path=<path/to/engine>
     label_path=<path/to/label>
     ```
 5. Run tensorrt_demo.py
     ```
-    $ python3 tensorrt_demo.py -c app/trt/classification_sample/task.json
+    $ python3 tensorrt_demo.py -c task/classification_sample/task.json
     ```
 ---
 

@@ -2,7 +2,7 @@
 
 1. Enter the environment
     ```bash
-    sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
+    sudo ./docker/run.sh -m
     ```
 2. Download model
     ```bash

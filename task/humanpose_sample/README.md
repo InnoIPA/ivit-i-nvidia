@@ -3,14 +3,14 @@
 ## Pre-requirements
 0. Enter the container
 ```bash
-sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
+sudo ./docker/run.sh -m
 ```
 
 1. Download Model
 
    * run the script
        ```bash
-        cd /path/to/iNIT-I
+        cd /path/to/iVIT-I
         ./task/humanpose_sample/download_model.sh
        ```
    * choose the model
@@ -107,7 +107,7 @@ sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
 ## Run Human Pose Estimation Sample
 
 ```
-python3 demo.py -c app/humanpose_sample/task.json
+python3 demo.py -c task/humanpose_sample/task.json
 ```
 
 ---
@@ -115,7 +115,7 @@ python3 demo.py -c app/humanpose_sample/task.json
 # For Developer
 
 ## Reference
-1. Human Pose Estimation in iVINNO base on [NVIDIA-AI-IOT/trt_pose](https://github.com/NVIDIA-AI-IOT/trt_pose) 
+1. Human Pose Estimation in iVINNO base on [NVIDIA-AI-IOT_pose](https://github.com/NVIDIA-AI-IOT_pose) 
 2. We provide a prue repository of trt_pose for ivinno. [p513817/pure_trt_pose](https://github.com/p513817/pure_trt_pose)
 
 ## Pre-processing

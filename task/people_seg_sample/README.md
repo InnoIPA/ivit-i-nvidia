@@ -4,7 +4,7 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
 ## Pre-requirements
 0. Enter the container
     ```bash
-    sudo ./docker/trt/run.sh -f nvidia -v v0.1 -m
+    sudo ./docker/run.sh -m
     ```
 1. Download Model
     ```bash 

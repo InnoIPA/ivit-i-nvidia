@@ -40,7 +40,7 @@ port=$(cat ${CONF} | jq -r '.PORT')
 # ---------------------------------------------------------
 # help
 function help(){
-	echo "Run the iNIT-I environment."
+	echo "Run the iVIT-I environment."
 	echo
 	echo "Syntax: scriptTemplate [-g|p|c|f|smh]"
 	echo "options:"
@@ -152,7 +152,7 @@ fi
 # ---------------------------------------------------------
 # Show information
 title="\n\
-PROGRAMMER: Welcome to iNIT-I \n\
+PROGRAMMER: Welcome to iVIT-I \n\
 FRAMEWORK:  ${platform}\n\
 MODE:  ${mode}\n\
 DOCKER: ${docker_image} \n\
