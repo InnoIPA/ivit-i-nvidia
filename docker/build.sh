@@ -28,7 +28,7 @@ TAG_VER=$(cat ${CONF} | jq -r '.VERSION')
 TAG_PLATFORM=$(cat ${CONF} | jq -r '.PLATFORM')
 
 # Concate name
-IMAGE_NAME="${BASE_NAME}/${TAG_PLATFORM}:${TAG_VER}"
+IMAGE_NAME="${BASE_NAME}-${TAG_PLATFORM}:${TAG_VER}"
 printd "Concatenate docker image name: ${IMAGE_NAME}" Cy
 
 # Change the default runtime
