@@ -12,7 +12,7 @@ iNIT-I for NVIDIA x86 platform
     > submodule is web api which will be place in [init_i/web](./init_i/web)
     ```bash
     # clone repo and submodule
-    git clone --recurse-submodules https://github.com/MaxChangInnodisk/init-i-nvidia.git
+    git clone --recurse-submodules https://github.com/MaxChangInnodisk/ivit-i-nvidia.git
     
     # check if submodule is downloaded
     ls ./init_i/web
@@ -26,13 +26,13 @@ iNIT-I for NVIDIA x86 platform
     ```bash
     ./docker/build.sh
 
-    Build the docker image. (init-i/nvidia:v0.1)
+    Build the docker image. (ivit-i/nvidia:v0.1)
     Sending build context to Docker daemon  16.38kB
     Step 1/6 : FROM nvcr.io/nvidia/tensorrt:21.03-py3
     ---> 0371e1584b77
     # ...
     Successfully built 2290a33efdc1
-    Successfully tagged init-i/nvidia:v0.1
+    Successfully tagged ivit-i/nvidia:v0.1
     ```
     > about 12 min.
 3. Run the docker container with web api

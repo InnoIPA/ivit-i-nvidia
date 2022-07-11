@@ -5,7 +5,7 @@ source "$(dirname $(realpath $0))/utils.sh"
 # Set the default value of the getopts variable 
 gpu="all"
 web=""
-project_name="init-i"
+project_name="ivit-i"
 platform=""
 version="latest"
 magic=false
