@@ -18,7 +18,7 @@ if [[ -z $(which jq) ]];then
 fi
 
 # Variable
-CONF="init-i.json"
+CONF="ivit-i.json"
 FLAG=$(ls ${CONF} 2>/dev/null)
 if [[ -z $FLAG ]];then
     CONF="${RUN_PWD}/${CONF}"

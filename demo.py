@@ -17,7 +17,7 @@ CV_WIN='Detection Results'
 def main(args):
 
     # 1. Initialize logger
-    config_logger(log_name='init-i-nvidia.log', write_mode='w', level='debug')
+    config_logger(log_name='ivit-i-nvidia.log', write_mode='w', level='debug')
 
     # 2. Load and combine configuration
     app_conf = load_json(args.config)                       # load the configuration of the application
@@ -30,7 +30,7 @@ def main(args):
         trg = api.get(total_conf)
         draw = Draw()
     except Exception as e:
-        handle_exception(error=e, title="Could not get init-i API", exit=True)
+        handle_exception(error=e, title="Could not get ivit-i API", exit=True)
 
     # 4. Load and initialize model which return a list of objects for inference and the palette
     try:

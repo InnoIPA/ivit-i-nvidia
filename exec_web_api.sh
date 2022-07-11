@@ -22,7 +22,7 @@ fi
 PORT=$(cat ${CONF} | jq -r '.PORT')
 WORKER=$(cat ${CONF} | jq -r '.WORKER')
 THREADING=$(cat ${CONF} | jq -r '.THREADING')
-export INIT_I=/workspace/init-i.json
+export IVIT_I=/workspace/ivit-i.json
 
 # Run
 if [[ ! -d "./init_i/web" ]];then
