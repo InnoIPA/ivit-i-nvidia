@@ -18,6 +18,6 @@ jobs:
           
       - uses: pyTooling/Actions/releaser@r0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
           tag: nightly
           files: ${{ github.event.repository.name }}-nightly.zip
