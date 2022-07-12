@@ -9,6 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          USERNAME: MaxChangInnodisk
           token: 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
           submodules: true
 
@@ -19,6 +20,7 @@ jobs:
           
       - uses: pyTooling/Actions/releaser@r0
         with:
+          USERNAME: MaxChangInnodisk
           token: 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
           tag: nightly
           files: ${{ github.event.repository.name }}-nightly.zip
