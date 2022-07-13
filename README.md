@@ -12,7 +12,7 @@ iVIT-I for NVIDIA x86 platform
     > submodule is web api which will be place in [ivit_i/web](./ivit_i/web)
     ```bash
     # clone repo and submodule
-    git clone --recurse-submodules https://github.com/InnoIPA/init-i-nvidia.git
+    git clone --recurse-submodules https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
     
     # check if submodule is downloaded
     ls ./ivit_i/web
