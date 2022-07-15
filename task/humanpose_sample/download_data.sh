@@ -1,6 +1,6 @@
 #!/bin/bash
 printf "\n"
-printf "Download File ... \n"
+printf "# Download File \n"
 
 # Define Parameters 
 URL="https://drive.google.com/file/d/1ML9geQOPGdkTC8Zpmgbh8B3DEcDJpBCI/view?usp=sharing"
@@ -13,12 +13,9 @@ LEN=20
 FILE_PATH="${TRG_FOLDER}/${FILE_NAME}"
 
 # Show information
-printf "%${LEN}s \n" " " | tr " " "-"
-printf "%-${LEN}s \n" "Information"
 printf "%-${LEN}s | %-${LEN}s \n" "TRG_FOLDER" "${TRG_FOLDER}"
 printf "%-${LEN}s | %-${LEN}s \n" "FILE_NAME" "${FILE_NAME}"
 printf "%-${LEN}s | %-${LEN}s \n" "DOWNLOAD_URL" "${URL}"
-printf "%${LEN}s \n" " " | tr " " "-"
 
 # Check if folder exist
 if [[ ! -d "${TRG_FOLDER}" ]];then
