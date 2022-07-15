@@ -153,9 +153,10 @@ CAMERA:  $((${#cam_arr[@]}/2))\n\
 GPU:  ${gpu}\n\
 COMMAND: ${command}"
 
+# Print the title
 print_magic "${title}" "${magic}"
 
-# Run container
+# Combine docker command line
 docker_cmd="docker run \
 --name ${docker_name} \
 ${mount_gpu} \
@@ -169,5 +170,5 @@ ${docker_image} \"${command}\""
 
 echo -e "Command: ${docker_cmd}"
 
-
+# Run container
 bash -c "${docker_cmd}"
