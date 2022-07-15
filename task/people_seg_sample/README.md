@@ -8,6 +8,7 @@ You can download PeopleSegNet model from [NGC](https://catalog.ngc.nvidia.com/or
     ```
 1. Download Model
     ```bash 
+    ./task/people_seg_sample/download_data.sh
     ./task/people_seg_sample/download_model.sh
 
     # After downloaded

@@ -11,6 +11,7 @@ sudo ./docker/run.sh -m
    * run the script
        ```bash
         cd /path/to/iVIT-I
+        ./task/humanpose_sample/download_data.sh
         ./task/humanpose_sample/download_model.sh
        ```
    * choose the model

@@ -12,6 +12,10 @@ Classification model which trained from NVIDIA TAO or iTAO.
 ## For Sample Torch Model
 1. Download Sample Model ( Torch )
     ```bash
+    # download data
+    ./task/classification_sample/download_data.sh
+
+    # download model
     python3 task/classification_sample/download_resnext50.py
 
     # ------------------------------------
@@ -77,6 +81,8 @@ Classification model which trained from NVIDIA TAO or iTAO.
     python3 demo.py -c task/classification_sample/task.json
     ```
 
+---
+
 ## For TAO Classification Model ( Archived )
 1. Prepare Model and Label
     ```shell
@@ -97,9 +103,9 @@ Classification model which trained from NVIDIA TAO or iTAO.
     -d 3,224,224 \
     -i nchw \
     -m 1 -t fp32 \
-    -e /ivinno-trt/models/TAO-Classification/mask_clssifier.trt \
+    -e /path/to/mask_clssifier.trt \
     -w 1610612736 \
-    /ivinno-trt/models/TAO-Classification/model.etlt
+    /path/to/model.etlt
 
     # [INFO] Detected 1 inputs and 1 output network tensors.
     ```
@@ -117,21 +123,20 @@ Classification model which trained from NVIDIA TAO or iTAO.
     ```
     $ python3 tensorrt_demo.py -c task/classification_sample/task.json
     ```
----
 
-# For Developer ( TAO )
+## For Developer ( TAO )
 
-## Reference
-1. The model in classification_sample should be trained from NVIDIA TAO or iTAO and must be the .
+### Reference
+* The model in classification_sample should be trained from NVIDIA TAO or iTAO and must be the .
 
-## Pre-processing
+### Pre-processing
 * Classic Caffe mode
   1. Convert the images from RGB to BGR.
   2. Rescale to the target size via `cv2.resize`.
   3. zero-center each color channel with respect to the ImageNet dataset.
       * BGR -> [103.939, 116.779, 123.68]
 
-## Post-processing
+### Post-processing
 1. Four objects ( detections, bounding boxes, socres, classes ) in results.
 2. Bounding Boxes have to reshape to [-1, 4].
 3. You can parse out four positions ( top_left, top_right, bottom_letf, bottom_right ) in each bounding box.

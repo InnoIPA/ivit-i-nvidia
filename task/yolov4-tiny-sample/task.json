@@ -1,6 +1,6 @@
 {
     "framework": "tensorrt",
-    "source": "data/night-street.mp4",
+    "source": "data/car.mp4",
     "category": "sample",
     "application": {
         "name": "default"

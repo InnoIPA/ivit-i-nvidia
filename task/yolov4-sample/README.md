@@ -7,20 +7,19 @@
 2. Download model
     ```bash
     # In the yolov4 folder
-    cd /path/to/init-i/task/yolov4              # modify to your path
+    cd /path/to/ivit-i/task/yolov4              # modify to your path
     python3 custom_download.py -m yolov4 -s 416 
 
-    # In the init-i folder
+    # In the ivit-i folder
     python3 ./task/yolov4-sample/custom_download.py -m yolov4 -s 416 -f ./task/yolov4-sample
-
-    # The weight and config will be downloaded
-    ls ./task/yolov4-sample/yolov4-416*
-    ./task/yolov4-sample/yolov4-416.cfg  ./task/yolov4-sample/yolov4-416.weights
+    
+    # Download Data
+    ./task/yolov3-tiny-sample/download_data.sh
     ```
 3. Convert Model
     ```bash
     # For Example
-    cd /path/to/init-i
+    cd /path/to/ivit-i
 
     # Notice: no need to give extension here
     ./converter/yolo-converter.sh ./task/yolov4-sample/yolov4-416
@@ -35,6 +34,6 @@
         * onnx to tensorrt: 1m 51s ( 111s )
 4. Run demo.py
     ```
-    cd /path/to/init-i
+    cd /path/to/ivit-i
     python3 demo.py -c ./task/yolov4-sample/task.json
     ```

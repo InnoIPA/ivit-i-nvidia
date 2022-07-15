@@ -6,10 +6,11 @@
     ```
 2. Download model
     ```shell
+    # Download Model
     ./task/innodisk_dram_detector/download_model.sh
 
-    # Prepare testing data
-    ./task/innodisk_dram_detector/download_testing_data.sh
+    # Download Data
+    ./task/innodisk_dram_detector/download_data.sh
     ```
 3. Convert Model
     ```shell
