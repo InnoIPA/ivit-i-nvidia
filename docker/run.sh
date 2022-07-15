@@ -1,7 +1,6 @@
 #!/bin/bash
 source "$(dirname $(realpath $0))/utils.sh"
 
-# ---------------------------------------------------------
 # Set the default value of the getopts variable 
 gpu="all"
 web=""
@@ -37,7 +36,6 @@ version=$(cat ${CONF} | jq -r '.VERSION')
 platform=$(cat ${CONF} | jq -r '.PLATFORM')
 port=$(cat ${CONF} | jq -r '.PORT')
 
-# ---------------------------------------------------------
 # help
 function help(){
 	echo "Run the iVIT-I environment."
@@ -87,7 +85,6 @@ while getopts "g:c:f:v:wshmh" option; do
 	esac
 done
 
-# ---------------------------------------------------------
 # Setup Masgic
 if [[ ${magic} = true ]];then
 	printf "Preparing magic ... "
@@ -95,7 +92,6 @@ if [[ ${magic} = true ]];then
 	printf "Done \n"
 fi
 
-# ---------------------------------------------------------
 # Setup variable
 docker_image=""
 workspace=""
@@ -109,7 +105,6 @@ docker_image="${project_name}-${platform}:${version}"
 workspace="/workspace"
 docker_name="${project_name}-${platform}"
 
-# ---------------------------------------------------------
 # Check if image come from docker hub
 hub_name="maxchanginnodisk/${docker_image}"
 from_hub=$(check_image $hub_name)
@@ -118,7 +113,6 @@ if [[ ! from_hub -eq 0 ]];then
 	docker_image=${hub_name}
 fi
 
-# ---------------------------------------------------------
 # SERVER or DESKTOP MODE
 if [[ ${server} = false ]];then
 	mode="DESKTOP"
@@ -129,7 +123,6 @@ else
 	mode="SERVER"
 fi
 
-# ---------------------------------------------------------
 # Combine Camera option
 all_cam=$(ls /dev/video* 2>/dev/null)
 cam_arr=(${all_cam})
@@ -139,17 +132,14 @@ do
     mount_camera="${mount_camera} --device ${cam_node}:${cam_node}"
 done
 
-# ---------------------------------------------------------
 # Combine gpu option
 mount_gpu="${mount_gpu} device=${gpu}"
 
-# ---------------------------------------------------------
 # If web is available, run the WEB API
 if [[ -n ${web} ]];then 
 	command="${web_api}"
 fi
 
-# ---------------------------------------------------------
 # Show information
 title="\n\
 PROGRAMMER: Welcome to iVIT-I \n\
@@ -165,7 +155,6 @@ COMMAND: ${command}"
 
 print_magic "${title}" "${magic}"
 
-# ---------------------------------------------------------
 # Run container
 docker_cmd="docker run \
 --name ${docker_name} \

@@ -1,6 +1,6 @@
 {
     "framework": "tensorrt",
-    "source": "./workspace/data/innodisk_dram.avi",
+    "source": "/workspace/data/innodisk_dram.avi",
     "category": "smart factory",
     "application": {
         "name": "counting"
