@@ -1,6 +1,6 @@
 {
     "framework": "tensorrt",
-    "source": "/workspace/data/innodisk_dram.avi",
+    "source": "data/innodisk_dram.avi",
     "category": "smart factory",
     "application": {
         "name": "counting"
@@ -8,6 +8,6 @@
     "prim": {
         "model_json": "./task/innodisk_dram_detector/yolov3-tiny.json"
     },
-    "name": "yolov3-tiny",
+    "name": "innodisk_dram_detector",
     "source_type": "Video"
 }
