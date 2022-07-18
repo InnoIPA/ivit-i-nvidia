@@ -31,9 +31,11 @@ iVIT-I for NVIDIA x86 platform
 
 3. Run the docker container with web api
     ```bash
-    ./docker/run.sh -wm
-    # enter container without web api
-    ./docker/run.sh -m
+    # Initialize default sample
+    ./docker/run.sh -i
+
+    # Run with CLI mode
+    ./docker/run.sh -ci
     ```
 
 # Run Samples

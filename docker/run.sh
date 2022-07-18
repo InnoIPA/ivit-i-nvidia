@@ -5,7 +5,7 @@ source "$(dirname $(realpath $0))/utils.sh"
 GPU="all"
 RUN_WEB=true
 RUN_CLI=false
-MAGIC=false
+MAGIC=true
 SERVER=false
 INIT=false
 FIRST_TIME=true
@@ -56,7 +56,7 @@ while getopts "g:wcsihmh" option; do
 		c )
 			RUN_CLI=true ;;
 		m )
-			MAGIC=true ;;
+			MAGIC=false ;;
 		i )
 			INIT=true ;;
 		h )
