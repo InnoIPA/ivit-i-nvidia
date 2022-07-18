@@ -121,14 +121,17 @@ def download_by_name(name, folder):
         os.makedirs(folder)
 
     # Download Weight and Config
-    for key in ['weight', 'config']:
-        url = DOWNLOAD_MAP[name][key]
-        file_name = os.path.join(folder, url.split('/')[-1] ) 
+    target_path = os.path.abspath(os.path.join(folder, name))
+    if not os.path.exists( target_path ):
+        print(f"Can not found ${target_path}, download a new one ...")
+        for key in ['weight', 'config']:
+            url = DOWNLOAD_MAP[name][key]
+            file_name = os.path.join(folder, url.split('/')[-1] ) 
 
-        if not check_path( file_name , log=False):
-            print('Start to download {} ...'.format(file_name), end='')
-            wget.download(url, folder, False) 
-            print('Done')
+            if not check_path( file_name , log=False):
+                print('Start to download {} ...'.format(file_name), end='')
+                wget.download(url, folder, False) 
+                print('Done')
 
 if __name__ == "__main__":
     
