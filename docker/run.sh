@@ -85,19 +85,11 @@ MOUNT_GPU="--gpus"
 
 WORKSPACE="/workspace"
 SET_VISION=""
-RUN_WEB_CMD="./exec_web_api.sh"
+
 INIT_CMD="./init_for_sample.sh"
-RUN_CMD="$( if [[ ${RUN_CLI} = false ]];then echo "${RUN_WEB_CMD}";else echo "bash";fi )"
-
-# Initialize docker container and check is the first time
-if [[ ${INIT} = true ]];then
-	printd "Initialize docker container" Cy
-	docker rm ${DOCKER_NAME}
-	RUN_CMD="${INIT_CMD} && ${RUN_CMD}"
-else
-	FIRST_TIME=false
-fi
-
+WEB_CMD="./exec_web_api.sh"
+CLI_CMD="bash"
+RUN_CMD=""
 
 # Check if image come from docker hub
 DOCKER_HUB_IMAGE="maxchanginnodisk/${DOCKER_IMAGE}"
@@ -132,14 +124,14 @@ MOUNT_GPU="${MOUNT_GPU} device=${GPU}"
 DOCKER_CMD="docker run \
 --name ${DOCKER_NAME} \
 ${MOUNT_GPU} \
--it \
+-dt \
 --net=host --ipc=host \
 -v /etc/localtime:/etc/localtime:ro \
 -w ${WORKSPACE} \
 -v `pwd`:${WORKSPACE} \
 ${MOUNT_CAMERA} \
 ${SET_VISION} \
-${DOCKER_IMAGE} \"${RUN_CMD}\" \n"
+${DOCKER_IMAGE} \"bash\" \n"
 
 # Show information
 INFO="\n\
@@ -152,7 +144,7 @@ Web API: ${RUN_WEB} \n\
 HOST: 0.0.0.0:${PORT} \n\
 MOUNT_CAMERA:  $((${#cam_arr[@]}/2))\n\
 GPU:  ${GPU}\n\
-COMMAND: ${RUN_CMD} \n"
+COMMAND: bash \n"
 
 # Print the INFO
 print_magic "${INFO}" "${MAGIC}"
@@ -163,32 +155,33 @@ printf "$(date +%m-%d-%Y)" > "${LOG}"
 printf "${INFO}" >> "${LOG}"
 printf "\nDOCKER COMMAND: \n${DOCKER_CMD}" >> "${LOG}";
 
-# Check is the container alread exit
+# Define run command
+RUN_CMD=`if [[ ${RUN_CLI} = false ]];then echo ${WEB_CMD};else echo ${CLI_CMD};fi `
+
+# Check is the container not exist
 if [[ $(check_container ${DOCKER_NAME}) -eq 0 ]];then
 	
-	# Run container
+	printd "Run docker container in background" Cy;
 	bash -c "${DOCKER_CMD}";
+	docker exec -it ${DOCKER_NAME} ${INIT_CMD};
+	docker exec -it ${DOCKER_NAME} ${RUN_CMD};
 
+# If container exist
 else
-	printd "Found container ... " Cy
 	
-	xhost + 2 > /dev/null;
+	printd "Found docker container " Cy
 
-	if [ "$( docker container inspect -f '{{.State.Running}}' $DOCKER_NAME )" == "true" ]; then
-		printd "Docker container is running" Cy
-		if [[ ${RUN_CLI} = true ]]; then
-			docker exec -it ${DOCKER_NAME} ${RUN_CMD};	
-		else
-			docker attach ${DOCKER_NAME};
-		fi
+	# Check is the container still running
+	if [ $(check_container_run ${DOCKER_NAME}) == "true" ]; then
+		printd "Container is running" Cy
+		docker exec -it ${DOCKER_NAME} ${INIT_CMD};
+		docker exec -it ${DOCKER_NAME} ${RUN_CMD};
+	
+	# Start container if container not running 
 	else
-		if [[ ${RUN_CLI} = true ]]; then
-			printd "Start docker container with command line mode" Cy
-			docker start ${DOCKER_NAME};
-			docker exec -it ${DOCKER_NAME} ${RUN_CMD};		
-		else
-			printd "Start docker container" Cy
-			docker start ${DOCKER_NAME} -a;
-		fi
-	fi
-fi
+		printd "Start the docker container" Cy
+		docker start ${DOCKER_NAME};
+		docker exec -it ${DOCKER_NAME} ${INIT_CMD};
+		docker exec -it ${DOCKER_NAME} ${RUN_CMD};
+	fi;
+fi;
