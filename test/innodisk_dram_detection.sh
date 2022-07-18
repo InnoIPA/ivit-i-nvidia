@@ -91,7 +91,7 @@ if [[ ! -f ${MODEL_PATH} ]];then
 	printf "Convert Model"
 	${RUN_CONVERT}
 else
-	printf "Found Converted Model"
+	printf "Found Converted Model\n"
 fi
 
 # Change GPU
@@ -102,5 +102,5 @@ if [[ "$RUN_DEMO" = true ]];then
 	printf "Run Sample ... \n"
 	python3 demo.py -c ${CONF_PATH} ${SERVER_MODE}
 else
-	printf "End"
+	printf "${TASK_NAME} Initialize finished \n"
 fi

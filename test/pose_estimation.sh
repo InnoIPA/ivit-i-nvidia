@@ -96,5 +96,5 @@ if [[ "$RUN_DEMO" = true ]];then
     printf "\nRun Sample ... \n"
     python3 demo.py -c ${CONF_PATH} ${SERVER_MODE}
 else
-    printf "End"
+    printf "${TASK_NAME} Initialize finished \n"
 fi
