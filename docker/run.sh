@@ -2,13 +2,14 @@
 source "$(dirname $(realpath $0))/utils.sh"
 
 # Set the default value of the getopts variable 
-gpu="all"
-web=""
-project_name="ivit-i"
-platform=""
-version="latest"
-magic=false
-server=false
+GPU="all"
+RUN_WEB=true
+RUN_CLI=false
+MAGIC=false
+SERVER=false
+INIT=false
+FIRST_TIME=true
+LOG="./docker/docker_info.log"
 
 # Install pre-requirement
 if [[ -z $(which jq) ]];then
@@ -16,107 +17,99 @@ if [[ -z $(which jq) ]];then
     sudo apt-get install jq -yqq
 fi
 
-# Variable
+# Check configuration is exit
 CONF="ivit-i.json"
 FLAG=$(ls ${CONF} 2>/dev/null)
 if [[ -z $FLAG ]];then
-    CONF="${RUN_PWD}/${CONF}"
-    FLAG=$(ls ${CONF} 2>/dev/null)
-    if [[ -z $FLAG ]];then
-        printd "Couldn't find configuration (${CONF})" Cy
-        exit
-    fi
+	printd "Couldn't find configuration (${CONF})" Cy
+	exit
 else
     printd "Detected configuration (${CONF})" Cy
 fi
 
 # Parse information from configuration
-project_name=$(cat ${CONF} | jq -r '.PROJECT')
-version=$(cat ${CONF} | jq -r '.VERSION')
-platform=$(cat ${CONF} | jq -r '.PLATFORM')
-port=$(cat ${CONF} | jq -r '.PORT')
+PROJECT=$(cat ${CONF} | jq -r '.PROJECT')
+VERSION=$(cat ${CONF} | jq -r '.VERSION')
+PLATFORM=$(cat ${CONF} | jq -r '.PLATFORM')
+PORT=$(cat ${CONF} | jq -r '.PORT')
 
-# help
+# Help
 function help(){
 	echo "Run the iVIT-I environment."
 	echo
-	echo "Syntax: scriptTemplate [-g|p|c|f|smh]"
+	echo "Syntax: scriptTemplate [-g|wsmih]"
 	echo "options:"
-	echo "g		select the target gpu."
-	echo "w		run container with Web API."
-	echo "f		Setup platform like [ nvidia, intel, xillinx ]."
-	echo "v		Setup docker image version like [ v0.1, lastest ]."
-	echo "s		Server mode for non vision user"
-	echo "m		Print information with magic"
+	echo "g		select the target GPU."
+	echo "s		Server mode for non vision user."
+	echo "c		Run as command line mode"
+	echo "m		Print information with MAGIC."
+	echo "i		Initialize docker container ( start over )."
 	echo "h		help."
 }
-while getopts "g:c:f:v:wshmh" option; do
+
+while getopts "g:wcsihmh" option; do
 	case $option in
 		g )
-			gpu=$OPTARG
-			;;
-		w )
-			web=true
-			;;
-		f )
-			platform=$OPTARG
-			;;
+			GPU=$OPTARG ;;
 		s )
-			server=true
-			;;
+			SERVER=true ;;
+		c )
+			RUN_CLI=true ;;
 		m )
-			magic=true
-			;;
-		v )
-			version=$OPTARG
-			;;
+			MAGIC=true ;;
+		i )
+			INIT=true ;;
 		h )
-			help
-			exit
-			;;
+			help; exit ;;
 		\? )
-			help
-			exit
-			;;
+			help; exit ;;
 		* )
-			help
-			exit
-			;;
+			help; exit ;;
 	esac
 done
 
-# Setup Masgic
-if [[ ${magic} = true ]];then
-	printf "Preparing magic ... "
-	sudo apt-get install -qy boxes > /dev/null 2>&1
-	printf "Done \n"
+# Setup Masgic package
+if [[ ${MAGIC} = true ]];then
+	if [[ -z $(which boxes) ]];then 
+		printd "Preparing MAGIC "
+		sudo apt-get install -qy boxes > /dev/null 2>&1; 
+	fi
 fi
 
 # Setup variable
-docker_image=""
-workspace=""
-docker_name=""
-mount_camera=""
-mount_gpu="--gpus"
-set_vision=""
-command="bash"
-web_api="./exec_web_api.sh"
-docker_image="${project_name}-${platform}:${version}"
-workspace="/workspace"
-docker_name="${project_name}-${platform}"
+DOCKER_IMAGE="${PROJECT}-${PLATFORM}:${VERSION}"
+DOCKER_NAME="${PROJECT}-${PLATFORM}"
+
+MOUNT_CAMERA=""
+MOUNT_GPU="--gpus"
+
+WORKSPACE="/workspace"
+SET_VISION=""
+RUN_WEB_CMD="./exec_web_api.sh"
+INIT_CMD="./init_for_sample.sh"
+RUN_CMD="$( if [[ ${RUN_CLI} = false ]];then echo "${RUN_WEB_CMD}";else echo "bash";fi )"
+
+# Initialize docker container and check is the first time
+if [[ ${INIT} = true ]];then
+	printd "Initialize docker container" Cy
+	docker rm ${DOCKER_NAME}
+	RUN_CMD="${INIT_CMD} && ${RUN_CMD}"
+else
+	FIRST_TIME=false
+fi
+
 
 # Check if image come from docker hub
-hub_name="maxchanginnodisk/${docker_image}"
-from_hub=$(check_image $hub_name)
-if [[ ! from_hub -eq 0 ]];then
-	echo "From Docker Hub"
-	docker_image=${hub_name}
+DOCKER_HUB_IMAGE="maxchanginnodisk/${DOCKER_IMAGE}"
+if [[ ! $(check_image $DOCKER_HUB_IMAGE) -eq 0 ]];then
+	DOCKER_IMAGE=${DOCKER_HUB_IMAGE}
+	echo "From Docker Hub ... Update Docker Image Name: ${DOCKER_IMAGE}"
 fi
 
 # SERVER or DESKTOP MODE
-if [[ ${server} = false ]];then
+if [[ ${SERVER} = false ]];then
 	mode="DESKTOP"
-	set_vision="-v /etc/localtime:/etc/localtime:ro -v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix${DISPLAY}"
+	SET_VISION="-v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix${DISPLAY}"
 	# let display could connect by every device
 	xhost + > /dev/null 2>&1
 else
@@ -129,46 +122,73 @@ cam_arr=(${all_cam})
 
 for cam_node in "${cam_arr[@]}"
 do
-    mount_camera="${mount_camera} --device ${cam_node}:${cam_node}"
+	MOUNT_CAMERA="${MOUNT_CAMERA} --device ${cam_node}:${cam_node}"
 done
 
-# Combine gpu option
-mount_gpu="${mount_gpu} device=${gpu}"
+# Combine GPU option
+MOUNT_GPU="${MOUNT_GPU} device=${GPU}"
 
-# If web is available, run the WEB API
-if [[ -n ${web} ]];then 
-	command="${web_api}"
-fi
+# Combine docker RUN_CMD line
+DOCKER_CMD="docker run \
+--name ${DOCKER_NAME} \
+${MOUNT_GPU} \
+-it \
+--net=host --ipc=host \
+-v /etc/localtime:/etc/localtime:ro \
+-w ${WORKSPACE} \
+-v `pwd`:${WORKSPACE} \
+${MOUNT_CAMERA} \
+${SET_VISION} \
+${DOCKER_IMAGE} \"${RUN_CMD}\" \n"
 
 # Show information
-title="\n\
-PROGRAMMER: Welcome to iVIT-I \n\
-FRAMEWORK:  ${platform}\n\
+INFO="\n\
+PROGRAMMER: Welcome to ${PROJECT} \n\
+FRAMEWORK:  ${PLATFORM}\n\
 MODE:  ${mode}\n\
-DOCKER: ${docker_image} \n\
-CONTAINER: ${docker_name} \n\
-Web API: ${web} \n\
-HOST: 0.0.0.0:${port} \n\
-CAMERA:  $((${#cam_arr[@]}/2))\n\
-GPU:  ${gpu}\n\
-COMMAND: ${command}"
+DOCKER: ${DOCKER_IMAGE} \n\
+CONTAINER: ${DOCKER_NAME} \n\
+Web API: ${RUN_WEB} \n\
+HOST: 0.0.0.0:${PORT} \n\
+MOUNT_CAMERA:  $((${#cam_arr[@]}/2))\n\
+GPU:  ${GPU}\n\
+COMMAND: ${RUN_CMD} \n"
 
-# Print the title
-print_magic "${title}" "${magic}"
+# Print the INFO
+print_magic "${INFO}" "${MAGIC}"
+echo -e "Command: ${DOCKER_CMD}"
 
-# Combine docker command line
-docker_cmd="docker run \
---name ${docker_name} \
-${mount_gpu} \
---rm -it \
---net=host --ipc=host \
--w ${workspace} \
--v `pwd`:${workspace} \
-${mount_camera} \
-${set_vision} \
-${docker_image} \"${command}\""
+# Log
+printf "$(date +%m-%d-%Y)" > "${LOG}"
+printf "${INFO}" >> "${LOG}"
+printf "\nDOCKER COMMAND: \n${DOCKER_CMD}" >> "${LOG}";
 
-echo -e "Command: ${docker_cmd}"
+# Check is the container alread exit
+if [[ $(check_container ${DOCKER_NAME}) -eq 0 ]];then
+	
+	# Run container
+	bash -c "${DOCKER_CMD}";
 
-# Run container
-bash -c "${docker_cmd}"
+else
+	printd "Found container ... " Cy
+	
+	xhost + 2 > /dev/null;
+
+	if [ "$( docker container inspect -f '{{.State.Running}}' $DOCKER_NAME )" == "true" ]; then
+		printd "Docker container is running" Cy
+		if [[ ${RUN_CLI} = true ]]; then
+			docker exec -it ${DOCKER_NAME} ${RUN_CMD};	
+		else
+			docker attach ${DOCKER_NAME};
+		fi
+	else
+		if [[ ${RUN_CLI} = true ]]; then
+			printd "Start docker container with command line mode" Cy
+			docker start ${DOCKER_NAME};
+			docker exec -it ${DOCKER_NAME} ${RUN_CMD};		
+		else
+			printd "Start docker container" Cy
+			docker start ${DOCKER_NAME} -a;
+		fi
+	fi
+fi
