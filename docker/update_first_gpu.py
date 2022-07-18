@@ -8,7 +8,7 @@ parser.add_argument("-f", "--framework", default="tensorrt", help="framework [ t
 parser.add_argument("-j", "--json", help="path to task configuration")
 args = parser.parse_args()
 
-print("# Modify GPU Information to each configuration")
+print("# Modify GPU Information to each configuration \n")
 
 gpu_list = get_gpu_info()
 
