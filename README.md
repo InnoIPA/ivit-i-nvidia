@@ -64,7 +64,6 @@ iVIT-I for NVIDIA x86 platform
 
 # Web API
 We recommand [Postman](https://www.postman.com/) to test your web api , you could see more detail in or `<IP Address>:<Port>/apidocs`.
-
 <img src="docs/images/apidocs.png" width=80%>
 
 # Fast Testing
