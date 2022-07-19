@@ -63,8 +63,13 @@ iVIT-I for NVIDIA x86 platform
     | [humanpose_sample](task/humanpose_sample/README.md) | Human pose estimation which base on [trt_pose](https://github.com/NVIDIA-AI-IOT_pose)
 
 # Web API
-We recommand [Postman](https://www.postman.com/) to test your web api , you could see more detail in or `<IP Address>:<Port>/apidocs`.
-<img src="docs/images/apidocs.png" width=80%>
+<details>
+    <summary>
+        We recommand <a href="https://www.postman.com/">Postman</a> to test your web api , you could see more detail in <code>{IP Address}:{PORT}/apidocs</code>.
+    </summary>
+    <img src="docs/images/apidocs.png" width=80%>
+</details>
+<br>
 
 # Fast Testing
 We provide the fast-test for each sample, please check the [document](./test/README.md).
