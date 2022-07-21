@@ -43,3 +43,6 @@ temp/
 # !task/yolov4-sample/*
 # !task/yolov4-tiny-sample/*
 # task
+
+# Docs
+!docs/images/*
