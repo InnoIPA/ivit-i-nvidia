@@ -3,7 +3,11 @@
     "source": "data/innodisk_dram.avi",
     "category": "smart factory",
     "application": {
-        "name": "counting"
+        "name": "counting",
+        "depend_on": [
+            "Memory",
+            "Sticker"
+        ]
     },
     "prim": {
         "model_json": "./task/innodisk_dram_detector/yolov3-tiny.json"
