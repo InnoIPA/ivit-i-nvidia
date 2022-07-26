@@ -129,7 +129,8 @@ ${MOUNT_GPU} \
 -v /etc/localtime:/etc/localtime:ro \
 -w ${WORKSPACE} \
 -v `pwd`:${WORKSPACE} \
-${MOUNT_CAMERA} \
+--privileged \
+-v /dev:/dev \
 ${SET_VISION} \
 ${DOCKER_IMAGE} \"bash\" \n"
 
