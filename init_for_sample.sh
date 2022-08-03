@@ -1,7 +1,15 @@
 #!/bin/bash
 source /workspace/docker/utils.sh
 
+printd "Start to initialize Sample ..." BCy
+echo -e "\
+\n
+Supported Samples: \n\
+    - Classification \n\
+    - YOLOv4 \n\
+    - YOLOv4-tiny \n"
 cd /workspace
+
 echo "-----------------------------------"
 printd "Initialize Classification Sample" G
 ./test/classification.sh
