@@ -106,3 +106,5 @@ if [[ "$RUN_DEMO" = true ]];then
 else
 	printf "${TASK_NAME} Initialize finished \n"
 fi
+
+echo ""
