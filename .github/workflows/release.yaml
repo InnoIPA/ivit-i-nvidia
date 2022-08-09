@@ -23,12 +23,11 @@ jobs:
       - name: Create zip
         run: |
           cd ..
-          zip ${{ github.event.repository.name }}/${{ github.event.repository.name }}-${{ steps.get_version.outputs.VERSION }}.zip -q -r ${{ github.event.repository.name }}
+          zip ${{ github.event.repository.name }}/${{ github.event.repository.name }}-${{ steps.get_version.outputs.VERSION }}.zip -r ${{ github.event.repository.name }}
 
       - name: Release Repository  
         uses: pyTooling/Actions/releaser@r0
         with:
-          USERNAME: MaxChangInnodisk
           token: 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
           tag: ${{ steps.get_version.outputs.VERSION }}
           files: ${{ github.event.repository.name }}-${{ steps.get_version.outputs.VERSION }}.zip
