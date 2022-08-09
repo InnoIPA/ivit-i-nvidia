@@ -9,7 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Download Submodule
+        uses: actions/checkout@v2
         with:
           USERNAME: MaxChangInnodisk
           token: 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
@@ -22,9 +23,10 @@ jobs:
       - name: Create zip
         run: |
           cd ..
-          zip ${{ github.event.repository.name }}/${{ github.event.repository.name }}-${{ steps.get_version.outputs.VERSION }}.zip ${{ github.event.repository.name }} -r
-          
-      - uses: pyTooling/Actions/releaser@r0
+          zip ${{ github.event.repository.name }}/${{ github.event.repository.name }}-${{ steps.get_version.outputs.VERSION }}.zip -q -r ${{ github.event.repository.name }}
+
+      - name: Release Repository  
+        uses: pyTooling/Actions/releaser@r0
         with:
           USERNAME: MaxChangInnodisk
           token: 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
