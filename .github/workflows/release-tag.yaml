@@ -1,7 +1,9 @@
-name: nightly-release
+name: release-tag
 
 on:
-  push
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -16,11 +18,11 @@ jobs:
       - name: Create zip
         run: |
           cd ..
-          zip ${{ github.event.repository.name }}/${{ github.event.repository.name }}-nightly.zip ${{ github.event.repository.name }} -r
+          zip ${{ github.event.repository.name }}/${{ github.event.repository.name }}-${{ github.ref }}.zip ${{ github.event.repository.name }} -r
           
       - uses: pyTooling/Actions/releaser@r0
         with:
           USERNAME: MaxChangInnodisk
           token: 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
-          tag: nightly
-          files: ${{ github.event.repository.name }}-nightly.zip
+          tag: ${{ github.ref }}
+          files: ${{ github.event.repository.name }}-${{ github.ref }}.zip
