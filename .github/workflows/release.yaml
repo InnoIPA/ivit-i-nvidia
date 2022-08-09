@@ -12,7 +12,6 @@ jobs:
       - name: Download Submodule
         uses: actions/checkout@v2
         with:
-          USERNAME: MaxChangInnodisk
           token: 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
           submodules: true
 
