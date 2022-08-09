@@ -1,0 +1,28 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          USERNAME: MaxChangInnodisk
+          token: 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
+          submodules: true
+
+      - name: Create zip
+        run: |
+          cd ..
+          zip ${{ github.event.repository.name }}/${{ github.event.repository.name }}-${{ github.ref }}.zip ${{ github.event.repository.name }} -r
+          
+      - uses: pyTooling/Actions/releaser@r0
+        with:
+          USERNAME: MaxChangInnodisk
+          token: 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
+          tag: ${{ github.ref }}
+          files: ${{ github.event.repository.name }}-${{ github.ref }}.zip
