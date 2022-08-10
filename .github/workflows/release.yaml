@@ -27,6 +27,7 @@ jobs:
       - name: Release Repository  
         uses: pyTooling/Actions/releaser@r0
         with:
+          USERNAME: ${{ secrets.USERNAME }}
           token: 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
           tag: ${{ steps.get_version.outputs.VERSION }}
           files: ${{ github.event.repository.name }}-${{ steps.get_version.outputs.VERSION }}.zip
