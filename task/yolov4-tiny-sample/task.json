@@ -1,38 +1,9 @@
 {
     "framework": "tensorrt",
-    "source": "data/night-street.mp4",
+    "source": "data/car.mp4",
     "category": "sample",
     "application": {
-        "name": "area_detection",
-        "area_points": [
-            [
-                1094,
-                34
-            ],
-            [
-                1258,
-                22
-            ],
-            [
-                1265,
-                707
-            ],
-            [
-                870,
-                707
-            ],
-            [
-                1133,
-                360
-            ],
-            [
-                962,
-                20
-            ]
-        ],
-        "depend_on": [
-            "person"
-        ]
+        "name": "default"
     },
     "prim": {
         "model_json": "./task/yolov4-tiny-sample/yolov4-tiny.json"
