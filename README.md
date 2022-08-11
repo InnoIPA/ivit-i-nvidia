@@ -42,15 +42,17 @@ iVIT-I for NVIDIA x86 platform
     In my case, it cost about 12 minutes.
 
 3. Run the docker container with web api
-    
-    To see more detail -> [running_workflow.md](docs/running_workflow.md)
+
+    > If you run iVIT-I before, make sure there is no `ivit-i-{brand}` is exists, you could run `docker rm ivit-i-<brand>` to remove it.
     ```bash
-    # Initialize default sample
+    # Initialize default sample 
+    # Run web api
     sudo ./docker/run.sh
 
     # Run with CLI mode
     sudo ./docker/run.sh -c
     ```
+    * Refer to [running_workflow.md](docs/running_workflow.md) to see the output in terminal.
     <img src="docs/images/run_script_info.png" width=80%>
 
 4. Option: If you do not want to use the shell script we provided, you can refer to this [document](docs/activate_env_for_developer.md).
