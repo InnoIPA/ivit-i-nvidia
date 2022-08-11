@@ -62,6 +62,10 @@ iVIT-I for NVIDIA x86 platform
     2. Download model.
     3. Convert model if needed.
     4. Using [demo.py](./demo.py) to run the sample.
+        * 'a' and 'F12' transfer to full screen.
+        * 'c' and 'space' to change color.
+        * 'q' and 'Esc' to quit.
+
 * Samples:
     | name | describe 
     | ---- | -------- 
