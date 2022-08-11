@@ -22,16 +22,14 @@ iVIT-I for NVIDIA x86 platform
 
     * Clone with submodule
         ```bash
-            # clone repo and submodule
-            git clone --recurse-submodules https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
-            
-            # check if submodule is downloaded
-            ls ./ivit_i/web
-            ai  api  app_bk.py  app.py  docs  __init__.py tools    
+        git clone --recurse-submodules https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
+        
+        # check if submodule is downloaded
+        ls ./ivit_i/web
+        ai  api  app_bk.py  app.py  docs  __init__.py tools    
         ```
     * Clone pure-repository and download submodule
         ```bash
-        # clone repo and submodule
         git clone https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
         
         git submodule init && git submodule update
