@@ -13,8 +13,10 @@ from ivit_i.app.handler import get_application
 from ivit_i.web.tools.common import handle_exception
 
 CV_WIN='Detection Results'
+FULL_SCREEN = True
 
 def main(args):
+    global FULL_SCREEN
 
     # 1. Initialize logger
     config_logger(log_name='ivit-i-nvidia.log', write_mode='w', level='debug')
@@ -30,6 +32,7 @@ def main(args):
         trg = api.get(total_conf)
         draw = Draw()
     except Exception as e:
+        
         handle_exception(error=e, title="Could not get ivit-i API", exit=True)
 
     # 4. Load and initialize model which return a list of objects for inference and the palette
@@ -65,7 +68,7 @@ def main(args):
     # server mode: won't display cv window
     if not args.server:
         cv2.namedWindow(CV_WIN, cv2.WND_PROP_FULLSCREEN)
-        cv2.setWindowProperty(CV_WIN, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+        cv2.setWindowProperty(CV_WIN,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN if FULL_SCREEN else cv2.WINDOW_NORMAL )
 
     try:
         while True:
@@ -97,8 +100,15 @@ def main(args):
                 # show the results            
                 cv2.imshow(CV_WIN, frame)
                 key = cv2.waitKey(1 if not args.debug else 0)
-                if key in {ord('q'), ord('Q'), '27'}:
-                    break 
+                if key in {ord('q'), ord('Q'), 27}:
+                    break                 
+                elif key in { ord('a'), 201, 206, 210, 214 }:
+                    FULL_SCREEN = not FULL_SCREEN
+                    cv2.setWindowProperty(CV_WIN,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN if FULL_SCREEN else cv2.WINDOW_NORMAL )
+                elif key in { ord('c'), 32 }:
+                    palette = get_palette( total_conf )
+                else:
+                    logging.debug(key)
 
             else:
                 logging.info( info["detections"])
