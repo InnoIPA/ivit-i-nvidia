@@ -4,8 +4,8 @@ iVIT-I for NVIDIA x86 platform
 * [Pre-requirements](#pre-requirements)
 * [Prepare Environment](#prepare-environment)
 * [Run Samples](#run-samples)
-* [Web API](#web-api)
 * [Fast Testing](#fast-testing)
+* [Web API](#web-api)
 
 # Pre-requirements
 * NVIDIA gpu driver ( 430+ )
@@ -22,20 +22,28 @@ iVIT-I for NVIDIA x86 platform
     
     # check if submodule is downloaded
     ls ./ivit_i/web
-    ai  api  app.py  __init__.py  utils
+    ai  api  app_bk.py  app.py  docs  __init__.py tools
 
     # if not exist then download submodule again
-    # $ git submodule init && git submodule update
+    # run `git submodule init && git submodule update`
+    ```
+    > clone specificall branch and submodule
+    ```bash
+    VER=r0.6
+    git clone --recurse-submodules --branch ${VER} https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
     ```
 
 2. Build the docker images
+
     We use [ivit-i.json](ivit-i.json) to manage environment, like "docker image name", "docker image version", "port number", etc. You can see more detail in [setup_environment.md](docs/setup_environment.md)
     ```bash
     sudo ./docker/build.sh
     ```
-    > about 12 min.
+    In my case, it cost about 12 minutes.
 
 3. Run the docker container with web api
+    
+    To see more detail -> [running_workflow.md](docs/running_workflow.md)
     ```bash
     # Initialize default sample
     sudo ./docker/run.sh
@@ -43,11 +51,13 @@ iVIT-I for NVIDIA x86 platform
     # Run with CLI mode
     sudo ./docker/run.sh -c
     ```
-    * To see more detail -> [running_workflow.md](docs/running_workflow.md)
-        <img src="docs/images/run_script_info.png" width=80%>
+    <img src="docs/images/run_script_info.png" width=80%>
+
+4. Option: If you do not want to use the shell script we provided, you can refer to this [document](docs/activate_env_for_developer.md).
 
 # Run Samples
 * Please follow the README.md in each samples, the common workflow like below:
+    1. Enter docker container.
     1. Choose a sample.
     2. Download model.
     3. Convert model if needed.
@@ -62,14 +72,17 @@ iVIT-I for NVIDIA x86 platform
     | [people_seg_sample](task/people_seg_sample/README.md)   | Peopple segmentation for the `etlt` model download from NVIDIA NGC.
     | [humanpose_sample](task/humanpose_sample/README.md) | Human pose estimation which base on [trt_pose](https://github.com/NVIDIA-AI-IOT_pose)
 
+
+# Fast Testing
+We provide the fast-test for each sample, please check [here](./test/README.md).
+
+
 # Web API
 <details>
     <summary>
         We recommand <a href="https://www.postman.com/">Postman</a> to test your web api , you could see more detail in <code>{IP Address}:{PORT}/apidocs</code>.
     </summary>
     <img src="docs/images/apidocs.png" width=80%>
+    
 </details>
 <br>
-
-# Fast Testing
-We provide the fast-test for each sample, please check the [document](./test/README.md).
