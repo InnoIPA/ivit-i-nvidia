@@ -23,5 +23,9 @@ printd "Initialize YOLOv4-tiny Sample" G
 ./test/yolov4-tiny.sh
 
 echo "-----------------------------------"
+printd "Initialize Innodisk DRAM Sample" G
+./test/innodisk_dram_detection.sh
+
+echo "-----------------------------------"
 printd "ALL DONE !" G
 echo ""
