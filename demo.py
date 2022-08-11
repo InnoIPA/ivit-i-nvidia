@@ -107,8 +107,6 @@ def main(args):
                     cv2.setWindowProperty(CV_WIN,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN if FULL_SCREEN else cv2.WINDOW_NORMAL )
                 elif key in { ord('c'), 32 }:
                     palette = get_palette( total_conf )
-                else:
-                    logging.debug(key)
 
             else:
                 logging.info( info["detections"])
