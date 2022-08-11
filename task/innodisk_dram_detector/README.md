@@ -2,7 +2,7 @@
 
 1. Enter the environment
     ```bash
-    sudo ./docker/run.sh -m
+    sudo ./docker/run.sh -c
     ```
 2. Download model
     ```shell

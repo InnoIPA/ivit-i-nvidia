@@ -5,9 +5,8 @@ Classification model which trained from NVIDIA TAO or iTAO.
     ```bash
     cd /path/to/iVIT-I
     # for desktop user
-    sudo ./docker/run.sh -m
+    sudo ./docker/run.sh -c
     ```
-    * `-m` means magic,print information with funny format.
 
 ## For Sample Torch Model
 1. Download Sample Model ( Torch )
@@ -37,7 +36,9 @@ Classification model which trained from NVIDIA TAO or iTAO.
             "model_json": "./app/classification_sample/classification.json"
         },
         "category": "sample",
-        "application": "classification",
+        "application": {
+            "name": "default"
+        },
         "name": "classification_sample",
         "source_type": "V4L2"
     }

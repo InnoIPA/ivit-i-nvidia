@@ -3,7 +3,7 @@
 ## Pre-requirements
 0. Enter the container
 ```bash
-sudo ./docker/run.sh -m
+sudo ./docker/run.sh -c
 ```
 
 1. Download Model
