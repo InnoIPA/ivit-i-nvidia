@@ -15,60 +15,92 @@ iVIT-I for NVIDIA x86 platform
 # Prepare Environment
 
 1. Clone Repository and submodule
-    > submodule is web api which will be place in [ivit_i/web](./ivit_i/web)
-    ```bash
-    # clone repo and submodule
-    git clone --recurse-submodules https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
-    
-    # check if submodule is downloaded
-    ls ./ivit_i/web
-    ai  api  app_bk.py  app.py  docs  __init__.py tools
 
-    # if not exist then download submodule again
-    # run `git submodule init && git submodule update`
-    ```
-    > clone specificall branch and submodule
-    ```bash
-    VER=r0.6
-    git clone --recurse-submodules --branch ${VER} https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
-    ```
+    * About submodules
+    
+        Submodule is the web api for ivit-i which will be place in [ivit_i/web](./ivit_i/web)
+
+    * Clone with submodule
+        ```bash
+            # clone repo and submodule
+            git clone --recurse-submodules https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
+            
+            # check if submodule is downloaded
+            ls ./ivit_i/web
+            ai  api  app_bk.py  app.py  docs  __init__.py tools    
+        ```
+    * Clone pure-repository and download submodule
+        ```bash
+        # clone repo and submodule
+        git clone https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
+        
+        git submodule init && git submodule update
+        ```
+    * Clone specificall branch ( with submodule )
+        ```bash
+        VER=r0.6
+        git clone --recurse-submodules --branch ${VER} https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
+        ```
 
 2. Build the docker images
 
-    We use [ivit-i.json](ivit-i.json) to manage environment, like "docker image name", "docker image version", "port number", etc. You can see more detail in [setup_environment.md](docs/setup_environment.md)
-    ```bash
-    sudo ./docker/build.sh
-    ```
-    In my case, it cost about 12 minutes.
+    * Before building docker images
+
+        We use [ivit-i.json](ivit-i.json) to manage environment, like "docker image name", "docker image version", "port number", etc. You can see more detail in [setup_environment.md](docs/setup_environment.md)
+    
+    * Build docker image with shell script
+        ```bash
+        sudo ./docker/build.sh
+        ```
+        In my case, it costs about 12 minutes.
+
+    * Build docker image step by step for developer
+
+        Here is the [documentation](docs/activate_env_for_developer.md) explaining the workflow of `build docker image` and `run docker container`.
 
 3. Run the docker container with web api
 
-    > If you run iVIT-I before, make sure there is no `ivit-i-{brand}` is exists, you could run `docker rm ivit-i-<brand>` to remove it.
-    ```bash
-    # Initialize default sample 
-    # Run web api
-    sudo ./docker/run.sh
+    * Before running the container
+        1. Avoid Container Conflict
 
-    # Run with CLI mode
-    sudo ./docker/run.sh -c
-    ```
-    * Refer to [running_workflow.md](docs/running_workflow.md) to see the output in terminal.
-    <img src="docs/images/run_script_info.png" width=80%>
+            If you run `ivit-i-{brand}` before, make sure there is no container naming `ivit-i-{brand}` exists, you could run `docker rm ivit-i-{brand}` to remove it.
 
-4. Option: If you do not want to use the shell script we provided, you can refer to this [document](docs/activate_env_for_developer.md).
+        2. Initialize Automatically
+        
+            It will initialize serveral samples which define in [init_for_sample.sh](./init_for_sample.sh).
+        
+    * Run container with **web api**
+        ```bash
+        sudo ./docker/run.sh
+        ```
+
+    * Run container with **interactive mode**
+        ```bash
+        sudo ./docker/run.sh -c
+        ```
+
+    * Run docker container step by step for developer
+
+        Here is the [documentation](docs/activate_env_for_developer.md) explaining the workflow of `build docker image` and `run docker container`.
+
+    * Terminal Output
+
+        <img src="docs/images/run_script_info.png" width=80%>
+        
+        Refer to [running_workflow.md](docs/running_workflow.md) to see more output information.
 
 # Run Samples
-* Please follow the README.md in each samples, the common workflow like below:
+* Please follow the README.md in each samples, the common workflow like below
     1. Enter docker container.
-    1. Choose a sample.
-    2. Download model.
-    3. Convert model if needed.
-    4. Using [demo.py](./demo.py) to run the sample.
+    2. Choose a sample.
+    3. Download model.
+    4. Convert model if needed.
+    5. Using [demo.py](./demo.py) to run the sample.
         * 'a' and 'F12' transfer to full screen.
-        * 'c' and 'space' to change color.
+        * 'c' and 'space' to change color ( only in default application ) .
         * 'q' and 'Esc' to quit.
 
-* Samples:
+* Samples
     | name | describe 
     | ---- | -------- 
     | [classification_sample](task/classification_sample/README.md)    |  Classfication sample.  
