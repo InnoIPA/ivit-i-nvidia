@@ -31,11 +31,11 @@ if [[ ! -d "./ivit_i/web" ]];then
 fi
 
 # get ip address
-ip=$(python3 -c "from ivit_i.web.tools.common import get_address;print(get_address())")
+IP=$(python3 -c "from ivit_i.web.tools.common import get_address;print(get_address())")
 
-echo "\n"
-echo "HOST: ${ip}" | boxes -s 80x5 -a c
-echo "\n"
+echo -e "\n"
+echo "HOST: ${IP}:${PORT}" | boxes -s 80x5 -a c
+echo -e "\n"
 
 gunicorn --worker-class eventlet \
 -w ${WORKER} \
