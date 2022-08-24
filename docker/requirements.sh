@@ -7,6 +7,9 @@ apt-get update -qqy
 apt-get install -qy figlet boxes tree > /dev/null 2>&1
 pip3 install --disable-pip-version-check --force pip~=21.0
 
+printd "System Require " Cy
+apt-get -qy install bsdmainutils zip jq wget usbutils
+
 ROOT=`pwd`
 echo "Workspace is ${ROOT}" | boxes -p a1
 
@@ -26,7 +29,6 @@ printd "Install torch, torchvision with CUDA 11.1 " Cy
 pip3 install --disable-pip-version-check torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 
 printd "Install other msicellaneous packages " Cy
-apt-get -qy install bsdmainutils zip jq wget
 pip3 install --disable-pip-version-check tqdm cython gdown setuptools packaging pycocotools GPUtil wget colorlog
 
 # For darknet yolo to tensorrt
