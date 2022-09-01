@@ -9,9 +9,12 @@ COPY ["./utils.sh", "./requirements.sh", "./patch_pose.sh", "./entrypoint", "${W
 
 # Install requirement
 RUN chmod u+x ./*.sh \
-&& ./requirements.sh \
-&& ./patch_pose.sh 
+&& ./requirements.sh
+
+# Install Thirth Party
+RUN ./patch_pose.sh 
 
 COPY [ "./inno_verify", "./entrypoint",  "/usr/bin/" ]
 
-ENTRYPOINT [ "entrypoint" ]
+# ENTRYPOINT [ "entrypoint" ]
+ENTRYPOINT [ "/bin/bash", "-c" ]

@@ -6,7 +6,7 @@ source "${DIR}/utils.sh"
 # Initial
 printd "Initialize ... " Cy
 apt-get update -qqy
-apt-get install -qy figlet boxes tree > /dev/null 2>&1
+apt-get install -qy figlet boxes tree git > /dev/null 2>&1
 pip3 install --disable-pip-version-check --force pip~=21.0
 
 printd "System Require " Cy
@@ -35,7 +35,7 @@ printd "Install the requirement of Darknet " Cy
 pip3 install onnx==1.9.0
 
 # For web api
-apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall netbase
+apt-get -o Dpkg::Options::="--force-confmiss" install -yq --reinstall netbase
 pip3 install flask flask-socketio==5.1.2 flask-cors flasgger gunicorn==20.1.0 eventlet==0.30.2
 pip3 install python-engineio==4.3.2 python-socketio==5.6.0
 
