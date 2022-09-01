@@ -23,22 +23,22 @@ RUN apt-get update -q \
 && mv -f ${TEMP}/${IVIT} ${WS}
 
 # Install Relatived Package
-WORKDIR ${WS}/${IVIT}
-# RUN ls && pwd && chmod u+x ./*.sh \
-# && ./requirements.sh \
-# && ./gen_inno_verify.sh \
-# && mv ./inno_verify ./entrypoint /usr/bin
+WORKDIR ${WS}/docker
+RUN chmod u+x ./*.sh \
+&& ./requirements.sh \
+&& ./gen_inno_verify.sh \
+&& mv ./inno_verify ./entrypoint /usr/bin
 
-# WORKDIR ${WS}
-# RUN echo -e "\n - Cythonize iVIT-I ... \n" \
-# && chmod u+x ./*.sh \
-# && ./cythonize.sh \
-# && echo -e "\n - Remove Relatived Script  ... \n" \
-# && rm -rf ./docker \
-# && rm ./cythonize.sh \
-# && rm -rf ./.git*
+WORKDIR ${WS}
+RUN echo -e "\n - Cythonize iVIT-I ... \n" \
+&& chmod u+x ./*.sh \
+&& ./cythonize.sh \
+&& echo -e "\n - Remove Relatived Script  ... \n" \
+&& rm -rf ./docker \
+&& rm ./cythonize.sh \
+&& rm -rf ./.git*
 
 # # Define Entrypoint
-# ENTRYPOINT [ "entrypoint" ]
-ENTRYPOINT [ "/bin/bash", "-c" ]
+ENTRYPOINT [ "entrypoint" ]
+
 # docker run -it --rm --privileged -v /dev:/dev --name ivit-i-intel-v0.8  --device /dev/dri --device-cgroup-rule='c 189:* rmw'  --net=host --ipc=host -v /etc/localtime:/etc/localtime:ro -v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix:0 maxchanginnodisk/ivit-i-intel:v0.8 /workspace/init_samples.sh bash
