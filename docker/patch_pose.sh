@@ -31,13 +31,13 @@ cd $ROOT && rm -rf ${TRG}
 
 # --------------------------------------------------------------------------------
 # TRT_POSE
-# printd "$(date +%T) Check trt_pose " Cy
-# TRG="pure_trt_pose"
+printd "$(date +%T) Check trt_pose " Cy
+TRG="pure_trt_pose"
 
-# if [[ -n ${TRG} ]];then git clone https://github.com/p513817/pure_trt_pose.git; fi
-# cd ${TRG}
-# python3 setup.py install
-# cd $ROOT && rm -rf ${TRG}
+if [[ -n ${TRG} ]];then git clone https://github.com/p513817/pure_trt_pose.git; fi
+cd ${TRG}
+python3 setup.py install
+cd $ROOT && rm -rf ${TRG}
 
 # # --------------------------------------------------------------------------------
 # printd "DONE" Cy
