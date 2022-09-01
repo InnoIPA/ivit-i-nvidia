@@ -16,7 +16,7 @@ TASK_PATH="${WS}/${TASK_ROOT}/${TASK_NAME}"
 CONF_PATH="${WS}/${TASK_ROOT}/${TASK_NAME}/${TASK_CONF}"
 
 DOWNLOAD_SCRIPT="download_resnext50.py"
-MODIFTY_GPU_SCRIPT="${WS}/docker/update_first_gpu.py"
+MODIFTY_GPU_SCRIPT="${WS}/tools/update_first_gpu.py"
 
 RUN_DOWNLOAD_DATA="${TASK_PATH}/download_data.sh"
 RUN_DOWNLOAD_MODEL="python3 ${TASK_PATH}/${DOWNLOAD_SCRIPT}"

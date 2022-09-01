@@ -22,7 +22,7 @@ MODEL_PATH="${TASK_PATH}/${MODEL_NAME}.trt"
 
 # Setup Running Script
 DOWNLOAD_SCRIPT="download_model.sh"
-MODIFTY_GPU_SCRIPT="${WS}/docker/update_first_gpu.py"
+MODIFTY_GPU_SCRIPT="${WS}/tools/update_first_gpu.py"
 CONVERT_SCRIPT="${WS}/converter/yolo-converter.sh"
 
 RUN_DOWNLOAD_DATA="./task/innodisk_dram_detector/download_data.sh"
