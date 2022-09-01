@@ -1,5 +1,5 @@
 #!/bin/bash
-source /workspace/docker/utils.sh
+source /workspace/tools/utils.sh
 
 printd "Start to initialize Sample ..." BCy
 echo -e "\
@@ -29,3 +29,13 @@ printd "Initialize Innodisk DRAM Sample" G
 echo "-----------------------------------"
 printd "ALL DONE !" G
 echo ""
+
+VAR="$@"
+CMD="bash"
+
+if [[ ! -z "$VAR" ]];then 
+    CMD="$VAR"; 
+    echo $CMD
+fi
+
+/bin/bash -c "$CMD"
