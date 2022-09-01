@@ -17,26 +17,26 @@ RUN apt-get update -q \
 && apt-get install -qqy git ssh openssh-server jq boxes \
 && git config --system credential.helper store \
 && echo "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials \
-&& git clone --recurse-submodules ${REPO} --branch ${VER} \
+&& git clone --recurse-submodules https://github.com/InnoIPA/ivit-i-nvidia.git --branch ${VER} \
 && mv -f ${IVIT} ${WS}
 
 # Install Relatived Package
-WORKDIR ${WS}/docker/
-RUN ls && pwd && chmod u+x ./*.sh \
-&& ./requirements.sh \
-&& ./gen_inno_verify.sh \
-&& mv ./inno_verify ./entrypoint /usr/bin
+WORKDIR ${WS}/
+# RUN ls && pwd && chmod u+x ./*.sh \
+# && ./requirements.sh \
+# && ./gen_inno_verify.sh \
+# && mv ./inno_verify ./entrypoint /usr/bin
 
-WORKDIR ${WS}
-RUN echo -e "\n - Cythonize iVIT-I ... \n" \
-&& chmod u+x ./*.sh \
-&& ./cythonize.sh \
-&& echo -e "\n - Remove Relatived Script  ... \n" \
-&& rm -rf ./docker \
-&& rm ./cythonize.sh \
-&& rm -rf ./.git*
+# WORKDIR ${WS}
+# RUN echo -e "\n - Cythonize iVIT-I ... \n" \
+# && chmod u+x ./*.sh \
+# && ./cythonize.sh \
+# && echo -e "\n - Remove Relatived Script  ... \n" \
+# && rm -rf ./docker \
+# && rm ./cythonize.sh \
+# && rm -rf ./.git*
 
-# Define Entrypoint
-ENTRYPOINT [ "entrypoint" ]
-
+# # Define Entrypoint
+# ENTRYPOINT [ "entrypoint" ]
+ENTRYPOINT [ "/bin/bash", "-c" ]
 # docker run -it --rm --privileged -v /dev:/dev --name ivit-i-intel-v0.8  --device /dev/dri --device-cgroup-rule='c 189:* rmw'  --net=host --ipc=host -v /etc/localtime:/etc/localtime:ro -v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix:0 maxchanginnodisk/ivit-i-intel:v0.8 /workspace/init_samples.sh bash
