@@ -12,6 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV REPO=https://github.com/InnoIPA/${IVIT}.git
 
 # Download Repository
+WORKDIR /opt/inno/${IVIT}
 RUN apt-get update -q \
 && apt-get install -qqy git ssh openssh-server jq boxes \
 && git config --system credential.helper store \
@@ -20,7 +21,8 @@ RUN apt-get update -q \
 && mv -f ${IVIT} ${WS}
 
 # Install Relatived Package
-WORKDIR ${WS}/docker/
+WORKDIR ls && \
+${WS}/docker/
 RUN chmod u+x ./*.sh \
 && ./requirements.sh \
 && ./gen_inno_verify.sh \
