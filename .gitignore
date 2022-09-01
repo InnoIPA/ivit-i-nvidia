@@ -46,3 +46,4 @@ temp/
 
 # Docs
 !docs/images/*
+docker/inno_verify
