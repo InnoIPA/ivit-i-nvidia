@@ -29,7 +29,7 @@ pip3 install --disable-pip-version-check torch==1.9.0+cu111 torchvision==0.10.0+
 
 printd "Install other msicellaneous packages " Cy
 pip3 install --disable-pip-version-check \
-tqdm=4.64.0 \
+tqdm==4.64.0 \
 cython==0.29.32 \
 gdown==4.5.1 \
 setuptools==52.0.0 \
