@@ -21,9 +21,8 @@ RUN apt-get update -q \
 && mv -f ${IVIT} ${WS}
 
 # Install Relatived Package
-WORKDIR ls && \
-${WS}/docker/
-RUN chmod u+x ./*.sh \
+WORKDIR ${WS}/docker/
+RUN ls && pwd && chmod u+x ./*.sh \
 && ./requirements.sh \
 && ./gen_inno_verify.sh \
 && mv ./inno_verify ./entrypoint /usr/bin
