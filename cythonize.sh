@@ -21,6 +21,10 @@ fi
 echo "Start to cythonize ivit_i ... "
 merak cythonize "${API}" "${OUTPUT}"
 
+# In ivit-i-nvidia is have to build twice, or you will get the error ( "variable tracking size limit exceeded with -fvar-tracking-assignments, retrying without" )
+rm -rf "${OUTPUT}"
+merak cythonize "${API}" "${OUTPUT}"
+
 # Remove whole ivit_i folder and create a new one
 rm -rf "${API}"
 mv -f "${OUTPUT}/${API}" "${ROOT}"
