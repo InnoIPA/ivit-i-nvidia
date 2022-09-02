@@ -28,8 +28,8 @@ def load_txt(path:str) -> list:
     
     if not os.path.exists(path):
         msg = "Can not find label file."
-        raise Exception(msg)
         logging.error(msg, stack_info=True)
+        raise Exception(msg)
     
     ret = []
     with open(path) as f:
@@ -38,8 +38,8 @@ def load_txt(path:str) -> list:
         
     if ret == []:
         msg = "Failed to load txt file."
-        raise Exception(msg)
         logging.error(msg, stack_info=True)
+        raise Exception(msg)
 
     return ret
 
