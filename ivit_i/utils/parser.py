@@ -1,33 +1,29 @@
 import json, os, logging
-# ---------------------------------------------------------------------------------
+
 VID_EXT=['.mp4', '.avi']
 IMG_EXT=['.jpg', '.png', '.jpeg']
-# ---------------------------------------------------------------------------------
-""" 回傳 JSON 檔案的內容，如果沒給就會吃 self.path """
+
 def load_json(path:str) -> dict:
-    # --------------------------------------------------------------------
+    
     # debug
     if not os.path.exists(path):
         raise Exception('File is not exists !')
     elif os.path.splitext(path)[1] != '.json':
         raise Exception("It's not a json file ({})".format(path))
-    # --------------------------------------------------------------------
-    with open(path) as file:
-        data = json.load(file)  # load is convert dict from json "file"
-    # --------------------------------------------------------------------
+    
+    with open(path) as f:
+        data = json.load(f)  # load is convert dict from json "file"
+    
     return data
 
-""" 寫入 JSON 檔案，如果沒給 path 就會吃 self.path """
 def write_json(cnt:dict, path:str) -> None:
-    # --------------------------------------------------------------------
-    with open(path, 'w') as file:
-        json.dump(cnt, file)    # dump is write dict into file
+    
+    with open(path, 'w') as f:
+        json.dump(cnt, f)    # dump is write dict into file
 
-""" 比較 JSON """ 
 def cmp_json(cnt:dict, path:str) -> bool:
     return (load_json(path)==cnt)
 
-""" 載入 TXT 檔案 """
 def load_txt(path:str) -> list:
     
     if not os.path.exists(path):
@@ -36,8 +32,8 @@ def load_txt(path:str) -> list:
         logging.error(msg, stack_info=True)
     
     ret = []
-    with open(path) as file:
-        lines = file.readlines()
+    with open(path) as f:
+        lines = f.readlines()
         [ ret.append(line.rstrip() ) for line in lines ]
         
     if ret == []:
@@ -86,7 +82,6 @@ def parse_config(cfg:dict) -> dict:
     cfg.pop(fw, None)
     return cfg
 
-# ---------------------------------------------------------------------------------
 if __name__ == '__main__':
     
     path = "./models/mask_classifier_by_max/mask_classifier.txt"

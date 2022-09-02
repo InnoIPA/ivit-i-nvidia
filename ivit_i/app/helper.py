@@ -1,8 +1,9 @@
 import logging
 import cv2, math
-FONT=cv2.LINE_AA
-FONT_SCALE=1
-FONT_THICKNESS=2
+
+FONT            = cv2.LINE_AA
+FONT_SCALE      = 1
+FONT_THICKNESS  = 2
 
 def get_text_size(label:str) -> tuple:
     """ return width, height in tuple """
