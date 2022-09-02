@@ -5,7 +5,7 @@ FONT            = cv2.LINE_AA
 FONT_SCALE      = 1
 FONT_THICKNESS  = 2
 
-def get_text_size(label:str) -> tuple:
+def get_text_size(label) -> tuple:
     """ return width, height in tuple """
     return cv2.getTextSize(label, FONT, FONT_SCALE, FONT_THICKNESS)[0]
 

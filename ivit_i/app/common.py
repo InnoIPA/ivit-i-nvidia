@@ -6,7 +6,7 @@ def read_json(path):
         return json.load(f)
 
 class App(object):
-    def __init__(self, depend_labels:list) -> None:
+    def __init__(self, depend_labels) -> None:
         self.frame_idx = 0
         self.track_obj = {}
         self.track_idx = {}
@@ -20,7 +20,7 @@ class App(object):
 
         self.detected_labels = []
 
-    def get_random_palette( self, labels:list ):
+    def get_random_palette( self, labels ):
         ret = {}
         for label in labels:
             color = self.get_random_color()

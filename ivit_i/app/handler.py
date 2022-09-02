@@ -65,7 +65,7 @@ def get_tag_app_list():
 
     return ret
 
-def get_application(config:dict):
+def get_application(config):
     
     if not APP_KEY in config:
         raise Exception("Could not find the {}".format(APP_KEY))
@@ -121,7 +121,7 @@ def get_application(config:dict):
     
     return app
             
-def get_labels(config:dict) -> list:
+def get_labels(config) -> list:
     """ get the label file and capture all category in it """
     content = []
     
