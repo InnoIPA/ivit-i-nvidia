@@ -1,6 +1,6 @@
 import logging, random, os, sys, cv2, colorsys, time
 import numpy as np
-sys.path.append(os.getcwd())                                # import local module
+# sys.path.append(os.getcwd())                                # import local module
 from ivit_i.utils.parser import load_json, load_txt
 from ivit_i.utils.logger import config_logger
 
