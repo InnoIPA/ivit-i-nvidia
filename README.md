@@ -20,7 +20,7 @@ iVIT-I for NVIDIA x86 platform
     git clone https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
     ```
 
-    * Clone specificall branch ( with submodule )
+    * Clone specificall branch
         ```bash
         VER=r0.9
         git clone --branch ${VER} https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
