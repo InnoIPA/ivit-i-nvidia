@@ -1,7 +1,21 @@
 #!/usr/bin/python3
-import json, os, sys, argparse
+import json, os, sys, argparse, GPUtil
 sys.path.append(os.getcwd())
-from ivit_i.utils.gpus import get_gpu_info
+
+def get_gpu_info():
+    gpus = GPUtil.getGPUs()
+    ret = dict()
+    for gpu in gpus:
+        ret.update({ gpu.name: {
+                
+                "id": gpu.id,
+                "name": gpu.name, 
+                "uuid": gpu.uuid, 
+                "load": round(gpu.load*100, 3), 
+                "memoryUtil": round(gpu.memoryUtil*100, 3), 
+                "temperature": gpu.temperature
+        }})
+    return ret
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--framework", default="tensorrt", help="framework [ tensorrt, openvino ]")

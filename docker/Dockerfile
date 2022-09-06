@@ -1,15 +1,20 @@
+# ivit-i-nvidia
 FROM nvcr.io/nvidia/tensorrt:21.03-py3
-# ------------------------------------------------------------------
-WORKDIR /workspace
-COPY ["./utils.sh", "./requirements.sh", "./patch_pose.sh", "/workspace/" ]
-# ------------------------------------------------------------------
-# 由於 安裝套件有互動界面會導致報錯 所以先行關閉
-ENV DEBIAN_FRONTEND noninteractive  
-RUN chmod +x ./requirements.sh \
-&& ./requirements.sh \
-&& chmod +x ./patch_pose.sh \
-&& ./patch_pose.sh \
-&& rm ./*.sh
+ENV WS=/workspace
+ENV DEBIAN_FRONTEND=noninteractive  
 
-# ------------------------------------------------------------------
+USER root
+WORKDIR ${WS}
+COPY ["./utils.sh", "./requirements.sh", "./patch_pose.sh", "./entrypoint", "${WS}/" ]
+
+# Install requirement
+RUN chmod u+x ./*.sh \
+&& ./requirements.sh
+
+# Install Thirth Party
+RUN ./patch_pose.sh 
+
+COPY [ "./inno_verify", "./entrypoint",  "/usr/bin/" ]
+
+# ENTRYPOINT [ "entrypoint" ]
 ENTRYPOINT [ "/bin/bash", "-c" ]

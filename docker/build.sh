@@ -33,9 +33,12 @@ printd "Concatenate docker image name: ${IMAGE_NAME}" Cy
 
 # Change the default runtime
 printd "Change the docker runtime to NVIDIA" Cy
-cd $ROOT
+cd "${ROOT}" || exit
 sudo python3 docker_daemon.py
 sudo systemctl restart docker
+
+# Generate inno_verify
+check_pyinstaller && ./gen_inno_verify.sh
 
 # Build the docker image
 printd "Build the docker image. (${IMAGE_NAME})" Cy

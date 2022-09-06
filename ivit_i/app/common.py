@@ -6,7 +6,7 @@ def read_json(path):
         return json.load(f)
 
 class App(object):
-    def __init__(self, depend_labels:list) -> None:
+    def __init__(self, depend_labels) -> None:
         self.frame_idx = 0
         self.track_obj = {}
         self.track_idx = {}
@@ -20,7 +20,7 @@ class App(object):
 
         self.detected_labels = []
 
-    def get_random_palette( self, labels:list ):
+    def get_random_palette( self, labels ):
         ret = {}
         for label in labels:
             color = self.get_random_color()
@@ -37,13 +37,16 @@ class App(object):
 
     def get_palette( self, labels):
         ret = {}
-        path = "ivit_i/app/palette.json"
-        if not os.path.exists(path):
-            path = "./palette.json"
-        if not os.path.exists(path):
-            raise Exception("Couldn't find palette")
+        # path = "ivit_i/app/palette.json"
+        # if not os.path.exists(path):
+        #     path = "./palette.json"
+        # if not os.path.exists(path):
+        #     raise Exception("Couldn't find palette")
         
-        color_map = read_json(path)
+        # color_map = read_json(path)
+
+        from .palette import palette
+        color_map = palette
         
         for idx, label in enumerate(labels):
             idx = str(idx+1)

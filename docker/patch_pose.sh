@@ -13,13 +13,13 @@
 # limitations under the License.
 
 #!/bin/bash
-# --------------------------------------------------------------------------------
+
 ROOT=$(dirname `realpath $0`)
 cd $ROOT
 source ./utils.sh
 ROOT=`pwd`
 
-# --------------------------------------------------------------------------------
+
 # torch2trt
 printd "$(date +"%T") Install torch2trt " Cy
 TRG="torch2trt"
@@ -29,7 +29,7 @@ cd ${TRG}
 python3 setup.py install --plugins
 cd $ROOT && rm -rf ${TRG}
 
-# --------------------------------------------------------------------------------
+
 # TRT_POSE
 printd "$(date +%T) Check trt_pose " Cy
 TRG="pure_trt_pose"
@@ -39,5 +39,5 @@ cd ${TRG}
 python3 setup.py install
 cd $ROOT && rm -rf ${TRG}
 
-# --------------------------------------------------------------------------------
-printd "DONE" Cy
+# 
+# printd "DONE" Cy

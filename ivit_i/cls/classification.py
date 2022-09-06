@@ -3,7 +3,7 @@ import numpy as np
 import logging
 import tensorrt as trt
 
-sys.path.append(f'{os.getcwd()}')
+# sys.path.append(f'{os.getcwd()}')
 from ivit_i.utils.logger import config_logger
 from ivit_i.utils.timer import Timer
 from ivit_i.common import common

@@ -1,15 +1,45 @@
 FROM nvcr.io/nvidia/tensorrt:21.03-py3
-# ------------------------------------------------------------------
-WORKDIR /workspace
-COPY ["." , "/workspace/" ]
-# ------------------------------------------------------------------
-# 由於 安裝套件有互動界面會導致報錯 所以先行關閉
-ENV DEBIAN_FRONTEND noninteractive  
 
-RUN chmod +x /workspace/docker/requirements.sh \
-&& cd /workspace/docker/ && ./requirements.sh \
-&& chmod +x /workspace/docker/patch_pose.sh \
-&& cd /workspace/docker/ && ./patch_pose.sh
+USER root
 
-# ------------------------------------------------------------------
-ENTRYPOINT [ "/bin/bash", "-c" ]
+ARG VER
+ARG GITHUB_USER
+ARG GITHUB_TOKEN
+
+ENV IVIT=ivit-i-nvidia
+ENV TEMP=/opt/inno
+ENV WS=/workspace
+ENV DEBIAN_FRONTEND=noninteractive  
+ENV REPO=https://github.com/InnoIPA/${IVIT}.git
+
+# Download Repository
+WORKDIR ${TEMP}/
+RUN apt-get update -q \
+&& apt-get install -qqy git ssh openssh-server jq boxes \
+&& git config --system credential.helper store \
+&& echo "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials \
+&& git clone --recurse-submodules https://github.com/InnoIPA/ivit-i-nvidia.git --branch ${VER} \
+&& rm -rf ${WS} \
+&& mv -f ${TEMP}/${IVIT} ${WS}
+
+# Install Relatived Package
+WORKDIR ${WS}/docker
+RUN chmod u+x ./*.sh \
+&& ./requirements.sh \
+&& ./patch_pose.sh \
+&& ./gen_inno_verify.sh \
+&& mv ./inno_verify ./entrypoint /usr/bin
+
+WORKDIR ${WS}
+RUN echo -e "\n - Cythonize iVIT-I ... \n" \
+&& chmod u+x ./*.sh \
+&& ./cythonize.sh \
+&& echo -e "\n - Remove Relatived Script  ... \n" \
+&& rm -rf ./docker \
+&& rm ./cythonize.sh \
+&& rm -rf ./.git*
+
+# # Define Entrypoint
+ENTRYPOINT [ "entrypoint" ]
+
+# docker run -it --rm --privileged -v /dev:/dev --name ivit-i-nvidia-v0.8  --device /dev/dri --device-cgroup-rule='c 189:* rmw'  --net=host --ipc=host -v /etc/localtime:/etc/localtime:ro -v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix:0 maxchanginnodisk/ivit-i-nvidia:v0.8 bash

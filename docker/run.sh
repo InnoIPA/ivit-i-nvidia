@@ -2,6 +2,7 @@
 source "$(dirname $(realpath $0))/utils.sh"
 
 # Set the default value of the getopts variable 
+WORKSPACE="/workspace"
 GPU="all"
 RUN_WEB=true
 RUN_CLI=false
@@ -9,7 +10,6 @@ MAGIC=true
 SERVER=false
 INIT=false
 FIRST_TIME=true
-LOG="./docker/docker_info.log"
 
 # Install pre-requirement
 if [[ -z $(which jq) ]];then
@@ -43,11 +43,12 @@ function help(){
 	echo "s		Server mode for non vision user."
 	echo "c		Run as command line mode"
 	echo "m		Print information with MAGIC."
-	echo "i		Initialize docker container ( start over )."
+	echo "n		Not to initialize samples."
 	echo "h		help."
 }
 
-while getopts "g:wcsihmh" option; do
+# Get information from argument
+while getopts "g:wcshmhnl" option; do
 	case $option in
 		g )
 			GPU=$OPTARG ;;
@@ -57,8 +58,10 @@ while getopts "g:wcsihmh" option; do
 			RUN_CLI=true ;;
 		m )
 			MAGIC=false ;;
-		i )
-			INIT=true ;;
+		n )
+			INIT=false ;;
+		l )
+			RELEASE=true ;;
 		h )
 			help; exit ;;
 		\? )
@@ -78,25 +81,25 @@ fi
 
 # Setup variable
 DOCKER_IMAGE="${PROJECT}-${PLATFORM}:${VERSION}"
-DOCKER_NAME="${PROJECT}-${PLATFORM}"
+DOCKER_NAME="${PROJECT}-${PLATFORM}-${VERSION}"
 
 MOUNT_CAMERA=""
 MOUNT_GPU="--gpus"
 
-WORKSPACE="/workspace"
+
 SET_VISION=""
 
-INIT_CMD="./init_for_sample.sh"
-WEB_CMD="./exec_web_api.sh"
+INIT_CMD="${WORKSPACE}/init_samples.sh"
+WEB_CMD="${WORKSPACE}/exec_web_api.sh"
 CLI_CMD="bash"
 RUN_CMD=""
 
-# Check if image come from docker hub
-DOCKER_HUB_IMAGE="maxchanginnodisk/${DOCKER_IMAGE}"
-if [[ ! $(check_image $DOCKER_HUB_IMAGE) -eq 0 ]];then
-	DOCKER_IMAGE=${DOCKER_HUB_IMAGE}
-	echo "From Docker Hub ... Update Docker Image Name: ${DOCKER_IMAGE}"
-fi
+# Initialize Samples
+if [[ ${INIT} = true ]]; then RUN_CMD=${INIT_CMD}; fi
+
+# Run CLI or Web
+if [[ ${RUN_CLI} = true ]]; then RUN_CMD="${RUN_CMD} ${CLI_CMD}";
+else RUN_CMD="${RUN_CMD} ${WEB_CMD}"; fi
 
 # SERVER or DESKTOP MODE
 if [[ ${SERVER} = false ]];then
@@ -124,15 +127,15 @@ MOUNT_GPU="${MOUNT_GPU} device=${GPU}"
 DOCKER_CMD="docker run \
 --name ${DOCKER_NAME} \
 ${MOUNT_GPU} \
--dt \
+-it \
 --net=host --ipc=host \
 -v /etc/localtime:/etc/localtime:ro \
 -w ${WORKSPACE} \
--v `pwd`:${WORKSPACE} \
+-v $(pwd):${WORKSPACE} \
 --privileged \
 -v /dev:/dev \
 ${SET_VISION} \
-${DOCKER_IMAGE} \"bash\" \n"
+${DOCKER_IMAGE} ${RUN_CMD}"
 
 # Show information
 INFO="\n\
@@ -149,40 +152,35 @@ COMMAND: bash \n"
 
 # Print the INFO
 print_magic "${INFO}" "${MAGIC}"
-echo -e "Command: ${DOCKER_CMD}"
+echo -ne "\nDOCKER COMMAND: \n${DOCKER_CMD}\n\n"
 
 # Log
-printf "$(date +%m-%d-%Y)" > "${LOG}"
-printf "${INFO}" >> "${LOG}"
-printf "\nDOCKER COMMAND: \n${DOCKER_CMD}" >> "${LOG}";
+printf "$(date +%m-%d-%Y)"
+printf "${INFO}"
+printf "\nDOCKER COMMAND: \n${DOCKER_CMD}";
 
 # Define run command
-RUN_CMD=`if [[ ${RUN_CLI} = false ]];then echo ${WEB_CMD};else echo ${CLI_CMD};fi `
+RUN_CMD=$(if [[ ${RUN_CLI} = false ]]; then echo ${WEB_CMD}; else echo ${CLI_CMD};fi)
 
 # Check is the container not exist
-if [[ $(check_container ${DOCKER_NAME}) -eq 0 ]];then
+if [[ $(check_container "${DOCKER_NAME}") -eq 0 ]];then
 	
-	printd "Run docker container in background" Cy;
-	bash -c "${DOCKER_CMD}";
-	docker exec -it ${DOCKER_NAME} ${INIT_CMD};
-	docker exec -it ${DOCKER_NAME} ${RUN_CMD};
+	printd "Run docker container ..." Cy
+	bash -c "${DOCKER_CMD}"
 
 # If container exist
 else
-	
-	printd "Found docker container " Cy
+    printd "Found docker container " Cy
 
 	# Check is the container still running
-	if [ $(check_container_run ${DOCKER_NAME}) == "true" ]; then
+	if [ "$(check_container_run "${DOCKER_NAME}")" == "true" ]; then
 		printd "Container is running" Cy
-		# docker exec -it ${DOCKER_NAME} ${INIT_CMD};
-		docker exec -it ${DOCKER_NAME} ${RUN_CMD};
+		docker exec -it "${DOCKER_NAME}" "${RUN_CMD}"
 	
 	# Start container if container not running 
 	else
 		printd "Start the docker container" Cy
-		docker start ${DOCKER_NAME};
-		docker exec -it ${DOCKER_NAME} ${INIT_CMD};
-		docker exec -it ${DOCKER_NAME} ${RUN_CMD};
+		docker start "${DOCKER_NAME}"
+		docker exec -it "${DOCKER_NAME}" "${RUN_CMD}"
 	fi;
 fi;

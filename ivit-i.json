@@ -1,6 +1,6 @@
 {
     "PROJECT": "ivit-i",
-    "VERSION": "v0.6",
+    "VERSION": "v0.8",
     "PLATFORM": "nvidia",
     "FRAMEWORK": "tensorrt",
     "AF": "tensorrt",

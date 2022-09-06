@@ -62,7 +62,6 @@ function check_pyinstaller(){
 	# Install pyinstaller for inno-verify
 	if [[ -z $(which pyinstaller) ]];then
 		printd "Installing pyinstaller for inno-verify .... " Cy
-		sudo -H python3 -m pip install --upgrade pip
-		sudo -H python3 -m pip install pyinstaller -q
+		pip3 install pyinstaller -q
 	fi
 }
