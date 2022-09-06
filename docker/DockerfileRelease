@@ -26,6 +26,7 @@ RUN apt-get update -q \
 WORKDIR ${WS}/docker
 RUN chmod u+x ./*.sh \
 && ./requirements.sh \
+&& ./patch_pose.sh \
 && ./gen_inno_verify.sh \
 && mv ./inno_verify ./entrypoint /usr/bin
 
@@ -41,4 +42,4 @@ RUN echo -e "\n - Cythonize iVIT-I ... \n" \
 # # Define Entrypoint
 ENTRYPOINT [ "entrypoint" ]
 
-# docker run -it --rm --privileged -v /dev:/dev --name ivit-i-intel-v0.8  --device /dev/dri --device-cgroup-rule='c 189:* rmw'  --net=host --ipc=host -v /etc/localtime:/etc/localtime:ro -v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix:0 maxchanginnodisk/ivit-i-intel:v0.8 /workspace/init_samples.sh bash
+# docker run -it --rm --privileged -v /dev:/dev --name ivit-i-nvidia-v0.8  --device /dev/dri --device-cgroup-rule='c 189:* rmw'  --net=host --ipc=host -v /etc/localtime:/etc/localtime:ro -v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix:0 maxchanginnodisk/ivit-i-nvidia:v0.8 bash
