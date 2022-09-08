@@ -1,3 +1,5 @@
+![LOGO](docs/images/iVIT-I-Logo-B.png)
+
 # iVIT-I For NVIDIA
 iVIT-I for NVIDIA x86 platform
 
@@ -9,7 +11,8 @@ iVIT-I for NVIDIA x86 platform
 
 # Pre-requirements
 * NVIDIA gpu driver ( 430+ )
-* Install [docker](https://max-c.notion.site/Install-Docker-9a0927c9b8aa4455b66548843246152f) and [nvidia-docker2](https://max-c.notion.site/Install-NVIDIA-Docker-b15e1b2930f646f389675bde6a04c9e2)
+* [Docker](https://max-c.notion.site/Install-Docker-9a0927c9b8aa4455b66548843246152f)
+* [NVIDIA Container](https://max-c.notion.site/Install-NVIDIA-Docker-b15e1b2930f646f389675bde6a04c9e2)
 
 
 # Prepare Environment
@@ -28,23 +31,26 @@ iVIT-I for NVIDIA x86 platform
 
 2. Run the docker container with web api
 
-    * Before running the container
-        1. Avoid Container Conflict
 
-            If you run `ivit-i-{brand}` before, make sure there is no container naming `ivit-i-{brand}` exists, you could run `docker rm ivit-i-{brand}` to remove it.
-
-        2. Initialize Automatically
-        
-            It will initialize serveral samples which define in [init_samples.sh](./init_samples.sh).
-        
     * Run container with **web api**
         ```bash
         sudo ./docker/run.sh
         ```
 
-    * Run container with **interactive mode**
+    * Run container with **command line mode**
         ```bash
         sudo ./docker/run.sh -c
+        ```
+
+    * Run container without initialize sample
+        ```bash
+        sudo ./docker/run.sh -sc
+
+        # if you need to initialize samples
+        ./init_samples.sh
+
+        # if you need to launch web api
+        ./exec_web_api.sh
         ```
 
     * Run docker container step by step for developer
@@ -55,8 +61,6 @@ iVIT-I for NVIDIA x86 platform
 
         <img src="docs/images/run_script_info.png" width=80%>
         
-        Refer to [running_workflow.md](docs/running_workflow.md) to see more output information.
-
 # Run Samples
 * Please follow the README.md in each samples, the common workflow like below
     1. Enter docker container.

@@ -7,7 +7,7 @@
 ```bash
 # Must modify to the correct information
 BRAND=nvidia
-VER=v0.9
+VER=v1.0
 ROOT=</path/to/ivit-i-${BRAND}>
 ```
 
