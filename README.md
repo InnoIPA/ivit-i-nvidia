@@ -44,7 +44,7 @@ iVIT-I for NVIDIA x86 platform
 
     * Run container without initialize sample
         ```bash
-        sudo ./docker/run.sh -c
+        sudo ./docker/run.sh -nc
 
         # if you need to initialize samples
         ./init_samples.sh
