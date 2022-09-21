@@ -105,7 +105,7 @@ else RUN_CMD="${RUN_CMD} ${WEB_CMD}"; fi
 if [[ ${BG} == true ]]; then RUN_CMD="bash"; fi
 
 # If is desktop mode
-if [[ ${SERVER} = true ]];then
+if [[ ${SERVER} = false ]];then
 	MODE="DESKTOP"
 	SET_VISION="-v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix${DISPLAY}"
 	xhost + > /dev/null 2>&1
@@ -123,7 +123,7 @@ MOUNT_GPU="${MOUNT_GPU} device=${GPU}"
 
 
 # Intel Option
-MOUNT_INTEL="--device /dev/dri --device-cgroup-rule='c 189:* rmw'"
+SET_PRIVILEG="--privileged -v /dev:/dev"
 
 # Sync Time
 SET_TIME="-v /etc/localtime:/etc/localtime:ro"
@@ -141,11 +141,11 @@ ${SET_CONTAINER_MODE} \
 ${SET_PRIVILEG} \
 ${SET_NAME} \
 ${MOUNT_GPU} \
-${MOUNT_INTEL} \
 ${SET_NETS} \
 ${SET_TIME} \
 ${MOUNT_WS} \
 ${SET_VISION} \
+-e \"IVIT_DEBUG=True\" \
 ${DOCKER_IMAGE} ${RUN_CMD}"
 
 # Log
