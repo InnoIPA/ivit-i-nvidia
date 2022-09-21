@@ -12,5 +12,9 @@
     "DATA": "data",
     "DEBUG": false,
     "WORKER": 1,
-    "THREADING": 30
+    "THREADING": 30,
+    "MQTT_BROKER_URL": "localhost",
+    "MQTT_BROKER_PORT": 1883,
+    "MQTT_REFRESH_TIME": 1.0,
+    "MQTT_USERNAME":""
 }   
