@@ -8,9 +8,10 @@ from ivit_i.utils.parser import load_json, load_txt, parse_input_data
 from ivit_i.utils.timer import Timer
 from ivit_i.utils.drawing_tools import Draw, get_palette, draw_fps
 from ivit_i.common import api
-from ivit_i.web.ai.pipeline import Source
 from ivit_i.app.handler import get_application
-from ivit_i.web.tools.common import handle_exception
+
+from ivit_i.common.pipeline import Source
+from ivit_i.utils import handle_exception
 
 CV_WIN='Detection Results'
 FULL_SCREEN = True
