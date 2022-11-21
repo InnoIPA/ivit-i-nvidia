@@ -1,132 +1,188 @@
-import os, sys, cv2, logging, argparse
-from pyexpat import model
-from shutil import ExecError
-import numpy as np
+#!/bin/python3
+
+import os, sys, cv2, logging, argparse, time
 sys.path.append(os.getcwd())
-from ivit_i.utils.logger import config_logger
-from ivit_i.utils.parser import load_json, load_txt, parse_input_data
-from ivit_i.utils.timer import Timer
-from ivit_i.utils.drawing_tools import Draw, get_palette, draw_fps
+
 from ivit_i.common import api
-from ivit_i.app.handler import get_application
+from ivit_i.common.pipeline import Pipeline
 
-from ivit_i.common.pipeline import Source
 from ivit_i.utils import handle_exception
+from ivit_i.utils.parser import load_json
+from ivit_i.utils.draw_tools import draw_fps
 
-CV_WIN='Detection Results'
+from ivit_i.app.handler import get_application
+from ivit_i.app.common import CV_WIN
+
 FULL_SCREEN = True
+WAIT_KEY_TIME   = 1
+SERV    = 'server'
+RTSP    = 'rtsp'
+GUI     = 'gui'
+
+def init_cv_win():
+    cv2.namedWindow( CV_WIN, cv2.WND_PROP_FULLSCREEN )
+    cv2.setWindowProperty( CV_WIN, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN )
+    logging.info('Init Display Window')
+
+def fullscreen_toggle():
+    global FULL_SCREEN
+    cv2.setWindowProperty( 
+        CV_WIN, cv2.WND_PROP_FULLSCREEN, 
+        cv2.WINDOW_FULLSCREEN if FULL_SCREEN else cv2.WINDOW_NORMAL )
+    FULL_SCREEN = not FULL_SCREEN
+
+def display(frame, t_wait_key):
+
+    exit_flag = False
+
+    cv2.imshow(CV_WIN, frame)            
+    
+    key = cv2.waitKey(t_wait_key)
+    if key in {ord('q'), ord('Q'), 27}:
+        exit_flag = True
+    elif key in { ord('a'), 201, 206, 210, 214 }:
+        fullscreen_toggle()
+
+    return exit_flag
+
+def get_running_mode(args):
+    if(args.server): return SERV
+    elif(args.rtsp): return RTSP
+    else: return GUI
+
+def check_info(info):
+    if info is None: return False
+    if info['detections']==[]: return False
+    
+    return True
 
 def main(args):
-    global FULL_SCREEN
 
-    # 1. Initialize logger
-    config_logger(log_name='ivit-i-nvidia.log', write_mode='w', level='debug')
+    # Get Mode
+    mode = get_running_mode(args)
+    t_wait_key  = 0 if args.debug else WAIT_KEY_TIME
 
-    # 2. Load and combine configuration
+    # Load and combine configuration
     app_conf = load_json(args.config)                       # load the configuration of the application
     model_conf = load_json(app_conf['prim']['model_json'])             # load the configuration of the AI model
     total_conf = model_conf.copy()
     total_conf.update(app_conf)
 
-    # 3. Get the target API and Draw tool
+    # Get the target API and load model
     try:
         trg = api.get(total_conf)
-        draw = Draw()
+        trg.load_model(total_conf)
     except Exception as e:
-        
         handle_exception(error=e, title="Could not get ivit-i API", exit=True)
 
-    # 4. Load and initialize model which return a list of objects for inference and the palette
-    try:
-        trt_objects, palette = trg.load_model(total_conf)
-    except Exception as e:
-        handle_exception(error=e, title="Could not load AI model", exit=True)
+    # Start inference base on three mode
+    src = Pipeline(total_conf['source'], total_conf['source_type'])
+    src.start()
+    (src_hei, src_wid), src_fps = src.get_shape(), src.get_fps()
+    
+    # Concate RTSP pipeline
+    if mode==RTSP:
+        gst_pipeline = 'appsrc is-live=true block=true ' + \
+            ' ! videoconvert ' + \
+            ' ! video/x-raw,format=I420 ' + \
+            ' ! x264enc speed-preset=ultrafast bitrate=2048 key-int-max=25' + \
+            f' ! rtspclientsink location=rtsp://{args.ip}:{args.port}{args.name}'
+        out = cv2.VideoWriter(  gst_pipeline, cv2.CAP_GSTREAMER, 0, 
+                                src_fps, (src_wid, src_hei), True )
+        logging.info(f'Define Gstreamer Pipeline: {gst_pipeline}')
 
-    # 5. Start inference base on three mode
-    src = Source(total_conf['source'], total_conf['source_type'])
+        if not out.isOpened():
+            raise Exception("can't open video writer")
 
-    # 6. Setting Application
-    has_app=False
+    # Setting Application
     try:
         application = get_application(total_conf)
-        has_app = False if application == None else True
-
-        # Setup parameter if needed
-        app_info = total_conf["application"]
-
-        # Area detection: point_points
-        if "area" in app_info["name"]:
-            key = "area_points"
-            if not key in app_info: application.set_area(pnts=None, frame=src.get_first_frame())
-            else: application.set_area(pnts=app_info[key])   
-
+        if total_conf["application"]["name"] != "default":
+            application.set_area(frame=src.get_first_frame() if mode==GUI else None)
     except Exception as e:
         handle_exception(error=e, title="Could not load application ... set app to None", exit=False)
-        has_app=False
     
-    # 7. Start inference
-    
-    # server mode: won't display cv window
-    if not args.server:
-        cv2.namedWindow(CV_WIN, cv2.WND_PROP_FULLSCREEN)
-        cv2.setWindowProperty(CV_WIN,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN if FULL_SCREEN else cv2.WINDOW_NORMAL )
+
+    # Start inference
+    if mode==GUI: init_cv_win()
+
+    # Infer Parameters
+    temp_info, cur_info    = None, None
+    cur_fps , temp_fps     = 30, 30
+    fps_buf = []
 
     try:
+        print('start to inference')
         while True:
-
-            # 7.1. capture frame from source object
-            ret_frame, frame = src.get_frame()
             
-            # 7.2. if not frame break
-            if not ret_frame: 
-                if src.get_type().lower() in ["rtsp", "video"]:
-                    src = Source(total_conf['source'], total_conf['source_type'])
+            # Get current frame
+            t_start = time.time()
+            success, frame = src.read()
+            
+            # Check frame
+            if not success:
+            
+                if src.get_type() == 'v4l2':
+                    break
+                else:
+                    application.reset()
+                    src.reload()
                     continue
 
-            # 7.3. do inference
-            org_frame = frame.copy()
-            info = trg.inference(trt_objects, org_frame, total_conf)   
+            draw = frame.copy()
+            
+            # Inference
+            cur_info = trg.inference( frame, args.mode )
+            if(check_info(cur_info)):
+                print('get results ( type: {} )'.format(type(cur_info)))
+                temp_info, cur_fps = cur_info, temp_fps
+            
+            # Drawing result using application and FPS
+            draw, app_info = application(draw, temp_info)
+            draw = draw_fps( draw, cur_fps )
+            
+            # Display draw
+            if mode==GUI:
+                exit_win = display(draw, t_wait_key)
+                if exit_win: break
 
-            # 7.4. draw results or using application
-            if not args.server:
-                
-                if info is None: continue
+            elif mode==RTSP:
+                print(type(draw), draw.shape)
+                out.write(draw)
 
-                # using default draw tool if no application available
-                if not has_app:
-                    frame = draw.draw_detections(info, palette, total_conf)
-                else:
-                    frame = application(org_frame, info)
+            # Log
+            # if(app_info): logging.temp_info(app_info)
 
-                # show the results            
-                cv2.imshow(CV_WIN, frame)
-                key = cv2.waitKey(1 if not args.debug else 0)
-                if key in {ord('q'), ord('Q'), 27}:
-                    break                 
-                elif key in { ord('a'), 201, 206, 210, 214 }:
-                    FULL_SCREEN = not FULL_SCREEN
-                    cv2.setWindowProperty(CV_WIN,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN if FULL_SCREEN else cv2.WINDOW_NORMAL )
-                elif key in { ord('c'), 32 }:
-                    palette = get_palette( total_conf )
-
-            else:
-                logging.info( info["detections"])
+            # Delay inferenece to fix in 30 fps
+            t_cost, t_expect = (time.time()-t_start), (1/src.get_fps())
+            time.sleep( (t_expect-t_cost) if( t_cost<t_expect ) else 0.0001 )
+            
+            # Calculate FPS
+            if(check_info(cur_info)):
+                fps_buf.append(int(1/(time.time()-t_start)))
+                if(len(fps_buf)>10): fps_buf.pop(0)
+                temp_fps = sum(fps_buf)/len(fps_buf)
+                    
+        src.release()
 
     except KeyboardInterrupt:
         logging.warning("Quit")
+
     finally:        
-        # release if needed
         trg.release()
-        if not args.server: src.release()
-
-
-if __name__ == "__main__":
-
-    # 宣告外部參數
+        
+if __name__ == '__main__':
+    
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--config', help='the path of configuration.')
-    parser.add_argument('-d', '--debug', action="store_true", help='the debug mode.')
-    parser.add_argument('-s', '--server', action="store_true", help='the server mode.')
+    parser.add_argument('-c', '--config', help = "The path of application config")
+    parser.add_argument('-s', '--server', action="store_true", help = "Server mode, not to display the opencv windows")
+    parser.add_argument('-r', '--rtsp', action="store_true", help = "RTSP mode, not to display the opencv windows")
+    parser.add_argument('-d', '--debug', action="store_true", help = "Debug mode")
+    parser.add_argument('-m', '--mode', type=int, default = 1, help = "Select sync mode or async mode{ 0: sync, 1: async }")
+    parser.add_argument('-i', '--ip', type=str, default = '127.0.0.1', help = "The ip address of RTSP uri")
+    parser.add_argument('-p', '--port', type=str, default = '8554', help = "The port number of RTSP uri")
+    parser.add_argument('-n', '--name', type=str, default = '/mystream', help = "The name of RTSP uri")
+
     args = parser.parse_args()
 
-    main(args)
+    sys.exit(main(args) or 0)

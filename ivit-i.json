@@ -1,6 +1,6 @@
 {
     "PROJECT": "ivit-i",
-    "VERSION": "v1.0",
+    "VERSION": "v1.0.3",
     "PLATFORM": "nvidia",
     "FRAMEWORK": "tensorrt",
     "AF": "tensorrt",
@@ -9,6 +9,7 @@
     "LOGGER": "ivit-i-web.log",
     "TASK_ROOT": "./task",
     "TEMP_PATH": "./temp",
+    "MODEL_DIR": "./model",
     "DATA": "data",
     "DEBUG": false,
     "WORKER": 1,

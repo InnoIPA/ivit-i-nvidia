@@ -7,48 +7,44 @@ Fast Testing for `NVIDIA` platform:
 
 * Run the testing script
     ```bash
-    ./docker/run.sh -c
-    <script.sh> < -r > < -s > < -h >
+    # Only init
+    ./test/<script>.sh
+
+    # Run demo
+    ./test/<script>.sh -d
+
+    # Run demo with RTSP
+    ./test/<script>.sh -d -r
     ```
-    |   name    |   descr                   
-    |   ----    |   -----
-    |   `-r`    |   run the demo script and display the result
-    |   `-s`    |   server mode, only print the result not dispay
-    |   `-h`    |   show help information
+    
+* Usage
+    ```bash
+    ./test/<script>.sh --help
+
+        Usage:
+            -l | --list             : show available task name
+            -d | --demo             : run demo ( display cv window )
+            -s | --server           : server mode ( only show log )
+            -r | --rtsp             : rtsp mode ( rtsp://127.0.0.0:8554/mystream )
+            --route                 : define rtsp route, ( rtsp://127.0.0.0:8554/<route> )
+    ```
 
 * Run script outside the docker container
 
     ```bash
-    docker start ivit-i-nvidia
-    docker exec -it ivit-i-nvidia <script.sh> < -r > < -s > < -h >
+    ./docker/run.sh -b
+    docker exec -it ivit-i-nvidia <script>.sh < -d > < -r > < -s > < -h >
     ```
 
 * Examples
-    * classification.sh
-        ```bash
-        docker exec -it ivit-i-nvidia ./test/classification.sh -r
-        ```
-    * ngc_people_seg.sh
-        ```bash
-        docker exec -it ivit-i-nvidia ./test/ngc_people_seg.sh -r
-        ```
-    * pose_estimation.sh
-        ```bash
-        docker exec -it ivit-i-nvidia ./test/pose_estimation.sh -r
-        ```
-    * innodisk_dram_detection.sh
-        ```bash
-        docker exec -it ivit-i-nvidia ./test/innodisk_dram_detection.sh -r
-        ```
-    * yolov3-tiny.sh
-        ```bash
-        docker exec -it ivit-i-nvidia ./test/yolov3-tiny.sh -r
-        ```
-    * yolov4-tiny.sh
-        ```bash
-        docker exec -it ivit-i-nvidia ./test/yolov4-tiny.sh -r
-        ```
-    * yolov4.sh
-        ```bash
-        docker exec -it ivit-i-nvidia ./test/yolov4.sh -r
-        ```
+    ```bash
+    docker exec -it ivit-i-nvidia ./classification.sh -d
+    docker exec -it ivit-i-nvidia ./area-detection-sample.sh -d
+    docker exec -it ivit-i-nvidia ./moving-direction-sample.sh -d
+    docker exec -it ivit-i-nvidia ./parking-lot-detect.sh -d
+    docker exec -it ivit-i-nvidia ./traffic-flow-detect.sh -d
+    docker exec -it ivit-i-nvidia ./wrong-side-detect.sh -d
+    docker exec -it ivit-i-nvidia ./yolov3-tiny.sh -d
+    docker exec -it ivit-i-nvidia ./yolov4.sh -d
+    docker exec -it ivit-i-nvidia ./yolov4-tiny.sh -d
+    ```

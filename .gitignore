@@ -48,3 +48,6 @@ temp/
 !docs/images/*
 docker/inno_verify
 bk
+
+# Model
+model/

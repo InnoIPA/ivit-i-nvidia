@@ -1,4 +1,4 @@
-import wget, argparse, os, logging
+import wget, argparse, os, logging, gdown
 
 DOWNLOAD_MAP = {
     "yolov3": {
@@ -32,6 +32,11 @@ DOWNLOAD_MAP = {
     "yolov4x-mish": {
         "weight": "https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4x-mish.weights",
         "config": "https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4x-mish.cfg",
+    },
+    "label":{
+        "name": "coco.txt",
+        "org_url": "https://drive.google.com/file/d/1OY9Qg6O-x1jDLchZqe3I8gKvvKzr44_C/view?usp=sharing",
+        "url": 'https://drive.google.com/uc?id=1OY9Qg6O-x1jDLchZqe3I8gKvvKzr44_C'
     }
 }
 
@@ -77,27 +82,29 @@ def modify_size(model, size, log=True):
     
     check_path(org_weight, need_raise=True)
     check_path(org_config, need_raise=True)
-        
-
-    with open(org_config, 'r') as file:
-        data = file.readlines()
-        # modify width and height
-        data[ line_width-1 ]="width={}\n".format(width)
-        data[ line_height-1 ]="height={}\n".format(height)
-        data[-1]="\n"
-        print(' * width -> {}'.format( width ))
-        print(' * height -> {}'.format( height ))
-        # yolo v4 need to change the batch
-        if line_batch != (-1):
-            data[ line_batch-1 ]="batch=1\n"
-            print(' * batch -> {}'.format( 1 ))
-    # double check
-    if data==[]: raise Exception('read {} content failed'.format( org_config ))
-
-    # write a new config
-    with open(trg_config, 'w') as file:
-        file.writelines(data)
     
+    if( not check_path(trg_config)):
+        with open(org_config, 'r') as file:
+            data = file.readlines()
+            # modify width and height
+            data[ line_width-1 ]="width={}\n".format(width)
+            data[ line_height-1 ]="height={}\n".format(height)
+            data[-1]="\n"
+            print(' * width -> {}'.format( width ))
+            print(' * height -> {}'.format( height ))
+            # yolo v4 need to change the batch
+            if line_batch != (-1):
+                data[ line_batch-1 ]="batch=1\n"
+                print(' * batch -> {}'.format( 1 ))
+        # double check
+        if data==[]: raise Exception('read {} content failed'.format( org_config ))
+
+        # write a new config
+        with open(trg_config, 'w') as file:
+            file.writelines(data)
+    else:
+        print("Config already exist")
+
     # new weight file if needed
     if not check_path( trg_weight, log=False ):        
         # link weight
@@ -113,7 +120,7 @@ def modify_size(model, size, log=True):
 
 # -------------------------------------------------------
 # Download weight if needed
-def download_by_name(name, folder):
+def download_model_by_name(name, folder):
     
     # Create folder if needed
     if not check_path(folder): 
@@ -130,6 +137,10 @@ def download_by_name(name, folder):
             wget.download(url, folder, False) 
             print('Done')
 
+def download_label(url, path):
+    if( not os.path.exists(path)):
+        gdown.download( url, path)
+
 if __name__ == "__main__":
     
     # ---------------------------------------------------
@@ -143,10 +154,17 @@ if __name__ == "__main__":
     # ---------------------------------------------------
     # Download weight if needed
     print('\nStart to download the model weights and configuration.')
-    download_by_name(args.model, args.folder)
+    download_model_by_name(args.model, args.folder)
 
     # ---------------------------------------------------
     # Modify config and soft link a new weight
     # return the target model name ( without extension )
     print('\nStart to modify configuration and create a soft link for weight file.')
     trg_model = modify_size(os.path.join(args.folder, args.model), args.size)
+
+    print('\nDownload label file')
+    download_label(
+        DOWNLOAD_MAP["label"]["url"] , 
+        os.path.join(args.folder, DOWNLOAD_MAP["label"]["name"]))
+
+    print('\nAll Done.\n')

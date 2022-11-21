@@ -6,10 +6,59 @@ WS="/workspace"
 FRAMEWORK="tensorrt"
 TASK_ROOT="task"
 
-TASK_NAME="classification_sample"
+TASK_NAME="classification-sample"
 TASK_CONF="task.json"
+
+# -----------------------------------------------------
+
 RUN_DEMO=false
-SERVER_MODE=""
+MODE=""
+RTSP_ROUTE=""
+SHOW_LIST=false
+
+
+script_name=$(basename "$0")
+short=t:ldsr
+long=task:,route:,list,demo,server,rtsp,help
+
+read -r -d '' usage <<EOF
+Usage:
+	-t | --task		: define task name
+	-l | --list		: show available task name
+	-d | --demo		: run demo ( display cv window )
+	-s | --server	: run server mode ( only show log )
+	-r | --rtsp		: run rtsp mode ( rtsp://127.0.0.0:8554/mystream )
+	--route			: define rtsp route, ( rtsp://127.0.0.0:8554/<route> ) 
+EOF
+
+TEMP=$(getopt -o $short --long $long --name "$script_name" -- "$@")
+
+eval set -- "${TEMP}"
+
+while :; do
+    case "${1}" in
+        -t | --task       	) TASK_NAME=$2;             shift 2 ;;
+        -d | --demo		  	) RUN_DEMO=true;           	shift 1 ;;
+        -s | --server 		) MODE='-s';       			shift 1 ;;
+		-r | --rtsp 		) MODE='-r';       			shift 1 ;;
+		-l | --list 		) SHOW_LIST=true;			shift 1 ;;
+		--route				) RTSP_ROUTE=$2;			shift 2 ;;
+        --help            	) echo "${usage}" 1>&2;   	exit ;;
+        --                	) shift;                 	break ;;
+        *                 	) echo "Error parsing"; 	exit 1 ;;
+    esac
+done
+
+# Move to Workspace
+cd $WS || exit
+
+if [[ "$SHOW_LIST" = true ]];then
+	echo -e "\nList Tasks"
+	ls "/workspace/task" | tr "" "\n" | nl
+	exit 0
+fi
+
+# -----------------------------------------------------
 
 # Combine Parameters
 TASK_PATH="${WS}/${TASK_ROOT}/${TASK_NAME}"
@@ -20,50 +69,18 @@ MODIFTY_GPU_SCRIPT="${WS}/tools/update_first_gpu.py"
 
 RUN_DOWNLOAD_DATA="${TASK_PATH}/download_data.sh"
 RUN_DOWNLOAD_MODEL="python3 ${TASK_PATH}/${DOWNLOAD_SCRIPT}"
+
 RUN_GPU_MODIFY="python3 ${MODIFTY_GPU_SCRIPT} -f ${FRAMEWORK} -j ${CONF_PATH}"
-
-# Title
-printf "\n"
-printf "# FAST-RUN ${TASK_NAME} \n"
-
-# Define HELP
-function help(){
-	echo "Run the iVIT-I environment."
-	echo
-	echo "Syntax: scriptTemplate [-rsh]"
-	echo "options:"
-	echo "r     run demo"
-    echo "s     run demo with server mode"
-	echo "h     help."
-}
-
-# Define Argument and Parse it
-while getopts "rsh" option; do
-	case $option in
-		r )
-			RUN_DEMO=true ;;
-		s )
-			SERVER_MODE="-s" ;;
-		h )
-			help; exit ;;
-		\? )
-			help; exit;;
-		* )
-			help; exit;;
-	esac
-done
 
 # Show information
 printf "%-${LEN}s | %-${LEN}s \n" "TIME" "$(date)"
 printf "%-${LEN}s | %-${LEN}s \n" "TASK_PATH" "${TASK_PATH}"
 printf "%-${LEN}s | %-${LEN}s \n" "CONF_PATH" "${CONF_PATH}"
 printf "%-${LEN}s | %-${LEN}s \n" "RUN SAMPLE" "${RUN_DEMO}"
-printf "%-${LEN}s | %-${LEN}s \n" "SERVER MODE" $(if [[ ${SERVER_MODE} = "" ]];then echo false; else echo true;fi)
+printf "%-${LEN}s | %-${LEN}s \n" "MODE" "${MODE}"
+printf "%-${LEN}s | %-${LEN}s \n" "RTSP_ROUTE" "${RTSP_ROUTE}"
 printf "%-${LEN}s | %-${LEN}s \n" "DOWNLOAD MODEL" "${RUN_DOWNLOAD_MODEL}"
 printf "%-${LEN}s | %-${LEN}s \n" "MODIFY GPU" "${RUN_GPU_MODIFY}"
-
-# Move to Workspace
-cd $WS
 
 # Download data
 ${RUN_DOWNLOAD_DATA}
@@ -75,10 +92,16 @@ ${RUN_DOWNLOAD_MODEL}
 ${RUN_GPU_MODIFY}
 
 # Run Sample
-if [[ "$RUN_DEMO" = true ]];then
-	printf "Run Sample ... \n"
-	export IVIT_I=/workspace/ivit-i.json
-	python3 demo.py -c ${CONF_PATH} ${SERVER_MODE}
-else
-	printf "${TASK_NAME} Initialize finished \n"
-fi
+if [[ "$RUN_DEMO" == false ]];then printf "%s Initialize finished \n" "${TASK_NAME}"; exit 0 ; fi
+
+# Title
+printf "\n# RUN Sample: %s \n" "${TASK_NAME}"
+
+export IVIT_I=/workspace/ivit-i.json
+
+CMD="/workspace/demo.py -c ${CONF_PATH} ${MODE}"
+
+if [[ "${RTSP_ROUTE}" != "" ]];then CMD="${CMD} -n ${RTSP_ROUTE}" ;fi
+
+bash -c "$CMD"
+exit

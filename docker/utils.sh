@@ -91,3 +91,15 @@ function check_lsof(){
 		apt-get install -qy lsof > /dev/null 2>&1; 
 	fi
 }
+
+function run_webrtc_server(){
+	printd "Launch WebRTC to Web Docker Service" Cy
+	docker run --rm -d \
+	--name ivit-webrtc-server \
+	--network host \
+	ghcr.io/deepch/rtsptoweb:latest
+}
+
+function stop_webrtc_server(){
+	docker stop ivit-webrtc-server
+}

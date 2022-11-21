@@ -7,8 +7,13 @@ echo -e "\
 Supported Samples: \n\
     - Classification \n\
     - YOLOv4 \n\
-    - YOLOv4-tiny \n"
-cd /workspace
+    - YOLOv4-tiny \n
+    - parking-lot-detect \n\
+    - traffic-flow-detect \n\
+    - wrong-side-detect \n\
+"
+
+cd /workspace || exit
 
 echo "-----------------------------------"
 printd "Initialize Classification Sample" G
@@ -23,19 +28,26 @@ printd "Initialize YOLOv4-tiny Sample" G
 ./test/yolov4-tiny.sh
 
 echo "-----------------------------------"
-printd "Initialize Innodisk DRAM Sample" G
-./test/innodisk_dram_detection.sh
+printd "Initialize parking-lot-detect" G
+./test/parking-lot-detect.sh
+
+echo "-----------------------------------"
+printd "Initialize traffic-flow-detect" G
+./test/traffic-flow-detect.sh
+
+echo "-----------------------------------"
+printd "Initialize wrong-side-detect" G
+./test/wrong-side-detect.sh
 
 echo "-----------------------------------"
 printd "ALL DONE !" G
 echo ""
 
-VAR="$@"
+VAR=$@
 CMD="bash"
 
-if [[ ! -z "$VAR" ]];then 
-    CMD="$VAR"; 
-    echo $CMD
+if [[ -n "$VAR" ]];then 
+    CMD=$VAR; echo $CMD
 fi
 
 /bin/bash -c "$CMD"

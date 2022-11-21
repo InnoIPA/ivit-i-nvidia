@@ -1,0 +1,51 @@
+{
+    "framework": "tensorrt",
+    "source": "data/car.mp4",
+    "category": "sample",
+    "application": {
+        "name": "moving_direction",
+        "depend_on": [
+            "car",
+            "bus",
+            "truck"
+        ],
+        "area_points": {
+            "0": [
+                [
+                    486,
+                    248
+                ],
+                [
+                    602,
+                    248
+                ],
+                [
+                    599,
+                    671
+                ],
+                [
+                    231,
+                    671
+                ]
+            ],
+            "1": []
+        },
+        "area_vector": {
+            "0": [
+                [
+                    440,
+                    630
+                ],
+                [
+                    522,
+                    318
+                ]
+            ]
+        }
+    },
+    "prim": {
+        "model_json": "./task/moving-direction-sample/yolov4-tiny.json"
+    },
+    "name": "moving-direction-sample",
+    "source_type": "Video"
+}

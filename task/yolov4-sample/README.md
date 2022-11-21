@@ -2,7 +2,7 @@
 
 1. Enter the environment
     ```bash
-    sudo ./docker/run.sh -c
+    ./docker/run.sh -c
     ```
 2. Download model
     ```bash
@@ -22,11 +22,11 @@
     cd /path/to/ivit-i
 
     # Notice: no need to give extension here
-    ./converter/yolo-converter.sh ./task/yolov4-sample/yolov4-416
+    ./converter/yolo-converter.sh ./model/yolov4/yolov4-416
 
     # After convert yolov4-416 should be generated.
-    ls ./task/yolov4-sample/yolov4-416* | grep trt
-    ./task/yolov4-sample/yolov4-416.trt
+    ls ./model/yolov4/yolov4-416* | grep trt
+    
     ```
     * Convert performance
       * `1050 Ti`
@@ -36,4 +36,26 @@
     ```
     cd /path/to/ivit-i
     python3 demo.py -c ./task/yolov4-sample/task.json
+    ```
+
+5. More Options
+    ```bash
+    python3 demo.py -h
+
+    Output <<EOF
+    usage: demo.py [-h] [-c CONFIG] [-s] [-r] [-d] [-m MODE] [-i IP] [-p PORT] [-n NAME]
+    
+    optional arguments:
+    -h, --help            show this help message and exit
+    -c CONFIG, --config CONFIG
+                            The path of application config
+    -s, --server          Server mode, not to display the opencv windows
+    -r, --rtsp            RTSP mode, not to display the opencv windows
+    -d, --debug           Debug mode
+    -m MODE, --mode MODE  Select sync mode or async mode{ 0: sync, 1: async }
+    -i IP, --ip IP        The ip address of RTSP uri
+    -p PORT, --port PORT  The port number of RTSP uri
+    -n NAME, --name NAME  The name of RTSP uri
+    EOF
+    
     ```

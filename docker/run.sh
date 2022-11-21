@@ -102,6 +102,9 @@ if [[ ${INIT} = true ]]; then RUN_CMD=${INIT_CMD}; fi
 if [[ ${RUN_CLI} = true ]]; then RUN_CMD="${RUN_CMD} ${CLI_CMD}";
 else RUN_CMD="${RUN_CMD} ${WEB_CMD}"; fi
 
+# Run WebRTC to Web Docker Service
+run_webrtc_server;
+
 if [[ ${BG} == true ]]; then RUN_CMD="bash"; fi
 
 # If is desktop mode
@@ -153,3 +156,6 @@ printd "Start to run docker command" Cy
 echo -ne "${DOCKER_CMD}\n"
 
 bash -c "${DOCKER_CMD}"
+
+docker stop ivit-webrtc-server
+exit
