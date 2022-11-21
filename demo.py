@@ -20,9 +20,9 @@ RTSP    = 'rtsp'
 GUI     = 'gui'
 
 def init_cv_win():
+    logging.info('Init Display Window')
     cv2.namedWindow( CV_WIN, cv2.WND_PROP_FULLSCREEN )
     cv2.setWindowProperty( CV_WIN, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN )
-    logging.info('Init Display Window')
 
 def fullscreen_toggle():
     global FULL_SCREEN
@@ -112,7 +112,7 @@ def main(args):
     fps_buf = []
 
     try:
-        print('start to inference')
+
         while True:
             
             # Get current frame
@@ -121,7 +121,6 @@ def main(args):
             
             # Check frame
             if not success:
-            
                 if src.get_type() == 'v4l2':
                     break
                 else:
@@ -134,20 +133,18 @@ def main(args):
             # Inference
             cur_info = trg.inference( frame, args.mode )
             if(check_info(cur_info)):
-                print('get results ( type: {} )'.format(type(cur_info)))
                 temp_info, cur_fps = cur_info, temp_fps
-            
+    
             # Drawing result using application and FPS
             draw, app_info = application(draw, temp_info)
             draw = draw_fps( draw, cur_fps )
-            
+
             # Display draw
             if mode==GUI:
                 exit_win = display(draw, t_wait_key)
                 if exit_win: break
 
             elif mode==RTSP:
-                print(type(draw), draw.shape)
                 out.write(draw)
 
             # Log
