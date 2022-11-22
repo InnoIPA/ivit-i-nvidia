@@ -157,5 +157,4 @@ echo -ne "${DOCKER_CMD}\n"
 
 bash -c "${DOCKER_CMD}"
 
-docker stop ivit-webrtc-server
-exit
+stop_webrtc_server; exit 0;

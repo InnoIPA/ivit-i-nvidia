@@ -112,7 +112,6 @@ def main(args):
     fps_buf = []
 
     try:
-
         while True:
             
             # Get current frame
@@ -134,7 +133,7 @@ def main(args):
             cur_info = trg.inference( frame, args.mode )
             if(check_info(cur_info)):
                 temp_info, cur_fps = cur_info, temp_fps
-    
+            
             # Drawing result using application and FPS
             draw, app_info = application(draw, temp_info)
             draw = draw_fps( draw, cur_fps )
@@ -159,14 +158,17 @@ def main(args):
                 fps_buf.append(int(1/(time.time()-t_start)))
                 if(len(fps_buf)>10): fps_buf.pop(0)
                 temp_fps = sum(fps_buf)/len(fps_buf)
-                    
+
+    except Exception as e:
+        logging.info(handle_exception(e))
+
+    finally:
+        trg.release()            
         src.release()
+        out.release()
 
-    except KeyboardInterrupt:
-        logging.warning("Quit")
-
-    finally:        
-        trg.release()
+    logging.warning('Quit')
+    sys.exit()
         
 if __name__ == '__main__':
     
@@ -182,4 +184,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    sys.exit(main(args) or 0)
+    if not ('/' in args.name):
+        args.name = f'/{args.name}'
+
+    main(args)
+    
