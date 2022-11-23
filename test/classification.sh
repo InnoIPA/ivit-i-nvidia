@@ -50,7 +50,7 @@ while :; do
 done
 
 # Move to Workspace
-cd $WS || exit
+cd ${WS} || exit
 
 if [[ "$SHOW_LIST" = true ]];then
 	echo -e "\nList Tasks"
@@ -64,11 +64,11 @@ fi
 TASK_PATH="${WS}/${TASK_ROOT}/${TASK_NAME}"
 CONF_PATH="${WS}/${TASK_ROOT}/${TASK_NAME}/${TASK_CONF}"
 
-DOWNLOAD_SCRIPT="download_resnext50.py"
+DOWNLOAD_SCRIPT="download_model.sh"
 MODIFTY_GPU_SCRIPT="${WS}/tools/update_first_gpu.py"
 
 RUN_DOWNLOAD_DATA="${TASK_PATH}/download_data.sh"
-RUN_DOWNLOAD_MODEL="python3 ${TASK_PATH}/${DOWNLOAD_SCRIPT}"
+RUN_DOWNLOAD_MODEL="${TASK_PATH}/${DOWNLOAD_SCRIPT}"
 
 RUN_GPU_MODIFY="python3 ${MODIFTY_GPU_SCRIPT} -f ${FRAMEWORK} -j ${CONF_PATH}"
 
@@ -88,6 +88,15 @@ ${RUN_DOWNLOAD_DATA}
 # Download model
 ${RUN_DOWNLOAD_MODEL}
 
+# Convert Model
+MODEL_PATH="/workspace/model/resnet/resnet34.trt"
+if [[ ! -f ${MODEL_PATH} ]];then
+	trtexec \
+	--onnx=/workspace/model/resnet/resnet34.onnx \
+	--batch=1 \
+	--saveEngine=${MODEL_PATH}
+fi
+
 # Change GPU
 ${RUN_GPU_MODIFY}
 
@@ -104,4 +113,3 @@ CMD="/workspace/demo.py -c ${CONF_PATH} ${MODE}"
 if [[ "${RTSP_ROUTE}" != "" ]];then CMD="${CMD} -n ${RTSP_ROUTE}" ;fi
 
 bash -c "$CMD"
-exit

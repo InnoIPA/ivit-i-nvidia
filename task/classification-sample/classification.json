@@ -1,8 +1,8 @@
 {
     "tag": "cls",
     "tensorrt": {
-        "model_path": "./model/resnet50/resnet50.engine",
-        "label_path": "./model/resnet50/imagenet.txt",
+        "model_path": "./model/resnet/resnet34.trt",
+        "label_path": "./model/resnet/imagenet.txt",
         "device": "NVIDIA GeForce GTX 1050 Ti",
         "input_size": "3,224,224",
         "preprocess": "torch",

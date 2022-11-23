@@ -1,4 +1,4 @@
-import cv2, time, logging, base64, threading, os, copy, sys
+import cv2, time, logging, base64, threading, os, copy, sys, json
 from flask import Blueprint, abort, jsonify, app, request
 from werkzeug.utils import secure_filename
 
@@ -6,7 +6,10 @@ from werkzeug.utils import secure_filename
 sys.path.append("/workspace")
 
 # Load Module from `web/api`
-from .common import frame2btye, get_src, stop_src, socketio, app, stop_task_thread
+# from .common import frame2btye, get_src, stop_src, socketio, app, stop_task_thread
+from .common import frame2btye, get_src, stop_src, stop_task_thread
+from .common import sock, app
+
 from ..tools.handler import get_tasks
 from ..tools.parser import get_pure_jsonify
 from ..ai.get_api import get_api
@@ -68,6 +71,7 @@ FRAME_IDX   = "frame_index"
 STREAM      = "stream"
 
 # Define SocketIO Event
+SOCK        = "SOCK"
 IMG_EVENT   = "images"
 RES_EVENT   = "results"
 
@@ -106,6 +110,12 @@ OV          = "openvino"
 XLNX        = "xilinx"
 VTS         = "vitis-ai"
 
+# def send_socketio(frame, socketio, namespace):
+#     # Convert to base64 format
+#     frame_base64 = base64.encodebytes(cv2.imencode(BASE64_EXT, frame)[1].tobytes()).decode(BASE64_DEC)
+#     # Send socketio to client
+#     socketio.emit(IMG_EVENT, frame_base64, namespace=namespace)
+
 def stream_task(task_uuid, src, namespace):
     '''
     Stream event: sending 'image' and 'result' to '/app/<uuid>/stream' via socketio
@@ -122,7 +132,6 @@ def stream_task(task_uuid, src, namespace):
     trg             = app.config[TASK][task_uuid][API]
     runtime         = app.config[TASK][task_uuid][RUNTIME]
     draw            = app.config[TASK][task_uuid][DRAW_TOOLS]
-    palette         = app.config[TASK][task_uuid][PALETTE]
     
     # deep copy the config to avoid changing the old one when do inference
     temp_model_conf = copy.deepcopy(model_conf)
@@ -190,36 +199,29 @@ def stream_task(task_uuid, src, namespace):
             t3 = time.time()
 
             # Draw something
-            draw, app_info = application(draw, cur_info)
+            if(temp_info):
+                draw, app_info = application(draw, cur_info)
             
             # Combine the return information
             ret_info            = copy.deepcopy(RET_INFO)
             ret_info[IDX]       = app.config[TASK][task_uuid][FRAME_IDX]
-            ret_info[DETS]      = info[DETS] if info is not None else None
+            ret_info[DETS]      = temp_info[DETS] if temp_info is not None else None
             ret_info[INFER]     = round((t3-t2)*1000, 3)
             ret_info[FPS]       = cur_fps
             ret_info[LIVE_TIME] = int((time.time() - app.config[TASK][task_uuid][START_TIME]))
-            ret_info[G_TEMP]    = ""
-            ret_info[G_LOAD]    = ""
 
             # Send RTSP
             out.write(draw)
 
-            # # Convert to base64 format
-            # frame_base64 = base64.encodebytes(cv2.imencode(BASE64_EXT, draw)[1].tobytes()).decode(BASE64_DEC)
-            # Send socketio to client
-            # socketio.emit(IMG_EVENT, frame_base64, namespace=namespace)
-
-            if(time.time() - temp_socket_time >= 1):
-                socketio.emit(RES_EVENT, get_pure_jsonify(ret_info, json_format=False), namespace=namespace)
+            # Send Information
+            if(time.time() - temp_socket_time >= 1):                
+                app.config[SOCK].update({ task_uuid: get_pure_jsonify(ret_info, json_format=False) })
                 temp_socket_time = time.time()
-            socketio.sleep(0)
 
             # Delay to fix in 30 fps
             t_cost, t_expect = (time.time()-t1), (1/src_fps)
             if(t_cost<t_expect):
                 time.sleep(t_expect-t_cost)
-                # socketio.sleep(t_expect-t_cost)
             
             # Update Live Time and FPS
             app.config[TASK][task_uuid][LIVE_TIME] = int((time.time() - app.config[TASK][task_uuid][START_TIME]))
@@ -227,13 +229,19 @@ def stream_task(task_uuid, src, namespace):
             if(temp_info):
                 temp_fps = int(1/(time.time()-t1))
 
-
         logging.info('Stop streaming')
 
     except Exception as e:
         err = handle_exception(e, "Stream Error")
         stop_task_thread(task_uuid, err)
         raise Exception(err)
+
+@sock.route(f'/{RES_EVENT}')
+def message(sock):
+    while(True):
+        ret = app.config[SOCK]
+        sock.send( json.dumps(ret) )
+        time.sleep(1)
 
 @bp_stream.route("/update_src/", methods=["POST"])
 @swag_from("{}/{}".format(YAML_PATH, "update_src.yml"))
@@ -282,18 +290,17 @@ def get_first_frame(uuid):
 @swag_from("{}/{}".format(YAML_PATH, "stream_start.yml"))
 def start_stream(uuid):      
 
-    [ logging.info(cnt) for cnt in [DIV, f'Start stream ... destination of socketio event: "/task/{uuid}/stream"', DIV] ]
+    [ logging.info(cnt) for cnt in [DIV, f'Start stream ... destination of socket event: "/task/{uuid}/stream"', DIV] ]
 
     # create stream object
     if app.config[TASK][uuid][STREAM]==None:
         logging.info('Create a new stream thread')
         app.config[TASK][uuid][STREAM] = threading.Thread(
-            target=stream_task, 
-            args=(uuid, get_src(uuid), f'/task/{uuid}/stream', ), 
-            name=f"{uuid}",
-            daemon=True
+            target  = stream_task, 
+            args    = (uuid, get_src(uuid), f'/task/{uuid}/stream', ), 
+            name    = f"{uuid}",
+            daemon  = True
         )
-        # app.config[TASK][uuid][STREAM].daemon = True
         time.sleep(1)
 
     # check if thread is alive
@@ -317,17 +324,16 @@ def start_stream(uuid):
 @swag_from("{}/{}".format(YAML_PATH, "stream_stop.yml"))
 def stop_stream(uuid):
     
-    if app.config[TASK][uuid][STATUS]!=ERROR:
-        # stop_src(uuid)
-        if app.config[TASK][uuid][STREAM]!=None:
-            # if app.config[TASK][uuid][STREAM].is_alive():
-            try:
-                
-                app.config[TASK][uuid][STREAM].join()
-                logging.warning('Stopped stream ...')
-            except Exception as e:
-                logging.warning(e)
+    if app.config[TASK][uuid][STATUS]==ERROR:
+        return jsonify('Stream Error ! '), 400
+        
+    if app.config[TASK][uuid][STREAM]!=None:
+        try:        
+            app.config[TASK][uuid][STREAM].join()
+            logging.warning('Stopped stream !')
+        except Exception as e:
+            logging.warning(e)
 
-        app.config[TASK][uuid][STREAM]=None
-        logging.warning('Clear Stream ...')
-        return jsonify('Stop stream success ! '), 200
+    app.config[TASK][uuid][STREAM]=None
+    logging.warning('Clear Stream ...')
+    return jsonify('Stop stream success ! '), 200

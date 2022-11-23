@@ -8,22 +8,28 @@ Classification model which trained from NVIDIA TAO or iTAO.
     ./docker/run.sh -c
     ```
 
-## For Sample Torch Model
-1. Download Sample Model ( Torch )
+## For Sample Onnx Model
+
+1. Download Sample Model ( ONNX )
     ```bash
     # download data
     ./task/classification-sample/download_data.sh
 
-    # download model
-    python3 ./task/classification-sample/download_resnext50.py
-
-    # ------------------------------------
-    # My situation
-    # Download ResNeXt50 ... 21.674s
-    # Convert to TensorRT ... 28.976s
-    # Save the tensorrt engine ... 0.615s
+    # download model - resnet34
+    ./task/classification-sample/download_model.sh
     ```
-2. Prepare the application configuration `task.json`
+    * Reference from [ONNX Model Zoo](https://github.com/onnx/models/tree/main/vision/classification/resnet)
+
+2. Convert Model
+    ```bash
+    trtexec \
+    --onnx=/workspace/model/resnet/resnet34.onnx \
+    --batch=1 \
+    --saveEngine=/workspace/model/resnet/resnet34.trt
+    ```
+    * GTX 1050Ti Convert ResNet34 Cost: About 30 sec.
+
+3. Prepare the application configuration `task.json`
     
     > Notice: 
     > if you only want to run with `tensorrt_demo.py`, you could ignore the option below: `category`, `application`, `name`, `source_type`.
@@ -53,7 +59,7 @@ Classification model which trained from NVIDIA TAO or iTAO.
     |   name    |   the name of this application
     |   source_type  |   the type of input data [ "V4L2", "Image", "Video", "RTSP" ]
 
-3. Prepare the model configuration
+4. Prepare the model configuration
     ```json
     {
         "tag": "cls",
@@ -62,7 +68,7 @@ Classification model which trained from NVIDIA TAO or iTAO.
             "label_path": "./task/classification-sample/imagenet.txt",
             "device": "NVIDIA GeForce GTX 1050 Ti",
             "input_size": "3,224,224",
-            "preprocess": "torch",
+            "preprocess": "caffe",
             "thres": "0.9"
         }
     }

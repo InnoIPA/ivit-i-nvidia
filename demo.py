@@ -85,7 +85,7 @@ def main(args):
         gst_pipeline = 'appsrc is-live=true block=true ' + \
             ' ! videoconvert ' + \
             ' ! video/x-raw,format=I420 ' + \
-            ' ! x264enc speed-preset=ultrafast bitrate=2048 key-int-max=25' + \
+            ' ! x264enc speed-preset=ultrafast bitrate=8192 key-int-max=15' + \
             f' ! rtspclientsink location=rtsp://{args.ip}:{args.port}{args.name}'
         out = cv2.VideoWriter(  gst_pipeline, cv2.CAP_GSTREAMER, 0, 
                                 src_fps, (src_wid, src_hei), True )
@@ -160,12 +160,14 @@ def main(args):
                 temp_fps = sum(fps_buf)/len(fps_buf)
 
     except Exception as e:
-        logging.info(handle_exception(e))
+        print(handle_exception(e))
 
     finally:
         trg.release()            
         src.release()
-        out.release()
+
+        if mode==RTSP:
+            out.release()
 
     logging.warning('Quit')
     sys.exit()

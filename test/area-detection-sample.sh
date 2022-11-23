@@ -133,4 +133,3 @@ if [[ "${RTSP_ROUTE}" != "" ]];then CMD="${CMD} -n ${RTSP_ROUTE}" ;fi
 printf "%s \n\n" "${CMD}"
 
 bash -c "$CMD"
-exit

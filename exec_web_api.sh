@@ -38,7 +38,7 @@ figlet -w ${WID} -c "iVIT-I Web API"
 echo "HOST: ${IP}:${PORT}" | boxes -s "${WID}x5" -a c
 echo ""
 
-gunicorn --worker-class eventlet \
+gunicorn \
 -w ${WORKER} \
 --threads ${THREADING} \
 --bind 0.0.0.0:${PORT} \

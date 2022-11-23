@@ -1,1 +1,0 @@
-{"framework": "tensorrt", "name": "temp-fruit", "source": "data/mixed_fruit_17.jpg", "source_type": "Image", "prim": {"model_json": "./task/temp-fruit/fruit.json"}, "application": {"name": "default", "depend_on": ["apple", "banana", "orange"], "area_points": {}, "area_vector": {}}}
