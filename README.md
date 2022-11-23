@@ -96,3 +96,24 @@ We provide the fast-test for each sample, please check [here](./test/README.md).
     
 </details>
 <br>
+
+# Log
+* r1.0.3
+    1. Add source pipeline to improve the streaming.
+    2. Add async inference pipeline to improve the streaming.
+    3. Add RTSP output: add [rtsp-simple-server](https://github.com/aler9/rtsp-simple-server), gstreamer and rebuild opencv.
+    4. Add WebRTC server: add [rtsp-to-web](https://github.com/deepch/RTSPtoWeb).
+    5. Provide new entrance `ivit-launcher` to test sample quickly. ([check here](#fast-testing)).
+    6. Reset application when source pipeline is restart.
+
+* r1.0.2
+    1. Application with `new condition` and `new algorithm`
+        * Add `Area Event` in Each Application.
+        * Add `Condition Event (Logic)` , `Alerm` in `Counting`.
+        * Add `Alerm`, `Sensitivity` in `Area Detection` and `Moving Direction`.
+        * Add `Direction` in `Moving Direction`.
+    2. New Default Task Sample ( More Realistic Use Case )
+        * Add `parking-lot-detect` ,`wrong-side-detect` , `traffic-flow-detect` 
+        * delete `pose estimation` and `segmentation`  samples.
+    3. New Model and Label Path
+        * Change the model path to `/workspace/model` folder to reduce the task operation time and reduce disk space.
