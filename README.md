@@ -25,7 +25,7 @@ iVIT-I for NVIDIA x86 platform
 
     * Clone specificall branch
         ```bash
-        VER=r1.0
+        VER=r1.0.3
         git clone --branch ${VER} https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
         ```
 
@@ -34,17 +34,17 @@ iVIT-I for NVIDIA x86 platform
 
     * Run container with **web api**
         ```bash
-        sudo ./docker/run.sh
+        ./docker/run.sh
         ```
 
     * Run container with **command line mode**
         ```bash
-        sudo ./docker/run.sh -c
+        ./docker/run.sh -c
         ```
 
     * Run container without initialize sample
         ```bash
-        sudo ./docker/run.sh -nc
+        ./docker/run.sh -nc
 
         # if you need to initialize samples
         ./init_samples.sh
@@ -79,9 +79,6 @@ iVIT-I for NVIDIA x86 platform
     | [yolov3-tiny](task/yolov3-tiny-sample/README.md)   | The objected detection sample which trained from NVIDIA TAO Toolkit.
     | [yolov4-tiny](task/yolov4-tiny-sample/README.md)   | The objected detection sample which trained from NVIDIA TAO Toolkit.
     | [yolov4](task/yolov4-sample/README.md)   | The objected detection sample which trained from NVIDIA TAO Toolkit.
-    | [people_seg_sample](task/people_seg_sample/README.md)   | Peopple segmentation for the `etlt` model download from NVIDIA NGC.
-    | [humanpose_sample](task/humanpose_sample/README.md) | Human pose estimation which base on [trt_pose](https://github.com/NVIDIA-AI-IOT_pose)
-
 
 # Fast Testing
 We provide the fast-test for each sample, please check [here](./test/README.md).
