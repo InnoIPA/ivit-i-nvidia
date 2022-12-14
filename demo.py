@@ -56,6 +56,14 @@ def check_info(info):
     
     return True
 
+def get_gst_pipeline(rtsp_url):
+    return 'appsrc is-live=true block=true ' + \
+        ' ! videoconvert ' + \
+        ' ! video/x-raw,format=I420 ' + \
+        ' ! x264enc speed-preset=ultrafast bitrate=8192 key-int-max=15' + \
+        f' ! rtspclientsink location={rtsp_url}'
+
+
 def main(args):
 
     # Get Mode
@@ -69,30 +77,28 @@ def main(args):
     total_conf.update(app_conf)
 
     # Get the target API and load model
-    try:
-        trg = api.get(total_conf)
-        trg.load_model(total_conf)
-    except Exception as e:
-        handle_exception(error=e, title="Could not get ivit-i API", exit=True)
+    trg = api.get(total_conf)
+    trg.load_model(total_conf)
 
     # Start inference base on three mode
     src = Pipeline(total_conf['source'], total_conf['source_type'])
     src.start()
     (src_hei, src_wid), src_fps = src.get_shape(), src.get_fps()
     
+    # Inference Mode: Async or Sync ( Default )
+    if args.mode==1:
+        trg.set_async_mode()
+
     # Concate RTSP pipeline
     if mode==RTSP:
-        gst_pipeline = 'appsrc is-live=true block=true ' + \
-            ' ! videoconvert ' + \
-            ' ! video/x-raw,format=I420 ' + \
-            ' ! x264enc speed-preset=ultrafast bitrate=8192 key-int-max=15' + \
-            f' ! rtspclientsink location=rtsp://{args.ip}:{args.port}{args.name}'
-        out = cv2.VideoWriter(  gst_pipeline, cv2.CAP_GSTREAMER, 0, 
-                                src_fps, (src_wid, src_hei), True )
+        rtsp_url = f"rtsp://{args.ip}:{args.port}{args.name}"
+        gst_pipeline = get_gst_pipeline(rtsp_url)
+        out = cv2.VideoWriter(  
+            gst_pipeline, cv2.CAP_GSTREAMER, 0,
+            src_fps, (src_wid, src_hei), True )
         logging.info(f'Define Gstreamer Pipeline: {gst_pipeline}')
 
-        if not out.isOpened():
-            raise Exception("can't open video writer")
+        assert not out.isOpened(), "can't open video writer"
 
     # Setting Application
     try:
@@ -101,7 +107,6 @@ def main(args):
             application.set_area(frame=src.get_first_frame() if mode==GUI else None)
     except Exception as e:
         handle_exception(error=e, title="Could not load application ... set app to None", exit=False)
-    
 
     # Start inference
     if mode==GUI: init_cv_win()
@@ -130,7 +135,7 @@ def main(args):
             draw = frame.copy()
             
             # Inference
-            cur_info = trg.inference( frame, args.mode )
+            cur_info = trg.inference( frame )
             if(check_info(cur_info)):
                 temp_info, cur_fps = cur_info, temp_fps
             
@@ -151,7 +156,7 @@ def main(args):
 
             # Delay inferenece to fix in 30 fps
             t_cost, t_expect = (time.time()-t_start), (1/src.get_fps())
-            time.sleep( (t_expect-t_cost) if( t_cost<t_expect ) else 0.0001 )
+            time.sleep( (t_expect-t_cost) if( t_cost<t_expect ) else 1e-6 )
             
             # Calculate FPS
             if(check_info(cur_info)):
