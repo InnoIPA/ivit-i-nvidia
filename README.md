@@ -52,7 +52,7 @@ iVIT-I for NVIDIA x86 platform
 
         
 # Run Samples
-* Please follow the README.md in each samples, the common workflow like below
+* Please follow the `README.md` in each samples, the common workflow like below
     1. Enter docker container.
     2. Choose a sample.
     3. Download the model.
@@ -65,10 +65,13 @@ iVIT-I for NVIDIA x86 platform
 * Samples
     | name | describe 
     | ---- | -------- 
-    | [classification_sample](task/classification_sample/README.md)    |  Classfication sample.  
-    | [yolov3-tiny](task/yolov3-tiny-sample/README.md)   | The objected detection sample which trained from NVIDIA TAO Toolkit.
-    | [yolov4-tiny](task/yolov4-tiny-sample/README.md)   | The objected detection sample which trained from NVIDIA TAO Toolkit.
-    | [yolov4](task/yolov4-sample/README.md)   | The objected detection sample which trained from NVIDIA TAO Toolkit.
+    | [classification-sample](task/classification-sample/README.md)    |  Classfication sample.  
+    | [yolov3-tiny](task/yolov3-tiny-sample/README.md)   | The objected detection sample which trained from `Darknet`.
+    | [yolov4-tiny](task/yolov4-tiny-sample/README.md)   | The objected detection sample which trained from `Darknet`.
+    | [yolov4](task/yolov4-sample/README.md)   | The objected detection sample which trained from `Darknet`.
+    | [wrong-side-detect](task/wrong-side-detect/README.md)   | The application sample of detecting moving direction.
+    | [traffic-flow-detect](task/traffic-flow-detect/README.md)   | The application sample of tracking object.
+    | [parking-lot-detect](task/parking-lot-detect/README.md)   | The application sample of detecting object is in area or not.
 
 # Fast Testing
 We provide the fast-test for each sample, please check [here](./test/README.md).
