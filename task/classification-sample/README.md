@@ -3,9 +3,8 @@ Classification model which trained from NVIDIA TAO or iTAO.
 
 ## Enter the iVIT-I container
     ```bash
-    cd /path/to/iVIT-I
-    # for desktop user
-    ./docker/run.sh -c
+    cd </path/to/iVIT-I>
+    sudo ./docker/run.sh -nc
     ```
 
 ## For Sample Onnx Model
@@ -87,63 +86,3 @@ Classification model which trained from NVIDIA TAO or iTAO.
     ```
     python3 demo.py -c task/classification-sample/task.json
     ```
-
----
-
-## For TAO Classification Model ( Archived )
-1. Prepare Model and Label
-    ```shell
-    tree
-    .
-    |-- README.md
-    |-- mask_classifier.txt # label file
-    `-- model.etlt          # etlt model
-    ```
-2. Convert Model
-    ```shell
-    # For Example: mask_classifier is a classification model can detect mask and non-mask.
-    $ cd /ivinno-trt
-
-    $ ./converter/tao-converter \
-    -k nvidia_tlt \
-    -o predictions/Softmax \
-    -d 3,224,224 \
-    -i nchw \
-    -m 1 -t fp32 \
-    -e /path/to/mask_clssifier.trt \
-    -w 1610612736 \
-    /path/to/model.etlt
-
-    # [INFO] Detected 1 inputs and 1 output network tensors.
-    ```
-3. Create label file `/ivinno-trt/models/TAO-Classfication/mask_classifier.txt`
-    ```
-    mask
-    non-mask
-    ```
-4. Update informations about model and label in `task/classification-sample/task.json`
-    ```
-    model_path=<path/to/engine>
-    label_path=<path/to/label>
-    ```
-5. Run tensorrt_demo.py
-    ```
-    $ python3 tensorrt_demo.py -c task/classification-sample/task.json
-    ```
-
-## For Developer ( TAO )
-
-### Reference
-* The model in classification-sample should be trained from NVIDIA TAO or iTAO and must be the .
-
-### Pre-processing
-* Classic Caffe mode
-  1. Convert the images from RGB to BGR.
-  2. Rescale to the target size via `cv2.resize`.
-  3. zero-center each color channel with respect to the ImageNet dataset.
-      * BGR -> [103.939, 116.779, 123.68]
-
-### Post-processing
-1. Four objects ( detections, bounding boxes, socres, classes ) in results.
-2. Bounding Boxes have to reshape to [-1, 4].
-3. You can parse out four positions ( top_left, top_right, bottom_letf, bottom_right ) in each bounding box.

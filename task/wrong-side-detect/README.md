@@ -1,38 +1,44 @@
-# Wrong-Side-Detect: 
+# Wrong-Side-Detect
+> custom yolov4 model trained from `DarkNet`
 
 1. Enter the environment
     ```bash
-    ./docker/run.sh -c
+    sudo ./docker/run.sh -c -n
     ```
-2. Download model
-    ```bash 
-    # Download Model
-    cd /workspace/
-    python3 ./task/wrong-side-detect/custom_download.py -m yolov4-tiny -s 416 -f ./task/model
+2. Define Parameters
+    ```bash
+    TASK=wrong-side-detect
+    MODEL=yolov4
+    SIZE=416
+    DIR=/workspace/model/${MODEL}
 
-    # Download Data
-    ./task/wrong-side-detect/download_data.sh
+    # Double Check
+    echo -e "\n* ${TASK}\n* ${MODEL}\n* ${SIZE}\n* ${DIR} \n" 
+    ```
+2. Download model and data
+    ```bash
+    cd /workspace/
+
+    # Model
+    python3 ./task/${TASK}/custom_download.py \
+    -m ${MODEL} -s ${SIZE} -f ${DIR}
+
+    # Data
+    ./task/${TASK}/download_data.sh
     ```
 3. Convert Model
     ```bash
-    
-    # Convert model
     cd /workspace
-    ./converter/yolo-converter.sh   ./model/yolov4-tiny/yolov4-tiny-416
-
-    # After convert yolov4-tiny-416 should be generated.
-    ls  ./model/yolov4-tiny/yolov4-tiny-416* | grep trt
-     
+    ./converter/yolo-converter.sh "${DIR}/${MODEL}-${SIZE}"
     ```
     * Convert performance
       * `1050 Ti`
         * yolo to onnx: 1s
         * onnx to tensorrt: 39s
-
 4. Run demo.py
     ```
     cd /workspace
-    python3 demo.py -c ./task/yolov4-tiny/task.json
+    python3 demo.py -c ./task/${TASK}/task.json
     ```
 
 5. More Options

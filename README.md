@@ -23,50 +23,40 @@ iVIT-I for NVIDIA x86 platform
     git clone https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
     ```
 
-    * Clone specificall branch
-        ```bash
-        VER=r1.0.3
-        git clone --branch ${VER} https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
-        ```
-
 2. Run the docker container with web api
 
 
     * Run container with **web api**
         ```bash
-        ./docker/run.sh
+        sudo ./docker/run.sh
         ```
 
     * Run container with **command line mode**
         ```bash
-        ./docker/run.sh -c
+        sudo ./docker/run.sh -c
         ```
 
     * Run container without initialize sample
         ```bash
-        ./docker/run.sh -nc
+        sudo ./docker/run.sh -n -c
 
         # if you need to initialize samples
         ./init_samples.sh
-
         # if you need to launch web api
         ./exec_web_api.sh
         ```
 
     * Run docker container step by step for developer
 
-        Here is the [documentation](docs/activate_env_for_developer.md) explaining the workflow of `build docker image` and `run docker container`.
+        Here is the [documentation](docs/activate_env_for_developer.md) explaining the workflow of `run docker container`.
 
-    * Terminal Output
-
-        <img src="docs/images/run_script_info.png" width=80%>
         
 # Run Samples
 * Please follow the README.md in each samples, the common workflow like below
     1. Enter docker container.
     2. Choose a sample.
-    3. Download model.
-    4. Convert model if needed.
+    3. Download the model.
+    4. Convert the model if needed.
     5. Using [demo.py](./demo.py) to run the sample.
         * 'a' and 'F12' transfer to full screen.
         * 'c' and 'space' to change color ( only in default application ) .
@@ -82,7 +72,6 @@ iVIT-I for NVIDIA x86 platform
 
 # Fast Testing
 We provide the fast-test for each sample, please check [here](./test/README.md).
-
 
 # Web API
 <details>
