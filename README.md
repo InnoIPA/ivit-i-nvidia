@@ -85,3 +85,8 @@ We provide the fast-test for each sample, please check [here](./test/README.md).
     
 </details>
 <br>
+
+# Credit
+* Using [aler9/rtsp-simple-server](https://github.com/aler9/rtsp-simple-server) to handle RTSP stream.
+* Convert to WebRTC by using [deepch/RTSPtoWeb](https://github.com/deepch/RTSPtoWeb).
+* Convert TensorRT egnine from darknet referring from [jkjung-avt/tensorrt_demos](https://github.com/jkjung-avt/tensorrt_demos)
