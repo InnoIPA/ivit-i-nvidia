@@ -51,3 +51,4 @@ bk
 
 # Model
 model/
+*.tmp
