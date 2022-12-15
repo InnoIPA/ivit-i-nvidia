@@ -58,11 +58,11 @@ iVIT-I for NVIDIA x86 platform
     3. Download the model.
     4. Convert the model if needed.
     5. Using [demo.py](./demo.py) to run the sample.
-        * 'a' and 'F12' transfer to full screen.
-        * 'c' and 'space' to change color ( only in default application ) .
-        * 'q' and 'Esc' to quit.
+        * For example: `python3 demo.py -c ${TASK}.json`
+        * `-s` run without display, only console output.
+        * `-r` run with RTSP ([`rtsp://localhost:8554/test`](rtsp://localhost:8554/test)) .
 
-* Samples
+* More detail
     | name | describe 
     | ---- | -------- 
     | [classification-sample](task/classification-sample/README.md)    |  Classfication sample.  
@@ -85,24 +85,3 @@ We provide the fast-test for each sample, please check [here](./test/README.md).
     
 </details>
 <br>
-
-# Log
-* r1.0.3
-    1. Add source pipeline to improve the streaming.
-    2. Add async inference pipeline to improve the streaming.
-    3. Add RTSP output: add [rtsp-simple-server](https://github.com/aler9/rtsp-simple-server), gstreamer and rebuild opencv.
-    4. Add WebRTC server: add [rtsp-to-web](https://github.com/deepch/RTSPtoWeb).
-    5. Provide new entrance `ivit-launcher` to test sample quickly. ([check here](#fast-testing)).
-    6. Reset application when source pipeline is restart.
-
-* r1.0.2
-    1. Application with `new condition` and `new algorithm`
-        * Add `Area Event` in Each Application.
-        * Add `Condition Event (Logic)` , `Alerm` in `Counting`.
-        * Add `Alerm`, `Sensitivity` in `Area Detection` and `Moving Direction`.
-        * Add `Direction` in `Moving Direction`.
-    2. New Default Task Sample ( More Realistic Use Case )
-        * Add `parking-lot-detect` ,`wrong-side-detect` , `traffic-flow-detect` 
-        * delete `pose estimation` and `segmentation`  samples.
-    3. New Model and Label Path
-        * Change the model path to `/workspace/model` folder to reduce the task operation time and reduce disk space.
