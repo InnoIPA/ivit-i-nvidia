@@ -98,7 +98,7 @@ def main(args):
             src_fps, (src_wid, src_hei), True )
         logging.info(f'Define Gstreamer Pipeline: {gst_pipeline}')
 
-        assert not out.isOpened(), "can't open video writer"
+        # assert not out.isOpened(), "can't open video writer"
 
     # Setting Application
     try:
