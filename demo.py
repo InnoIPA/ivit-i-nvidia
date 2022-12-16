@@ -135,13 +135,14 @@ def main(args):
             draw = frame.copy()
             
             # Inference
-            cur_info = trg.inference( frame )
-            if(check_info(cur_info)):
-                temp_info, cur_fps = cur_info, temp_fps
+            temp_info = trg.inference( frame )
+            if(check_info(temp_info)):
+                cur_info, cur_fps = temp_info, temp_fps
             
             # Drawing result using application and FPS
-            draw, app_info = application(draw, temp_info)
-            draw = draw_fps( draw, cur_fps )
+            if(check_info(cur_info)):
+                draw, app_info = application(draw, cur_info)
+                draw = draw_fps( draw, cur_fps )
 
             # Display draw
             if mode==GUI:
@@ -152,7 +153,8 @@ def main(args):
                 out.write(draw)
 
             # Log
-            # if(app_info): logging.temp_info(app_info)
+            if(check_info(cur_info)):
+                print(cur_info['detections'])
 
             # Delay inferenece to fix in 30 fps
             t_cost, t_expect = (time.time()-t_start), (1/src.get_fps())

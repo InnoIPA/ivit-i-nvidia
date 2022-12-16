@@ -9,5 +9,6 @@ LIST = [
     'counting',
     'heatmap',
     'moving_direction',
-    'tracking'
+    'tracking',
+    'default'
 ]
