@@ -31,7 +31,7 @@ CONVERT_SCRIPT="${WS}/converter/yolo-converter.sh"
 
 RUN_DOWNLOAD_DATA="${TASK_PATH}/download_data.sh"
 RUN_DOWNLOAD_MODEL="python3 ${DOWNLOAD_SCRIPT} -m ${MODEL_TYPE} -s ${SIZE} -f ${MODEL_ROOT}"
-RUN_CONVERT="./converter/yolo-converter.sh ${TASK_PATH}/${MODEL_NAME} "
+RUN_CONVERT="./converter/yolo-converter.sh ${MODEL_ROOT}/${MODEL_NAME} "
 RUN_GPU_MODIFY="python3 ${MODIFTY_GPU_SCRIPT} -f ${FRAMEWORK} -j ${CONF_PATH}"
 RUN_BUILD_PLUGIN="/workspace/plugins/build_plugin.sh"
 

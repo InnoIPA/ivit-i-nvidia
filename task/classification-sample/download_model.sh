@@ -44,8 +44,8 @@ cd ${FOLDER} || exit
 if [[ -f "${MODEL}" ]];then
 	echo "$(date +"%F %T") Model already exist"
 else
-	# ZIP: https://drive.google.com/file/d/12A_K6zuQ1PfooA7OP7ZcfZ1YVg1Oxo4l/view?usp=share_link
-	GID="12A_K6zuQ1PfooA7OP7ZcfZ1YVg1Oxo4l"
+	# ZIP: https://drive.google.com/file/d/1eKoPntJQWBrouJjnVezI-dyb0ICcon3v/view?usp=share_link
+	GID="1eKoPntJQWBrouJjnVezI-dyb0ICcon3v"
 	download $GID ${ZIP}
 	unzip ${ZIP} && mv *.onnx ${MODEL}
 fi
