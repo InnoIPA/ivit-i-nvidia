@@ -45,5 +45,5 @@ iVIT-I is an AI inference tool which could support multiple AI framework and thi
 
 # Python Library Documentation
 
-[iVIT-I-hailo API Docs](https://innoipa.github.io/ivit-i-nvidia/)
+[iVIT-I-nvidia API Docs](https://innoipa.github.io/ivit-i-nvidia/)
 
