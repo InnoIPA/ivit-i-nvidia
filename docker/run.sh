@@ -1,68 +1,57 @@
 #!/bin/bash
+# Copyright (c) 2023 Innodisk Corporation
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
 
-# Basic Parameters
-CONF="ivit-i.json"
-DOCKER_USER="maxchanginnodisk"
-
+# ========================================================
 # Store the utilities
 FILE=$(realpath "$0")
 ROOT=$(dirname "${FILE}")
 source "${ROOT}/utils.sh"
 
-# Set the default value of the getopts variable 
-GPU="all"
-BG=false
-RUN_WEB=true
-RUN_CLI=false
-MAGIC=true
-SERVER=false
-INIT=true
-MODE="SERVER"
+# ========================================================
+# Basic Parameters
+CONF="ivit-i.json"
+DOCKER_USER="maxchanginnodisk"
+DOCKER_COMPOSE="./docker/docker-compose.yml"
 
-# Install pre-requirement
-check_jq
-
+# ========================================================
 # Check configuration is exit
-FLAG=$(ls ${CONF} 2>/dev/null)
-if [[ -z $FLAG ]];then printd "Couldn't find configuration (${CONF})" Cy; exit
-else printd "Detected configuration (${CONF})" Cy; fi
+check_config ${CONF}
 
+# ========================================================
 # Parse information from configuration
+check_jq
 PROJECT=$(cat ${CONF} | jq -r '.PROJECT')
 VERSION=$(cat ${CONF} | jq -r '.VERSION')
 PLATFORM=$(cat ${CONF} | jq -r '.PLATFORM')
-PORT=$(cat ${CONF} | jq -r '.PORT')
+TAG=$(cat "${CONF}" | jq -r '.TAG')
 
+# ========================================================
+# Get Option
+
+INTERATIVE=true
+QUICK=false
+GPU="all"
 # Help
 function help(){
 	echo "Run the iVIT-I environment."
 	echo
-	echo "Syntax: scriptTemplate [-g|wbsmih]"
+	echo "Syntax: scriptTemplate [-bqh]"
 	echo "options:"
-	echo "b		background"
-	echo "g		select the target GPU."
-	echo "s		Server MODE for non vision user."
-	echo "c		Run as command line MODE"
-	echo "m		Print information with MAGIC."
-	echo "n		Not to initialize samples."
+	echo "b		Run in background"
+	echo "q		Qucik launch iVIT-I"
 	echo "h		help."
 }
 
 # Get information from argument
-while getopts "g:bwcshmhn" option; do
+while getopts "bqh:" option; do
 	case $option in
 		b )
-			BG=true ;;
-		g )
-			GPU=$OPTARG ;;
-		s )
-			SERVER=true ;;
-		c )
-			RUN_CLI=true ;;
-		m )
-			MAGIC=false ;;
-		n )
-			INIT=false ;;
+			INTERATIVE=false ;;
+		q )
+			QUICK=true ;;
 		h )
 			help; exit ;;
 		\? )
@@ -72,89 +61,92 @@ while getopts "g:bwcshmhn" option; do
 	esac
 done
 
-# Setup Masgic package
-if [[ ${MAGIC} = true ]];then check_boxes; fi
+# ========================================================
+# Initialize Docker Command Variables
 
-# --------------------------------------------------
-# Setup variable
-# --------------------------------------------------
+# [NAME]
+DOCKER_IMAGE="${DOCKER_USER}/${PROJECT}-${PLATFORM}:${VERSION}-${TAG}"
+DOCKER_NAME="${PROJECT}-${PLATFORM}-${VERSION}-${TAG}"
 
-DOCKER_IMAGE="${DOCKER_USER}/${PROJECT}-${PLATFORM}:${VERSION}"
-DOCKER_NAME="${PROJECT}-${PLATFORM}-${VERSION}"
-
-# MOUNT_CAMERA=""	# legacy
-MOUNT_GPU="--gpus"
-SET_VISION=""
-WORKSPACE="/workspace"
-INIT_CMD="${WORKSPACE}/init_samples.sh"
-WEB_CMD="${WORKSPACE}/exec_web_api.sh"
-CLI_CMD="bash"
-RUN_CMD=""
-
-# --------------------------------------------------
-# Combine Docker Command
-# --------------------------------------------------
-
-# Initialize Samples
-if [[ ${INIT} = true ]]; then RUN_CMD=${INIT_CMD}; fi
-
-# Run CLI or Web
-if [[ ${RUN_CLI} = true ]]; then RUN_CMD="${RUN_CMD} ${CLI_CMD}";
-else RUN_CMD="${RUN_CMD} ${WEB_CMD}"; fi
-
-# Run WebRTC to Web Docker Service
-run_webrtc_server;
-
-if [[ ${BG} == true ]]; then RUN_CMD="bash"; fi
-
-# If is desktop mode
-if [[ ${SERVER} = false ]];then
-	MODE="DESKTOP"
-	SET_VISION="-v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix${DISPLAY}"
-	xhost + > /dev/null 2>&1
-fi
-
-# Docker Container Mode
-SET_CONTAINER_MODE="-it"
-if [[ ${BG} = true ]]; then SET_CONTAINER_MODE="-dt"; fi
-
-# Setup docker name
+# [BASIC]
+WS="/workspace"
 SET_NAME="--name ${DOCKER_NAME}"
+MOUNT_WS="-w ${WS} -v $(pwd):${WS}"
+SET_TIME="-v /etc/localtime:/etc/localtime:ro"
+SET_NETS="--net=host"
 
-# Combine GPU option
+# [DEFINE COMMAND]
+RUN_CMD="bash"
+
+# [PLACEHOLDER]
+SET_CONTAINER_MODE="-it"
+SET_VISION=""
+SET_PRIVILEG="--privileged"
+MOUNT_CAM="-v /dev:/dev"
+SET_MEM="--ipc=host"
+
+# ========================================================
+
+# [ACCELERATOR]
+MOUNT_ACCELERATOR="--device /dev/dri --device-cgroup-rule='c 189:* rmw'"
+MOUNT_GPU="--gpus"
 MOUNT_GPU="${MOUNT_GPU} device=${GPU}"
 
+# [VISION] Set up Vision option for docker if need
+if [[ ! -z $(echo ${DISPLAY}) ]];then
+	SET_VISION="-v /tmp/.x11-unix:/tmp/.x11-unix:rw -e DISPLAY=unix${DISPLAY}"
+	xhost + > /dev/null 2>&1
+	printd " * Detected monitor"
+else
+	printd " * Can not detect monitor"
+fi
 
-# Intel Option
-SET_PRIVILEG="--privileged -v /dev:/dev"
+# [Basckground] Update background option
+if [[ ${INTERATIVE} = true ]]; then 
+	printd " * Run Interative Terminal Mode"
+else
+	SET_CONTAINER_MODE="-dt"; 
+	printd " * Run Background Mode"
+fi
 
-# Sync Time
-SET_TIME="-v /etc/localtime:/etc/localtime:ro"
-
-# Mount Network and Port
-SET_NETS="--net=host --ipc=host"
-
-# Mount Workspace
-MOUNT_WS="-w ${WORKSPACE} -v $(pwd):${WORKSPACE}"
-
-# docker command line
+# ========================================================
+# Conbine docker command line
 DOCKER_CMD="docker run \
 --rm \
 ${SET_CONTAINER_MODE} \
-${SET_PRIVILEG} \
 ${SET_NAME} \
 ${MOUNT_GPU} \
+${SET_PRIVILEG} \
+${MOUNT_ACCELERATOR} \
+${MOUNT_CAM} \
 ${SET_NETS} \
+${SET_MEM} \
 ${SET_TIME} \
 ${MOUNT_WS} \
 ${SET_VISION} \
--e \"IVIT_DEBUG=True\" \
 ${DOCKER_IMAGE} ${RUN_CMD}"
 
-# Log
-printd "Start to run docker command" Cy
-echo -ne "${DOCKER_CMD}\n"
+# ========================================================
+# Logout and wait
+echo -ne "\n${DOCKER_CMD}\n\n"
+if [[ ${QUICK} = false ]];then waitTime 5; fi
+
+# ========================================================
+# Execution
+
+# Rund Docker Compose
+printd "Launch Relative Container" G
+docker compose --file ${DOCKER_COMPOSE} -p ${TAG} up -d 
+
+# Run docker command 
+printd "Launch iVIT-I Container" G
+docker rm -f ${DOCKER_NAME} &> /dev/null
 
 bash -c "${DOCKER_CMD}"
 
-stop_webrtc_server; exit 0;
+if [[ ${INTERATIVE} = true ]];then
+	printd "Close Relative Container" R
+	docker compose -f ${DOCKER_COMPOSE} -p ${TAG} down
+fi
+
+exit 0;

@@ -1,22 +1,7 @@
 {
-    "PROJECT": "ivit-i",
-    "VERSION": "v1.0.3",
-    "PLATFORM": "nvidia",
-    "FRAMEWORK": "tensorrt",
-    "AF": "tensorrt",
-    "HOST": "",
-    "PORT": 818,
-    "LOGGER": "ivit-i-web.log",
-    "TASK_ROOT": "./task",
-    "TEMP_PATH": "./temp",
-    "MODEL_DIR": "./model",
-    "DATA": "data",
-    "DEBUG": false,
-    "WORKER": 1,
-    "THREADING": 30,
-    "ICAP": false,
-    "MQTT_KEEPALIVE": 5,
-    "MQTT_REFRESH_TIME": 1.0,
-    "TB": "10.204.16.110",
-    "TB_PORT": 3000
-}   
+  "PROJECT": "ivit-i",
+  "PLATFORM": "nvidia",
+  "FRAMEWORK": "tensorrt",
+  "VERSION": "v1.1",
+  "TAG": "runtime"
+}

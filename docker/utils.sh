@@ -1,4 +1,9 @@
 #!/bin/bash
+# Copyright (c) 2023 Innodisk Corporation
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 
 # Dear Developer
 # this script is link from `tools/utils.sh` to `docker/utils.sh`
@@ -102,4 +107,47 @@ function run_webrtc_server(){
 
 function stop_webrtc_server(){
 	docker stop ivit-webrtc-server
+}
+
+function update_compose_env() {
+	local args=("$@")
+	local file=$1
+
+	if [[ $# -lt 2 ]]; then usage; fi
+	
+	for ((i=1; i<${#args[@]}; i++)); do
+		
+		local pair=(${args[i]//=/ })
+		pair[1]="${pair[1]//\//\\/}"
+		sed -Ei "s/(.*${pair[0]}=).*/\1${pair[1]}/g" $file
+		echo "Replacing: ${pair[0]} with ${pair[1]}" 
+
+	done
+}
+
+function waitTime(){
+	TIME_FLAG=$1
+	while [ $TIME_FLAG -gt 0 ]; do
+		printf "\rWait ... (${TIME_FLAG}) "; sleep 1
+		(( TIME_FLAG-- ))
+	done
+	printf "\r                 \n"
+}
+
+function check_folder(){
+	TRG_PATH=$1
+	if [[ ! -d ${TRG_PATH} ]];then
+		mkdir ${TRG_PATH}	
+	fi
+}
+
+function check_config(){
+	CONF=$1
+	FLAG=$(ls ${CONF} 2>/dev/null)
+	if [[ -z $FLAG ]];then 
+		printd "Couldn't find configuration (${CONF})" Cy; 
+		exit
+	else 
+		printd "Detected configuration (${CONF})" Cy; 
+	fi
 }

@@ -45,7 +45,7 @@ temp/
 # task
 
 # Docs
-!docs/images/*
+
 docker/inno_verify
 bk
 

@@ -1,11 +1,19 @@
 #!/bin/bash
 printf "\n"
 printf "# Build Plugin \n"
+DIR="/workspace/plugins"
+cd ${DIR}
 
-cd /workspace/plugins
-if [[ -z "libyolo_layer.so" ]];then
+ls $(pwd)
+if [[ ! -f "libyolo_layer.so" ]]; then
     make clean && make > /dev/null 2>&1;
 else
-    echo "Plugin already exist";
+    echo "Plugin already exist"
 fi
+#     for FILE in "$DIR"/*
+#     do
+#         echo $FILE
+#     done
+#     echo "Plugin already exist";
+# fi
 

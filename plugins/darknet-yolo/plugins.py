@@ -14,7 +14,7 @@ from yolo_to_onnx import (is_pan_arch, DarkNetParser, get_category_num,
 
 
 try:
-    ctypes.cdll.LoadLibrary('./plugins/libyolo_layer.so')
+    ctypes.cdll.LoadLibrary('/workspace/plugins/libyolo_layer.so')
     # plugins/libyolo_layer.so
 except OSError as e:
     raise SystemExit('ERROR: failed to load ./plugins/libyolo_layer.so.  '

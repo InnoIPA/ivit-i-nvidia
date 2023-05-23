@@ -7,6 +7,18 @@ NVCC=nvcc
 # space separated compute values ex: computes=70 75. If not present will fetch device's CC
 computes=
 
+# Orin AGX, NX, Nano 	: 87
+# computes=87
+
+# AGX Xavier, NX 		: 72
+computes=72
+
+# TX2 					: 62
+# computes=62
+
+# Nano 					: 53
+# computes=53
+
 ifeq ($(computes), )
   computes= $(shell python gpu_cc.py)
   $(info computes: $(computes))
