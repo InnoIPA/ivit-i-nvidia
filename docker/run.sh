@@ -88,7 +88,7 @@ SET_MEM="--ipc=host"
 # ========================================================
 
 # [ACCELERATOR]
-MOUNT_ACCELERATOR="--device /dev/dri --device-cgroup-rule='c 189:* rmw'"
+# MOUNT_ACCELERATOR="--device /dev/dri --device-cgroup-rule='c 189:* rmw'"
 MOUNT_GPU="--gpus"
 MOUNT_GPU="${MOUNT_GPU} device=${GPU}"
 
@@ -117,7 +117,6 @@ ${SET_CONTAINER_MODE} \
 ${SET_NAME} \
 ${MOUNT_GPU} \
 ${SET_PRIVILEG} \
-${MOUNT_ACCELERATOR} \
 ${MOUNT_CAM} \
 ${SET_NETS} \
 ${SET_MEM} \
