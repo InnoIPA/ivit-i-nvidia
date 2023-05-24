@@ -10,7 +10,8 @@ iVIT-I is an AI inference tool which could support multiple AI framework and thi
 * [Docker 20.10 + ](https://docs.docker.com/engine/install/ubuntu/)
 * [Docker-Compose v2.15.1 ](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
 * you can check via `docker compose version`
-    
+* NVIDIA gpu driver ( 430+ )
+* Install [nvidia-docker2](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
 # Getting Start
 1. Clone Repository
     
