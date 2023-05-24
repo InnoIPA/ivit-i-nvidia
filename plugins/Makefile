@@ -11,7 +11,7 @@ computes=
 # computes=87
 
 # AGX Xavier, NX 		: 72
-computes=72
+# computes=72
 
 # TX2 					: 62
 # computes=62
