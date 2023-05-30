@@ -110,6 +110,22 @@ Note: It supports only models with single image input. </p>
 <dd>input image.</dd>
 </dl></div>
 </dd>
+<dt id="ivit_i.core.models.iClassification.softmax"><code class="name flex">
+<span>def <span class="ident">softmax</span></span>(<span>self, data: numpy.ndarray)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Do softmax.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>np.ndarray</code></dt>
+<dd>output data of model predict.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>softmax_data</code></dt>
+<dd>Return data after softmax.</dd>
+</dl></div>
+</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -352,6 +368,7 @@ inputs and outputs are expected to be lists of HostDeviceMem objects.</p></div>
 <li><code><a title="ivit_i.core.models.iClassification.normalize" href="#ivit_i.core.models.iClassification.normalize">normalize</a></code></li>
 <li><code><a title="ivit_i.core.models.iClassification.postprocess" href="#ivit_i.core.models.iClassification.postprocess">postprocess</a></code></li>
 <li><code><a title="ivit_i.core.models.iClassification.preprocess" href="#ivit_i.core.models.iClassification.preprocess">preprocess</a></code></li>
+<li><code><a title="ivit_i.core.models.iClassification.softmax" href="#ivit_i.core.models.iClassification.softmax">softmax</a></code></li>
 </ul>
 </li>
 <li>
