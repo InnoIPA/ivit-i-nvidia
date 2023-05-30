@@ -37,12 +37,8 @@ Support Model:
 	---------------------------
 	yolov3			| 416  |
 	yolov3-tiny		| 416  |
-	yolov3-spp		| 416  |
 	yolov4			| 416  |
 	yolov4-tiny		| 416  |
-	yolov4-csp		| 416  |
-	yolov4-p5		| 416  |	
-	yolov4x-mish	| 416  |
 EOF
 
 TEMP=$(getopt -o $short --long $long --name "$script_name" -- "$@")
@@ -86,13 +82,10 @@ MODEL_PATH="${MODEL_ROOT}/${MODEL_NAME}.trt"
 
 # Setup Running Script
 DOWNLOAD_SCRIPT="${ROOT}/yolo_download.py"
-MODIFTY_GPU_SCRIPT="${WS}/tools/update_first_gpu.py"
-CONVERT_SCRIPT="${WS}/converter/yolo-converter"
-
 RUN_DOWNLOAD_DATA="${ROOT}/download_data.sh"
 RUN_DOWNLOAD_MODEL="python3 ${DOWNLOAD_SCRIPT} -m ${MODEL_TYPE} -s ${SIZE} -f ${MODEL_ROOT}"
-RUN_CONVERT="yolo-converter ${MODEL_ROOT}/${MODEL_NAME} "
-
+RUN_CONVERT="${WS}/converter/yolo-converter.sh ${MODEL_ROOT}/${MODEL_NAME} "
+RUN_BUILD_PLUGIN="/workspace/plugins/build_plugin"
 
 
 # -----------------------------------------------------
@@ -101,6 +94,9 @@ RUN_CONVERT="yolo-converter ${MODEL_ROOT}/${MODEL_NAME} "
 # cd $WS || exit
 
 # -----------------------------------------------------
+
+# Build Darknet Plugin
+${RUN_BUILD_PLUGIN}
 
 # Download data
 if [[ ${DOWNLOAD_DATA} = true ]];then
