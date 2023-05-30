@@ -62,7 +62,7 @@ iVIT Object Detection Sample, this sample demonstrates how to do inference of im
         INPUT=${ROOT}/data/car.mp4
         MODEL=${ROOT}/model/yolov3-tiny/yolov3-tiny-416.trt
         LABEL=${ROOT}/model/yolov3-tiny/coco.txt
-        ARCHITECTURE=yolov3
+        ARCHITECTURE=yolov3-tiny
 
         ```
     * Run Sample:
@@ -88,7 +88,7 @@ iVIT Object Detection Sample, this sample demonstrates how to do inference of im
     INPUT=${ROOT}/data/car.mp4
     MODEL=${ROOT}/model/yolov4-tiny/yolov4-tiny-416.trt
     LABEL=${ROOT}/model/yolov4-tiny/coco.txt
-    ARCHITECTURE=yolov4
+    ARCHITECTURE=yolov4-tiny
     THRES=0.7
     ```
 * Add Confidence Threshold
