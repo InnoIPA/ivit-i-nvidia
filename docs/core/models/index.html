@@ -56,8 +56,7 @@
 <dd>path to model.</dd>
 <dt><strong><code>label_path</code></strong> :&ensp;<code>str</code></dt>
 <dd>path to label file.</dd>
-<dt><strong><code>confidence_threshold</code></strong> :&ensp;<code>float</code></dt>
-<dd>The minimum score that the model will consider the prediction to be a true prediction</dd>
+<dt>confidence_threshold (float):The minimum score that the model will consider the prediction to be a true prediction.</dt>
 <dt><strong><code>device</code></strong> :&ensp;<code>int</code></dt>
 <dd>idx of device , defalt is 0.</dd>
 <dt><strong><code>topk</code></strong> :&ensp;<code>int</code></dt>
@@ -108,22 +107,6 @@ Note: It supports only models with single image input. </p>
 <dl>
 <dt><strong><code>frame</code></strong> :&ensp;<code>np.ndarray</code></dt>
 <dd>input image.</dd>
-</dl></div>
-</dd>
-<dt id="ivit_i.core.models.iClassification.softmax"><code class="name flex">
-<span>def <span class="ident">softmax</span></span>(<span>self, data: numpy.ndarray)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Do softmax.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>data</code></strong> :&ensp;<code>np.ndarray</code></dt>
-<dd>output data of model predict.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>softmax_data</code></dt>
-<dd>Return data after softmax.</dd>
 </dl></div>
 </dd>
 </dl>
@@ -368,7 +351,6 @@ inputs and outputs are expected to be lists of HostDeviceMem objects.</p></div>
 <li><code><a title="ivit_i.core.models.iClassification.normalize" href="#ivit_i.core.models.iClassification.normalize">normalize</a></code></li>
 <li><code><a title="ivit_i.core.models.iClassification.postprocess" href="#ivit_i.core.models.iClassification.postprocess">postprocess</a></code></li>
 <li><code><a title="ivit_i.core.models.iClassification.preprocess" href="#ivit_i.core.models.iClassification.preprocess">preprocess</a></code></li>
-<li><code><a title="ivit_i.core.models.iClassification.softmax" href="#ivit_i.core.models.iClassification.softmax">softmax</a></code></li>
 </ul>
 </li>
 <li>
