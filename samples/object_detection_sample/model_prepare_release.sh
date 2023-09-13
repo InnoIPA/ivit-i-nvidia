@@ -84,8 +84,8 @@ MODEL_PATH="${MODEL_ROOT}/${MODEL_NAME}.trt"
 DOWNLOAD_SCRIPT="${ROOT}/yolo_download.py"
 RUN_DOWNLOAD_DATA="${ROOT}/download_data.sh"
 RUN_DOWNLOAD_MODEL="python3 ${DOWNLOAD_SCRIPT} -m ${MODEL_TYPE} -s ${SIZE} -f ${MODEL_ROOT}"
-RUN_CONVERT="${WS}/converter/yolo-converter.sh ${MODEL_ROOT}/${MODEL_NAME} "
-RUN_BUILD_PLUGIN="/workspace/plugins/build_plugin"
+RUN_CONVERT="yolo-converter ${MODEL_ROOT}/${MODEL_NAME} "
+
 
 
 # -----------------------------------------------------
@@ -94,9 +94,6 @@ RUN_BUILD_PLUGIN="/workspace/plugins/build_plugin"
 # cd $WS || exit
 
 # -----------------------------------------------------
-
-# Build Darknet Plugin
-${RUN_BUILD_PLUGIN}
 
 # Download data
 if [[ ${DOWNLOAD_DATA} = true ]];then

@@ -4,7 +4,7 @@ iVIT Object Detection Sample, this sample demonstrates how to do inference of im
 ## Getting Start
 * Clone Repository    
     ```bash
-    git clone  https://github.com/InnoIPA/ivit-i-nvidia.git && cd ivit-i-nvidia
+    git clone https://github.com/MaxChangInnodisk/ivit-i-nvidia-dev__confidential.git && cd ivit-i-nvidia-dev__confidential
     ```
 * Run iVIT-I Docker Container
     ```bash
